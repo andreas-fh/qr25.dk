@@ -1,0 +1,4 @@
+# Discord message ids that skip the blocklist, one per line.
+# The blocklist matches on substrings, so it has false positives (a word that
+# contains a blocked word inside it). Put those ids here rather than weakening
+# the list.

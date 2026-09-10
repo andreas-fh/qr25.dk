@@ -1,5 +1,8 @@
 name = "qr25-dk"
 compatibility_date = "2026-09-09"
 
+# Only ./public is served. Everything the site needs lives in there, and
+# nothing else does: tools/ holds the raw Discord dump and the blocklist, and
+# neither belongs on the public internet.
 [assets]
-directory = "./"
+directory = "./public"

@@ -1,0 +1,239 @@
+# qr25.dk
+
+Klassesiden for QR25, Aalborg Tekniske Gymnasium. Den svarer på to spørgsmål:
+
+1. Er det kagepause? (10:20 til 10:30, mandag til fredag)
+2. Hvad er dagens citat fra #quotes?
+3. Hvad står der i vedtægterne?
+4. Hvad bliver der stemt om lige nu?
+
+Der står ikke ret meget andet på den, og det er med vilje.
+
+Ren HTML, CSS og JavaScript. Intet byggetrin, ingen framework, ingen
+`node_modules`, ingen skrifttyper hentet ude fra. Alt der bliver serveret ligger
+i `public/`. Cloudflare Workers hoster mappen som statiske filer.
+
+## Sådan hænger det sammen
+
+```
+public/index.html          siden
+public/assets/style.css    hele stilen
+public/assets/app.js       uret og udvælgelsen af dagens citat
+public/data/quotes.json    de citater der er godkendt til at ligge offentligt
+tools/fetch_quotes.py      henter #quotes ned fra Discord
+tools/parse_quotes.py      laver rådataene om til quotes.json
+tools/names.json           hvilket navn der bliver vist for hvilket Discord-id
+tools/blocklist.txt        ord der holder et citat væk fra siden
+tools/exclude.txt          enkelte beskeder der aldrig må med
+tools/include.txt          enkelte beskeder der springer blocklisten over
+```
+
+`tools/` bliver ikke serveret. Kun `public/` gør.
+
+## Kør den lokalt
+
+```
+python3 -m http.server -d public 8000
+```
+
+Og åbn http://localhost:8000.
+
+## Opdater citaterne
+
+Botten DemokratiClanker har allerede adgang til kanalen, så dens token virker.
+På VPS'en ligger den i `/etc/demokraticlanker/env`.
+
+```
+ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 - /tmp/quotes_raw.json' < tools/fetch_quotes.py
+scp root@vps:/tmp/quotes_raw.json tools/quotes_raw.json
+python3 tools/parse_quotes.py
+```
+
+Eller, hvis du har en token lokalt:
+
+```
+DISCORD_TOKEN=... python3 tools/fetch_quotes.py
+python3 tools/parse_quotes.py
+```
+
+`parse_quotes.py` skriver `public/data/quotes.json` og fortæller hvor mange
+beskeder der blev sorteret fra og hvorfor. Commit `public/data/quotes.json`.
+`tools/quotes_raw.json` bliver ikke committet, se `.gitignore`.
+
+## Vedtægterne og afstemningerne
+
+De to kasser henter fra `https://data.qr25.dk`, som er nginx på VPS'en
+(161.97.159.207). qr25.dk er statiske filer på Cloudflare og kan ikke selv nå
+ind til DemokratiClanker, så VPS'en bygger to json-filer og serverer dem med
+CORS for qr25.dk.
+
+```
+qr25.dk (Cloudflare)                     VPS (161.97.159.207)
+  public/assets/app.js  --- fetch --->   nginx: data.qr25.dk
+                                           /var/www/qr25-data/vedtaegter.json
+                                           /var/www/qr25-data/polls.json
+                                                 ^
+                                           cron hvert minut
+                                           /opt/qr25-data/build.py
+                                             <- /var/lib/demokraticlanker/store.json
+                                             <- nyeste pdf i #rules (Discord API)
+```
+
+Alt det på VPS'en ligger uden for dette repo. Filerne er:
+
+| på VPS'en | hvad |
+| --- | --- |
+| `/opt/qr25-data/build.py` | bygger begge json-filer |
+| `/opt/qr25-data/navne.json` | kopi af `tools/names.json`, så navnene er de samme overalt |
+| `/etc/nginx/sites-available/data.qr25.dk.conf` | vhost med CORS |
+| `/etc/cron.d/qr25-data` | kører build.py hvert minut |
+| `/var/www/qr25-data/` | de færdige filer |
+| `/var/lib/qr25-data/` | cache af navne og hvornår discord sidst blev spurgt |
+| `/var/log/qr25-data.log` | hvad cron fangede |
+
+### Vedtægterne
+
+`build.py` finder den nyeste vedhæftede pdf i #rules, henter den, kører den
+gennem `pdftotext` og deler teksten op i kapitler, paragraffer og nummererede
+punkter. Vedhæftninger på discord har en udløbstid i url'en, så den bliver
+hentet forfra hver gang og ikke gemt.
+
+Filen bliver kun skrevet hvis pdf'ens sha256 er en anden end sidst. Så snart
+nogen lægger en ny version op i #rules, står den på siden inden for et kvarter.
+Der bliver spurgt discord hvert kvarter, se `DISCORD_INTERVAL` i `build.py`.
+
+Kan teksten ikke deles op i paragraffer, bliver den gamle fil stående i stedet
+for at siden bliver tom.
+
+### Afstemningerne
+
+Kommer fra bottens eget lager, `/var/lib/demokraticlanker/store.json`. Kun
+åbne afstemninger. `build.py` rører hverken botten eller discord for det her,
+den læser en fil, så det koster ingenting at gøre hvert minut. Siden henter
+dem igen hvert halve minut.
+
+To ting den er nødt til at have styr på:
+
+- **Hemmelige afstemninger.** Er `hide_results` slået til, viser botten ingen
+  tal for nogen før afstemningen lukker, heller ikke for den der lavede den.
+  Så `build.py` skriver ikke tallene i filen overhovedet. Ikke skjult på
+  siden, ikke med i filen. Kun spørgsmålet, mulighederne og hvor mange der har
+  stemt.
+- **Hvem der stemte hvad.** Botten kan vise det i discord når `show_voters`
+  er slået til, men det er en lukket server. `VIS_HVEM_DER_STEMTE` i
+  `build.py` står på `False`, så navnene kommer ikke ud på en offentlig side.
+  Sæt den til `True` hvis klassen beslutter andet.
+
+**Man kan ikke stemme fra hjemmesiden.** Kassen har ingen knapper, ingen
+formular og der er ikke en linje javascript der sender noget. Der er et link
+til #afstemninger, og det er det. Botten skal blive ved med at være det eneste
+sted en stemme kan afgives, ellers holder §6 ikke.
+
+### Hvis det skal sættes op forfra
+
+```
+apt-get install -y poppler-utils
+mkdir -p /opt/qr25-data /var/www/qr25-data /var/lib/qr25-data
+# læg build.py og navne.json i /opt/qr25-data
+# læg vhosten i sites-available og symlink den til sites-enabled
+certbot --nginx -d data.qr25.dk
+systemctl reload nginx
+python3 /opt/qr25-data/build.py --nu
+```
+
+DNS: `data.qr25.dk` skal være en A-record mod 161.97.159.207 i qr25.dk-zonen
+på Cloudflare.
+
+## Hvad der bliver sorteret fra
+
+## Hvad der bliver sorteret fra
+
+Kanalen er en almindelig chatkanal, så størstedelen af den er folk der
+kommenterer på citaterne i stedet for at skrive dem. Parseren beholder kun
+beskeder der ser ud som et citat:
+
+- der skal være noget i anførselstegn, både `"..."` og `“...”` tæller
+- der skal enten være en tilskrivning (`- Mikkel`, `<@id>`, `Navn:`) eller
+  også skal citatet stå først på linjen
+- flere linjer med anførselstegn i samme besked bliver til en dialog
+- det der står efter tilskrivningen bliver til en note (`til Content Creator møde`)
+- Discord-markup bliver oversat: pings bliver til navne, custom emoji ryger ud
+- gengangere ryger ud
+
+Af 1002 beskeder i kanalen bliver 364 til citater.
+
+**Blocklisten er ikke en sikkerhedsnet.** Den matcher på ord, den kan ikke læse
+en sætning, og der ligger citater i kanalen som er et problem uden at indeholde
+et eneste ord fra listen. Læs `public/data/quotes.json` igennem inden I peger
+domænet herhen, og brug `tools/exclude.txt` til resten.
+
+Alt hvad blocklisten fanger, bliver skrevet til `tools/flagged.json` sammen med
+det ord der fangede det, så I kan se hvad der forsvandt.
+
+Siden er sat til `noindex` i `public/index.html`, så den ikke ender i Google ved
+siden af skolens navn. Slet den meta-tag hvis I vil have den med.
+
+## Sådan tilføjer du en kasse
+
+En kasse er en `<div class="kasse">` inde i `<div id="scene">` i
+`public/index.html`:
+
+```html
+<div class="kasse" id="kasse-ditnavn">
+  <div class="indhold">
+    ...
+  </div>
+</div>
+```
+
+Kopier en af de andre og skriv dit eget i. Den bliver automatisk taget med når
+kasserne bliver smidt ud på siden, du skal ikke røre `app.js`. Der ligger en
+huskeliste i en af kasserne med det vi har snakket om.
+
+## Sådan ligger kasserne
+
+`spred()` i `app.js` giver hver kasse en tilfældig plads og et lille skævt hæld,
+hver gang siden hentes. Den vælger et tilfældigt sted på hele skærmens bredde,
+tjekker om der allerede ligger en kasse der, og prøver igen hvis der gør, så de
+aldrig lander oven i hinanden. Bagefter skubbes hele bunken op så den øverste
+kasse rører toppen. Knappen "bland" kører den samme funktion.
+
+Arkivet under citatet gør kassen højere når man folder det ud, så `spred()`
+måler kassen med arkivet åbent og lukker det igen bagefter. Ellers ville den
+lægge sig oven i naboen første gang nogen trykkede. Rører man ved en kasse,
+lægger den sig øverst.
+
+Under 700 px er der ikke plads til at rode med det, så der springer `spred()`
+over og lader kasserne stå i en søjle i midten. Det samme sker hvis javascript
+er slået fra.
+
+`#scene` har en `max-width` så længe kasserne står i søjlen, så `clientWidth`
+er søjlens bredde og ikke skærmens. Klassen `spredt` skal på plads før der
+bliver målt, ellers måler `spred()` 460 px, tror der ikke er plads, og springer
+fra hver gang.
+
+## Stil
+
+Siden skal ligne at nogen fra klassen har lavet den, ikke at et bureau har.
+Reglerne står øverst i `public/assets/style.css`:
+
+- gradienten skal være en regnbue, og den skal ligge der hele tiden. Den
+  kedelige lilla-til-lyserøde fade som alle ai-sider har er forbudt
+- ingen slørede skygger, ingen mat glas, ingen runde hjørner
+- ingen overskrifter på kasserne, man kan godt se hvad de er
+- ingen ting der fader ind når man scroller
+- ingen emoji som ikoner
+- ingen skrifttyper hentet ude fra, det der ligger på maskinen er nok
+
+Så det er regnbue i baggrunden hele tiden, hvide kasser med `outset`-kanter
+smidt ud over hele skærmen, Impact i overskriften, Verdana i brødteksten,
+Georgia i citaterne, et rullebånd i toppen med nedtællingen til kagepausen, og
+en besøgstæller der kun tæller i din egen browser.
+
+Citatet står ét sted. Rullebåndet havde et tilfældigt citat i sig før, men så
+var der to forskellige citater på siden på samme tid, og det var forvirrende.
+
+Rullebåndet er ikke et rigtigt `<marquee>`. Den starter forfra hver gang man
+skriver i den, og nedtællingen skriver i den hvert sekund, så det ville stå
+stille. Det er en `<div>` med en css-animation i stedet, for animationen kører
+på elementet og ikke på teksten.

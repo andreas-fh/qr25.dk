@@ -1,0 +1,6 @@
+# Discord message ids that must never reach the site, one per line.
+# Use this for anything the blocklist does not catch: a quote that was funny in
+# the moment and is not funny on a public page, or one somebody asked to have
+# taken down. Comments start with '#'.
+#
+# 123456789012345678  # why it is here

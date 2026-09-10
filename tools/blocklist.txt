@@ -1,0 +1,97 @@
+# Words that keep a quote off the public site.
+#
+# Matching is deliberately blunt: both the quote and the word are stripped down
+# to letters and digits and lowercased before comparing, so "n*gger", "n1gger"
+# and "n i g g e r" all match the same entry. That also means a match is on a
+# substring, so short entries will catch words that contain them. When that
+# happens, put the message id in include.txt instead of shortening the entry.
+#
+# Anything caught here goes to tools/flagged.json with the word that caught it,
+# so you can see what was dropped and why.
+#
+# This list is not a safety net. It catches words. It cannot read a sentence,
+# and there are quotes in the channel that are a problem without containing any
+# word on this list. Read public/data/quotes.json before you ship a change.
+
+# racial and ethnic slurs
+nigger
+nigga
+niger
+negro
+neger
+n1gg
+chink
+gook
+spic
+kike
+perker
+paki
+tyrkersvin
+raghead
+towelhead
+coon
+wetback
+sandnigger
+
+# homophobic and transphobic slurs
+faggot
+faggy
+fagget
+bosserøv
+svans
+tranny
+troon
+dyke
+
+# slurs about disability
+retard
+retarded
+spasser
+mongol
+mongoloid
+evnesvag
+
+# nazism and genocide
+heilhitler
+sieghei
+gaskammer
+gaschamber
+holocaust
+hitler
+nazi
+kkk
+klukluxklan
+whitepower
+whitesupremac
+folkedrab
+genocide
+etniskudrensning
+skoleskyderi
+schoolshoot
+
+# sexual content involving children
+pedo
+paedo
+pædo
+groom
+grooming
+loli
+lolicon
+shota
+csam
+childporn
+børneporno
+mindreårig
+underage
+jailbait
+epstein
+
+# sexual violence
+rape
+raped
+rapist
+voldtægt
+voldtag
+sexualassault
+sexualharass
+molest

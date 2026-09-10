@@ -1,0 +1,12 @@
+# The full download of #quotes. It is big, it churns on every fetch, and it
+# still contains everything the blocklist takes out. Regenerate it with
+# tools/fetch_quotes.py instead of committing it.
+tools/quotes_raw.json
+
+# What the blocklist caught, written on every run so you can see what was
+# dropped and why. Same reason: it stays local.
+tools/flagged.json
+
+# py_compile leftovers
+__pycache__/
+

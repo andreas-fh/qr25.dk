@@ -1,0 +1,234 @@
+/* qr25.dk
+ *
+ * skrevet i hånden. ingen tailwind, ingen build, ingen node_modules.
+ * reglerne er:
+ *
+ *   gradienten skal være en regnbue, og den skal ligge der hele tiden.
+ *     den kedelige lilla-til-lyserøde fade som alle ai-sider har er forbudt
+ *   ingen slørede skygger, ingen mat glas, ingen runde hjørner
+ *   ingen overskrifter på kasserne. man kan godt se hvad de er
+ *   ingen ting der fader ind når man scroller
+ *   ingen emoji som ikoner
+ *   ingen skrifttyper hentet ude fra. det der ligger på maskinen er nok
+ */
+
+body {
+  margin: 0;
+  padding: 14px 12px 40px;
+  color: #111;
+  font: 15px/1.5 Verdana, Geneva, "DejaVu Sans", sans-serif;
+
+  /* regnbue. den bliver siddende når man scroller, ellers gentager den sig */
+  background: linear-gradient(158deg,
+    #ff2020 0%, #ff8a00 15%, #ffe22e 30%, #35c93a 46%,
+    #1a9bff 62%, #4b2ecf 80%, #b32ecf 100%);
+  background-attachment: fixed;
+}
+
+a { color: #1a1aa8; }
+a:visited { color: #6a1a9a; }
+a:hover { color: #c22a1c; }
+
+/* ---- toppen ---- */
+
+h1 {
+  font: 400 54px/0.95 Impact, Haettenschweiler, "Arial Narrow Bold", "DejaVu Sans Condensed", sans-serif;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+  color: #fff;
+  /* hård skygge, ikke sløret. hvid på sort holder oven på alle regnbuens
+     farver, hvilket rød ikke gør */
+  text-shadow: 4px 4px 0 #111;
+}
+
+/* rullebåndet med nedtællingen. animationen kører på indersiden, så teksten
+   kan skiftes hvert sekund uden at rulningen hopper tilbage til start */
+#banner {
+  position: relative;
+  overflow: hidden;
+  height: 27px;
+  margin: 0 0 12px;
+  border: 3px inset #cfcab6;
+  background: #fff;
+}
+
+#banner-tekst {
+  position: absolute;
+  top: 3px;
+  white-space: nowrap;
+  font: italic 15px Georgia, "Times New Roman", serif;
+  animation: rul 15s linear infinite;
+}
+
+@keyframes rul {
+  from { left: 100%; transform: translateX(0); }
+  to   { left: 0;    transform: translateX(-100%); }
+}
+
+/* nogle folk bliver dårlige af ting der bevæger sig. så står den bare stille */
+@media (prefers-reduced-motion: reduce) {
+  #banner-tekst { position: static; animation: none; display: block; padding-left: 8px; }
+}
+
+#top p { margin: 0 0 16px; }
+
+/* ---- scenen kasserne bliver smidt ud på ---- */
+
+/* uden javascript, og på små skærme, står de under hinanden i midten */
+#scene { max-width: 460px; margin: 0 auto; }
+
+/* når de bliver smidt ud, må de bruge hele skærmen */
+#scene.spredt { position: relative; max-width: none; margin: 0; }
+#scene.spredt > .kasse { position: absolute; margin: 0; }
+
+/* ---- kasserne ---- */
+
+.kasse {
+  border: 5px outset #ddd8c6;
+  background: #fff;
+  margin: 0 0 18px;
+}
+
+.indhold { padding: 12px 14px 14px; }
+.indhold > :first-child { margin-top: 0; }
+.indhold > :last-child { margin-bottom: 0; }
+
+/* ---- kagepause ---- */
+
+.spg { margin: 0; font-weight: bold; font-size: 17px; }
+
+#verdict {
+  margin: 2px 0 4px;
+  font: 400 96px/0.9 Impact, Haettenschweiler, "Arial Narrow Bold", "DejaVu Sans Condensed", sans-serif;
+  letter-spacing: 2px;
+  color: #111;
+}
+
+body.kagepause #verdict { color: #c22a1c; }
+
+#detail { margin: 0; font-size: 15px; }
+#detail b { font-weight: bold; }
+
+/* ---- citat ---- */
+
+.quote-line + .quote-line { margin-top: 12px; }
+.quote-text { margin: 0; font: italic 21px/1.3 Georgia, "Times New Roman", serif; }
+.quote-attr { margin: 3px 0 0; font-size: 13px; }
+.quote-attr .who { font-weight: bold; }
+.quote-attr .who::before { content: "- "; }
+.quote-attr .note { color: #55503f; }
+
+button {
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 3px 10px;
+  border: 3px outset #ddd8c6;
+  background: #efece0;
+  color: #111;
+  cursor: pointer;
+}
+
+button:active { border-style: inset; }
+
+#kilde { font-size: 11px; margin-left: 4px; }
+
+#arkiv { margin-top: 12px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
+summary { cursor: pointer; font-size: 12px; font-weight: bold; }
+
+#archive-list { margin: 8px 0 0; padding-left: 24px; }
+#archive-list li { margin-bottom: 8px; }
+#archive-list .what { font: italic 15px Georgia, "Times New Roman", serif; }
+#archive-list .who { font-size: 12px; }
+
+/* ---- vedtægter og afstemninger ---- */
+
+/* begge kasser kan blive lange, og en kasse der vokser skubber sig ind i
+   naboen når de ligger tilfældige steder. så de ruller indeni i stedet */
+.kassetop {
+  margin: 0 0 8px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.kassetop span { font-weight: normal; font-size: 11px; color: #55503f; }
+
+.kassebund { margin: 8px 0 0; font-size: 11px; color: #55503f; }
+
+.tom { margin: 0; font-size: 13px; color: #55503f; }
+
+#vedtaegter, #polls {
+  max-height: 320px;
+  overflow-y: auto;
+  border-top: 1px dotted #b8b3a0;
+  padding-top: 8px;
+}
+
+#polls { min-height: 60px; }
+
+/* ---- vedtægter ---- */
+
+.kapitel { margin: 0 0 12px; }
+.kapitel:last-child { margin-bottom: 0; }
+
+.kapitel h3 {
+  margin: 0 0 5px;
+  font: bold 12px Verdana, Geneva, sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.paragraf { margin: 0 0 7px; font-size: 12.5px; line-height: 1.4; }
+.paragraf .nr { font-weight: bold; }
+
+.punkter { margin: 3px 0 0; padding-left: 22px; font-size: 12px; color: #3a382e; }
+.punkter li { margin-bottom: 2px; }
+
+/* ---- afstemninger ---- */
+
+.poll { margin: 0 0 14px; }
+.poll:last-child { margin-bottom: 0; }
+
+.poll h3 { margin: 0 0 6px; font: bold 13px Verdana, Geneva, sans-serif; line-height: 1.35; }
+
+.valg { margin: 0 0 4px; font-size: 12px; }
+
+.valg-top { display: flex; justify-content: space-between; gap: 10px; }
+.valg-top .antal { color: #55503f; white-space: nowrap; }
+
+/* massiv farve, ingen overgang */
+.bar { height: 9px; background: #efece0; border: 1px solid #b8b3a0; margin-top: 2px; }
+.bar span { display: block; height: 100%; background: #1a1aa8; }
+
+.poll .fod { margin: 5px 0 0; font-size: 11px; color: #55503f; }
+
+.poll.hemmelig .valg { color: #3a382e; }
+
+/* ---- tælleren ---- */
+
+#taeller { margin: 0; font-size: 13px; }
+
+#tal {
+  font: bold 17px "Courier New", Courier, monospace;
+  letter-spacing: 3px;
+  background: #111;
+  color: #38d038;
+  padding: 2px 7px;
+  border: 3px inset #777;
+}
+
+.advarsel {
+  max-width: 460px;
+  margin: 0 auto 14px;
+  border: 3px solid #c22a1c;
+  background: #fff;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+/* små skærme. der er ikke plads til at smide kasser tilfældige steder hen på
+   en telefon, så der står de under hinanden. app.js springer også
+   udsmidningen over dernede */
+@media (max-width: 700px) {
+  h1 { font-size: 40px; }
+  #verdict { font-size: 72px; }
+  .quote-text { font-size: 19px; }
+}

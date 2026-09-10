@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>qr25.dk</title>
+<meta name="color-scheme" content="light">
+<!-- klassens interne citater skal ikke ligge i google ved siden af skolens navn.
+     slet linjen her hvis I vil have siden med i søgeresultater -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="icon" href="/assets/kage.svg" type="image/svg+xml">
+</head>
+<body>
+
+<noscript><p class="advarsel">siden skal bruge javascript. kagepause 10:20 til 10:30, man til fre.</p></noscript>
+
+<div id="top">
+  <h1>qr25.dk</h1>
+
+  <!-- rullebåndet. det er ikke et rigtigt <marquee>: den starter forfra hver
+       gang man skriver i den, og nedtællingen skriver i den hvert sekund -->
+  <div id="banner" aria-hidden="true"><span id="banner-tekst"></span></div>
+
+  <p><button type="button" id="bland">bland</button></p>
+</div>
+
+<!-- kasserne bliver smidt tilfældige steder ud på #scene af app.js.
+     uden javascript står de bare under hinanden, og det er også fint -->
+<div id="scene">
+
+  <div class="kasse" id="kasse-kage">
+    <div class="indhold">
+      <p class="spg">er det kagepause?</p>
+      <p id="verdict">?</p>
+      <p id="detail" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div class="kasse" id="kasse-citat">
+    <div class="indhold">
+      <div id="quote"></div>
+      <p>
+        <button type="button" id="rul">tilfældigt</button>
+        <button type="button" id="tilbage" hidden>dagens</button>
+        <a id="kilde" href="#" rel="noreferrer">discord</a>
+      </p>
+      <details id="arkiv">
+        <summary>arkiv</summary>
+        <ol id="archive-list"></ol>
+      </details>
+    </div>
+  </div>
+
+  <div class="kasse" id="kasse-vedtaegter">
+    <div class="indhold">
+      <p class="kassetop">vedtægter <span id="vedt-version"></span></p>
+      <div id="vedtaegter"><p class="tom">henter</p></div>
+    </div>
+  </div>
+
+  <!-- afstemningerne er til at kigge på. man stemmer i discord, ikke her.
+       der er ingen knapper, ingen formular og intet der sender noget. -->
+  <div class="kasse" id="kasse-polls">
+    <div class="indhold">
+      <p class="kassetop">åbne afstemninger</p>
+      <div id="polls"><p class="tom">henter</p></div>
+      <p class="kassebund">der stemmes i <a id="polls-kanal" href="https://discord.com/channels/1437357663406002288/1468899893677396099" rel="noreferrer">#afstemninger</a></p>
+    </div>
+  </div>
+
+  <div class="kasse" id="kasse-om">
+    <div class="indhold">
+      <p id="taeller">besøg <span id="tal">000000</span></p>
+    </div>
+  </div>
+
+</div>
+
+<script src="/assets/app.js"></script>
+</body>
+</html>
