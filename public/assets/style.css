@@ -204,6 +204,25 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
 /* ---- tælleren ---- */
 
+/* kassen henter sig selv igen mens man kigger, og en besked kan være ét ord
+   eller fire linjer. så den har fast højde og ruller indeni, ellers ville
+   siden lægge alle kasserne om hver gang han skriver noget */
+#senest {
+  height: 76px;
+  overflow-y: auto;
+  border-top: 1px dotted #b8b3a0;
+  padding-top: 8px;
+}
+
+.senest-tekst {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  /* det er en besked fra discord, ikke et citat, så den skal ikke se ud som
+     om nogen har sagt noget klogt */
+  word-break: break-word;
+}
+
 #taeller { margin: 0; font-size: 13px; }
 
 #tal {

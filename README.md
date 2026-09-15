@@ -135,6 +135,12 @@ qr25.dk (Cloudflare)                     VPS (161.97.159.207)
                                              <- /var/lib/demokraticlanker/store.json
                                              <- nyeste pdf i #rules (Discord API)
 
+                                           /var/www/qr25-data/live/senest.json
+                                                 ^
+                                           DemokratiClanker, på gatewayen
+                                           /opt/demokraticlanker/src/senest.js
+                                             <- messageCreate (Discord gateway)
+
                         --- POST /tael -->   nginx -> 127.0.0.1:8787
                                            /opt/qr25-data/taeller.py
                                              -> /var/lib/qr25-tael/tael
@@ -153,7 +159,11 @@ Alt det på VPS'en ligger uden for dette repo. Filerne er:
 | `/var/www/qr25-data/` | de færdige filer |
 | `/var/lib/qr25-data/` | cache af navne og hvornår discord sidst blev spurgt |
 | `/opt/qr25-data/skjul.json` | valgfri liste af id'er der ikke skal nævnes |
+| `/opt/qr25-data/blocklist.txt` | kopi af `tools/blocklist.txt`, så botten kan filtrere |
 | `/var/log/qr25-data.log` | hvad cron fangede |
+| `/opt/demokraticlanker/src/senest.js` | skriver `senest.json` når han skriver noget |
+| `/var/www/qr25-data/live/` | det botten selv skriver. eget ejerskab, så den ikke rører resten |
+| `/var/lib/demokraticlanker/senest.json` | hans seneste ti beskeder, så en sletning har noget at falde tilbage på |
 
 ### Vedtægterne
 
@@ -193,6 +203,39 @@ formular og der er ikke en linje javascript der sender noget. Der er et link
 til #afstemninger, og det er det. Botten skal blive ved med at være det eneste
 sted en stemme kan afgives, ellers holder §6 ikke.
 
+### Tristans nyeste besked
+
+Han bad om at få sin nyeste besked på forsiden, og Dangus bad om den før ham.
+Alle kanaler tæller med.
+
+Det er ikke `build.py` der laver den. DemokratiClanker sidder allerede på
+discords gateway, så den ved det i samme sekund han trykker enter, og skriver
+`/var/www/qr25-data/live/senest.json` med det samme. Siden henter filen når den
+loades og igen hvert halve minut.
+
+Botten har fået `GuildMessages` til det. Den er ikke privilegeret: den siger at
+der er kommet en besked, hvem der skrev den og hvor, men ikke hvad der står.
+Teksten hentes over REST for den ene besked det handler om. Så botten læser
+præcis én persons beskeder i stedet for at få hele serverens indhold ind ad
+døren, og `MessageContent` behøver aldrig blive tændt i udviklerportalen.
+
+Teksten kommer gennem den samme blocklist som citaterne, klippet ved 280 tegn.
+Pings bliver stående som `<@id>` i filen og slået op i `navne.json` i browseren,
+præcis som i citaterne. Retter han beskeden, retter siden med. Sletter han den,
+falder den tilbage på den forrige.
+
+Hvem det er, står i `SENEST_BRUGER` i `senest.js`. Det er med vilje ikke noget
+man kan skifte udefra: der skal ikke være en generel "skriv hvad som helst
+direkte på en offentlig forside"-knap til 40 mand. Skal han ud af det igen, så
+sæt hans id i `skjul.json` og slet filen.
+
+Botten ved kun det den har set, siden den startede. Skal der fyldes ud bagfra
+— første gang, eller hvis filen er gået tabt — leder `build.py` i kanalerne:
+
+```
+python3 /opt/qr25-data/build.py --senest
+```
+
 ### Hvis det skal sættes op forfra
 
 ```
@@ -205,6 +248,16 @@ systemctl reload nginx
 python3 /opt/qr25-data/build.py --nu
 # læg qr25-tael.service i /etc/systemd/system
 systemctl enable --now qr25-tael
+
+# tristans nyeste besked: botten skriver den, så den skal have et sted at
+# skrive hen, og lov til det inde i sin egen ProtectSystem=strict
+cp tools/blocklist.txt /opt/qr25-data/blocklist.txt
+install -d -o demokrati -g www-data -m 0755 /var/www/qr25-data/live
+mkdir -p /etc/systemd/system/demokraticlanker.service.d
+printf '[Service]\nReadWritePaths=/var/www/qr25-data/live\n' \
+  > /etc/systemd/system/demokraticlanker.service.d/senest.conf
+systemctl daemon-reload && systemctl restart demokraticlanker
+python3 /opt/qr25-data/build.py --senest   # fyld den ud med det der allerede står
 ```
 
 DNS: `data.qr25.dk` skal være en A-record mod 161.97.159.207 i qr25.dk-zonen

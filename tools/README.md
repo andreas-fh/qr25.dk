@@ -38,6 +38,10 @@ Hvis nogen ikke vil have deres citat på siden overhovedet, så sæt beskedens i
 i `exclude.txt`. Beskedens id får du i Discord med højreklik og "Kopier
 beskeds-id" (kræver udviklertilstand).
 
+`blocklist.txt` skal også ligge på VPS'en som `/opt/qr25-data/blocklist.txt`.
+Botten læser den, når den skriver Tristans nyeste besked. Retter du i listen,
+så kopier den derover — den bliver læst forfra af sig selv, når filen er ny.
+
 ## Changelog- og idékanalen
 
 Kanal `1549329884256411720`. Hver gang der bliver lavet noget om på siden, skal

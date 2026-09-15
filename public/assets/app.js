@@ -442,6 +442,59 @@
     });
   }
 
+  // --- tristans nyeste besked ---
+
+  /* Tristan bad om at få sin nyeste besked op at stå, og Dangus bad om den før
+     ham. DemokratiClanker sidder på discords gateway, så den ved det i samme
+     sekund han trykker enter, og skriver senest.json med det samme. Herfra er
+     det bare en fil. Vi henter den igen hvert halve minut, for en side der
+     står åben i en time skal ikke vise noget der er en time gammelt.
+
+     Teksten står med pings i behold, præcis som citaterne, så den skal gennem
+     udskriv() for at <@692...> bliver til et navn. */
+
+  var SENEST_ID = "692001336740413452";
+
+  function siden(ms) {
+    var s = Math.max(0, Math.round(ms / 1000));
+    if (s < 90) return "lige nu";
+    var m = Math.round(s / 60);
+    if (m < 60) return "for " + m + " minutter siden";
+    var t = Math.round(m / 60);
+    if (t < 24) return "for " + t + (t === 1 ? " time siden" : " timer siden");
+    var d = Math.round(t / 24);
+    return "for " + d + (d === 1 ? " dag siden" : " dage siden");
+  }
+
+  // navnet står i html'en som det hed da filen blev skrevet. hedder han noget
+  // andet i dag, ved navne.json det, og så er det den der gælder. det sker
+  // også selvom selve beskeden ikke kan hentes.
+  function senestNavn() {
+    if (NAVNE.navne[SENEST_ID]) id("senest-hvem").textContent = NAVNE.navne[SENEST_ID];
+  }
+
+  function tegnSenest(data) {
+    var kasse = id("senest");
+    kasse.innerHTML = "";
+    senestNavn();
+
+    if (!data || !data.tekst) {
+      kasse.appendChild(lav("p", "tom", "han har ikke sagt noget endnu"));
+      return;
+    }
+
+    kasse.appendChild(lav("p", "senest-tekst", udskriv(data.tekst)));
+
+    var naar = data.dato ? new Date(data.dato) : null;
+    var dele = [];
+    if (data.kanal) dele.push("#" + data.kanal);
+    if (naar && !isNaN(naar.getTime())) dele.push(siden(Date.now() - naar.getTime()));
+
+    var kilde = id("senest-kilde");
+    kilde.textContent = dele.length ? dele.join(", ") : "discord";
+    if (data.url) kilde.href = data.url;
+  }
+
   hent("/vedtaegter.json")
     .then(function (data) { tegnVedtaegter(data); })
     .catch(function (fejl) {
@@ -451,10 +504,20 @@
     .catch(function (fejl) {
       id("polls").textContent = "kunne ikke hente afstemningerne (" + fejl.message + ")";
     })
+    .then(function () { return hent("/senest.json").then(tegnSenest); })
+    .catch(function (fejl) {
+      senestNavn();
+      id("senest").textContent = "kunne ikke hente den (" + fejl.message + ")";
+    })
     .then(function () { spred(); });
 
-  // der bliver stemt mens folk kigger, så hent dem igen en gang imellem
-  setInterval(function () { opdaterPolls(false).catch(function () {}); }, 30000);
+  // der bliver stemt mens folk kigger, så hent dem igen en gang imellem.
+  // det samme med tristan: botten skriver filen i samme sekund han trykker
+  // enter, så en side der står åben skal ikke vise noget en time gammelt.
+  setInterval(function () {
+    opdaterPolls(false).catch(function () {});
+    hent("/senest.json").then(tegnSenest).catch(function () {});
+  }, 30000);
 
   // ---------------- smid kasserne ud på siden ----------------
 
