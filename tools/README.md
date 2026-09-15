@@ -12,6 +12,8 @@ Intet herinde bliver serveret. Se `../README.md` for hele forklaringen.
 | `blocklist.txt` | ord der holder et citat væk fra siden |
 | `exclude.txt` | besked-id'er der aldrig må med |
 | `include.txt` | besked-id'er der springer blocklisten over |
+| `changelog.py` | lægger changelog-embeds op i #changelog og læser idéer derfra |
+| `changelog_state.json` | hvor langt idékanalen er læst |
 | `flagged.json` | skrives hver gang: hvad blocklisten fangede, og hvilket ord der fangede det |
 
 Kanal-id og server-id står i toppen af `parse_quotes.py`.
@@ -35,3 +37,25 @@ sagde, ikke hvem siden siger det er.
 Hvis nogen ikke vil have deres citat på siden overhovedet, så sæt beskedens id
 i `exclude.txt`. Beskedens id får du i Discord med højreklik og "Kopier
 beskeds-id" (kræver udviklertilstand).
+
+## Changelog- og idékanalen
+
+Kanal `1549329884256411720`. Hver gang der bliver lavet noget om på siden, skal
+der op et embed med hvad der er lavet. Folk skriver idéer ind i den samme
+kanal.
+
+```
+scp tools/changelog.py root@vps:/tmp/cl.py
+scp changelog.json root@vps:/tmp/cl.json
+ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 /tmp/cl.py post /tmp/cl.json'
+```
+
+`changelog.json` er `{"titel", "tekst", "punkter", "fod"}`. Og for at læse det
+folk har skrevet siden sidst:
+
+```
+ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 /tmp/cl.py nyt <sidst_laest>'
+```
+
+`sidst_laest` står i `changelog_state.json`. Skriv det id kommandoen nåede til
+tilbage i filen bagefter, ellers bliver hele kanalen læst forfra næste gang.

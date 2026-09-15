@@ -25,6 +25,8 @@ tools/parse_quotes.py      laver rådataene om til quotes.json
 tools/fetch_members.py     henter kaldenavnene ned, så parseren kan genkende dem
 tools/members.json         kaldenavnene på det tidspunkt filen blev hentet
 tools/names.json           hvem der ikke skal nævnes ved navn
+tools/changelog.py         lægger changelog op i #changelog og henter idéer
+tools/changelog_state.json hvor langt idékanalen er læst
 tools/blocklist.txt        ord der holder et citat væk fra siden
 tools/exclude.txt          enkelte beskeder der aldrig må med
 tools/include.txt          enkelte beskeder der springer blocklisten over
@@ -207,6 +209,12 @@ systemctl enable --now qr25-tael
 
 DNS: `data.qr25.dk` skal være en A-record mod 161.97.159.207 i qr25.dk-zonen
 på Cloudflare.
+
+## Changelog
+
+Bliver der lavet noget om på siden, kommer der et embed op i kanal
+`1549329884256411720` med hvad der er lavet. Den samme kanal er idékasse, så
+klassen kan skrive ønsker ind i den. Se `tools/README.md`.
 
 ## Hvad der bliver sorteret fra
 

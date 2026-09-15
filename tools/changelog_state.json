@@ -1,0 +1,13 @@
+{
+  "_comment": [
+    "Hvor langt changelog- og idékanalen er læst. Uden den skal hele kanalen",
+    "læses forfra hver gang, og det er spild.",
+    "",
+    "    ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 /tmp/cl.py nyt <sidst_laest>'",
+    "",
+    "Skriv id'et den nåede til ind i sidst_laest bagefter."
+  ],
+  "kanal": "1549329884256411720",
+  "sidst_laest": "1549331391819419711",
+  "sidst_laest_dato": "2026-09-15"
+}
