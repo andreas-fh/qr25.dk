@@ -55,6 +55,9 @@ ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 /tmp/cl.py po
 ```
 
 `changelog.json` er `{"version", "titel", "tekst", "punkter", "fod"}`.
+Skal der nævnes nogen, så slå id'et op i `members.json` — skriv det ikke efter
+hukommelsen. Værktøjet spørger discord og nægter at lægge op, hvis et `<@id>`
+ikke findes på serveren, men det er en spærre og ikke en metode.
 Versionen står i bunden af embeddet og tæller op ved hver changelog: store ting
 foran, små ting bagved. Den står i `changelog_state.json`, så tag den derfra og
 skriv den nye tilbage.

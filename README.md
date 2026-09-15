@@ -136,10 +136,12 @@ qr25.dk (Cloudflare)                     VPS (161.97.159.207)
                                              <- nyeste pdf i #rules (Discord API)
 
                                            /var/www/qr25-data/live/senest.json
+                                           /var/www/qr25-data/live/medie/*
                                                  ^
                                            DemokratiClanker, på gatewayen
                                            /opt/demokraticlanker/src/senest.js
                                              <- messageCreate (Discord gateway)
+                                             <- selve gif'en (Discord CDN)
 
                         --- POST /tael -->   nginx -> 127.0.0.1:8787
                                            /opt/qr25-data/taeller.py
@@ -162,7 +164,9 @@ Alt det på VPS'en ligger uden for dette repo. Filerne er:
 | `/opt/qr25-data/blocklist.txt` | kopi af `tools/blocklist.txt`, så botten kan filtrere |
 | `/var/log/qr25-data.log` | hvad cron fangede |
 | `/opt/demokraticlanker/src/senest.js` | skriver `senest.json` når han skriver noget |
+| `/opt/demokraticlanker/scripts/senest-backfill.js` | finder hans nyeste besked bagfra, hvis filen mangler |
 | `/var/www/qr25-data/live/` | det botten selv skriver. eget ejerskab, så den ikke rører resten |
+| `/var/www/qr25-data/live/medie/` | gif'en eller billedet der hører til beskeden |
 | `/var/lib/demokraticlanker/senest.json` | hans seneste ti beskeder, så en sletning har noget at falde tilbage på |
 
 ### Vedtægterne
@@ -229,11 +233,25 @@ man kan skifte udefra: der skal ikke være en generel "skriv hvad som helst
 direkte på en offentlig forside"-knap til 40 mand. Skal han ud af det igen, så
 sæt hans id i `skjul.json` og slet filen.
 
+Sender han en gif, henter botten selve filen ned og lægger den i
+`live/medie/`, og siden viser den. Det er med vilje ikke et link videre til
+Discord: deres urler er signerede og udløber efter et døgn, så linket ville
+være dødt i morgen. Filen hedder det samme som beskedens id, så den kan caches
+for evigt, og der ligger kun dem der hører til de fem beskeder botten husker.
+Der bliver kun hentet fra Discords egne værter og kun billeder og video — en
+gif fra klipy eller tenor kommer gennem Discords egen proxy, så vi laver ikke
+GET-kald mod hvad som helst nogen skriver i en chat.
+
+Discord laver gif'er udefra om til mp4, så en "gif" er tit en video. Den bliver
+vist som `<video autoplay loop muted playsinline>`, altså præcis som en gif.
+
 Botten ved kun det den har set, siden den startede. Skal der fyldes ud bagfra
-— første gang, eller hvis filen er gået tabt — leder `build.py` i kanalerne:
+— første gang, eller hvis filen er gået tabt — leder det her script i
+kanalerne og sender fundet den samme vej som en levende besked:
 
 ```
-python3 /opt/qr25-data/build.py --senest
+set -a; . /etc/demokraticlanker/env; set +a
+sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
 
 ### Hvis det skal sættes op forfra
@@ -253,11 +271,12 @@ systemctl enable --now qr25-tael
 # skrive hen, og lov til det inde i sin egen ProtectSystem=strict
 cp tools/blocklist.txt /opt/qr25-data/blocklist.txt
 install -d -o demokrati -g www-data -m 0755 /var/www/qr25-data/live
+install -d -o demokrati -g www-data -m 0755 /var/www/qr25-data/live/medie
 mkdir -p /etc/systemd/system/demokraticlanker.service.d
 printf '[Service]\nReadWritePaths=/var/www/qr25-data/live\n' \
   > /etc/systemd/system/demokraticlanker.service.d/senest.conf
 systemctl daemon-reload && systemctl restart demokraticlanker
-python3 /opt/qr25-data/build.py --senest   # fyld den ud med det der allerede står
+sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
 
 DNS: `data.qr25.dk` skal være en A-record mod 161.97.159.207 i qr25.dk-zonen

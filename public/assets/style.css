@@ -208,10 +208,23 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
    eller fire linjer. så den har fast højde og ruller indeni, ellers ville
    siden lægge alle kasserne om hver gang han skriver noget */
 #senest {
-  height: 76px;
+  height: 188px;
   overflow-y: auto;
   border-top: 1px dotted #b8b3a0;
   padding-top: 8px;
+}
+
+/* gif'en fylder det den kan uden at vælte kassen. bredden er sat på elementet
+   så pladsen er der inden filen er hentet, og her tages den ned igen */
+.senest-medie {
+  display: block;
+  margin: 8px auto 0;
+  max-width: 100%;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  border: 1px solid #b8b3a0;
+  background: #efece0;
 }
 
 .senest-tekst {

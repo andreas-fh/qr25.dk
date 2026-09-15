@@ -24,6 +24,7 @@ tools/changelog_state.json, så starter næste læsning der og ikke forfra.
 
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -58,6 +59,29 @@ def kald(sti, metode="GET", krop=None):
         sys.exit(f"discord svarede {fejl.code}: {fejl.read().decode()[:400]}")
 
 
+GUILD = "1437357663406002288"
+PING = re.compile(r"<@!?(\d+)>")
+
+
+def tjek_pings(tekst):
+    """Stop hvis der bliver nævnt et discord-id der ikke findes på serveren.
+
+    Et embed med et forkert id peger på en helt anden person, eller på ingen,
+    og det opdager man først når det står i kanalen. Det er billigere at
+    spørge discord én gang end at rette en besked bagefter.
+    """
+    ider = set(PING.findall(tekst))
+    if not ider:
+        return
+    kendte = {m["user"]["id"] for m in kald(f"/guilds/{GUILD}/members?limit=1000")}
+    ukendte = sorted(ider - kendte)
+    if ukendte:
+        sys.exit(
+            "disse id'er findes ikke på serveren: " + ", ".join(ukendte)
+            + "\nslå dem op i tools/members.json i stedet for at gætte."
+        )
+
+
 def post(sti, besked=None):
     with open(sti, encoding="utf-8") as fh:
         ind = json.load(fh)
@@ -67,6 +91,8 @@ def post(sti, besked=None):
         linjer.append(ind["tekst"])
     for punkt in ind.get("punkter", []):
         linjer.append("- " + punkt)
+
+    tjek_pings(" ".join([ind.get("titel", "")] + linjer))
 
     embed = {
         "title": ind.get("titel", "qr25.dk"),

@@ -478,12 +478,41 @@
     kasse.innerHTML = "";
     senestNavn();
 
-    if (!data || !data.tekst) {
+    if (!data || (!data.tekst && !data.medie)) {
       kasse.appendChild(lav("p", "tom", "han har ikke sagt noget endnu"));
       return;
     }
 
-    kasse.appendChild(lav("p", "senest-tekst", udskriv(data.tekst)));
+    if (data.tekst) kasse.appendChild(lav("p", "senest-tekst", udskriv(data.tekst)));
+
+    /* Sender han en gif, ligger selve filen på data.qr25.dk. Discord laver gif'er
+       om til mp4 når de kommer udefra, og det er den vi får, så en "gif" er tit
+       en video. Den skal opføre sig som en gif: kør, kør igen, ingen lyd, og
+       ingen afspiller-knapper. */
+    if (data.medie && data.medie.url) {
+      var m = data.medie;
+      var er = String(m.type || "");
+      var node;
+      if (er.indexOf("video/") === 0) {
+        node = document.createElement("video");
+        node.autoplay = true;
+        node.loop = true;
+        node.muted = true;
+        node.playsInline = true;
+        node.setAttribute("muted", "");
+        node.setAttribute("playsinline", "");
+      } else {
+        node = document.createElement("img");
+        node.alt = "det han sendte";
+        node.loading = "lazy";
+      }
+      node.className = "senest-medie";
+      node.src = m.url;
+      // så pladsen er der med det samme og kassen ikke hopper mens den henter
+      if (m.bredde) node.width = m.bredde;
+      if (m.hoejde) node.height = m.hoejde;
+      kasse.appendChild(node);
+    }
 
     var naar = data.dato ? new Date(data.dato) : null;
     var dele = [];
