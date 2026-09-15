@@ -7,8 +7,9 @@ idéer ind, og de bliver samlet op derfra.
 
 To ting den kan:
 
-    post <fil.json>   lægger et embed op. filen er {"titel", "tekst", "punkter"}
-    nyt [efter-id]    skriver de beskeder ud der er kommet siden efter-id
+    post <fil.json> [besked-id]   lægger et embed op, eller retter et der
+                                  allerede ligger der hvis der står et id
+    nyt [efter-id]                skriver de beskeder ud der er kommet siden
 
 Begge dele kræver bottens token, så den kører på VPS'en:
 
@@ -57,7 +58,7 @@ def kald(sti, metode="GET", krop=None):
         sys.exit(f"discord svarede {fejl.code}: {fejl.read().decode()[:400]}")
 
 
-def post(sti):
+def post(sti, besked=None):
     with open(sti, encoding="utf-8") as fh:
         ind = json.load(fh)
 
@@ -73,13 +74,21 @@ def post(sti):
         "color": ind.get("farve", FARVE),
         "url": "https://qr25.dk",
     }
-    if ind.get("fod"):
-        embed["footer"] = {"text": ind["fod"]}
+    # Versionen står i foden. Den blev bedt om i kanalen, og et changelog uden
+    # et nummer er bare en dagbog.
+    fod = ind.get("fod", "qr25.dk")
+    if ind.get("version"):
+        fod = fod + " v" + ind["version"]
+    embed["footer"] = {"text": fod}
     if ind.get("dato"):
         embed["timestamp"] = ind["dato"]
 
-    svar = kald(f"/channels/{KANAL}/messages", "POST", {"embeds": [embed]})
-    print("lagt op:", svar["id"])
+    if besked:
+        kald(f"/channels/{KANAL}/messages/{besked}", "PATCH", {"embeds": [embed]})
+        print("rettet:", besked)
+    else:
+        svar = kald(f"/channels/{KANAL}/messages", "POST", {"embeds": [embed]})
+        print("lagt op:", svar["id"])
 
 
 def nyt(efter):
@@ -107,7 +116,7 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     if sys.argv[1] == "post":
-        post(sys.argv[2])
+        post(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
     elif sys.argv[1] == "nyt":
         nyt(sys.argv[2] if len(sys.argv) > 2 else None)
     else:

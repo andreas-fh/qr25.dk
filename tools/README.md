@@ -50,8 +50,19 @@ scp changelog.json root@vps:/tmp/cl.json
 ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 /tmp/cl.py post /tmp/cl.json'
 ```
 
-`changelog.json` er `{"titel", "tekst", "punkter", "fod"}`. Og for at læse det
-folk har skrevet siden sidst:
+`changelog.json` er `{"version", "titel", "tekst", "punkter", "fod"}`.
+Versionen står i bunden af embeddet og tæller op ved hver changelog: store ting
+foran, små ting bagved. Den står i `changelog_state.json`, så tag den derfra og
+skriv den nye tilbage.
+
+Skal en changelog rettes bagefter, så sæt beskedens id bagerst, så bliver den
+samme besked skrevet om i stedet for at der kommer to:
+
+```
+ssh root@vps '... python3 /tmp/cl.py post /tmp/cl.json 1549331391819419711'
+```
+
+Og for at læse det folk har skrevet siden sidst:
 
 ```
 ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 /tmp/cl.py nyt <sidst_laest>'
