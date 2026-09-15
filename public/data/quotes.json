@@ -7,10 +7,10 @@
    "lines": [
     {
      "text": "mmmmmm, hvor ser den lækker ud",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2025-11-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1438459759446589440"
   },
@@ -19,10 +19,10 @@
    "lines": [
     {
      "text": "Hvordan er der ild, regner der ikke?!",
-     "speaker": "Kevin"
+     "speakerId": "492756757668560896"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-11-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1438501658014253138"
   },
@@ -31,10 +31,10 @@
    "lines": [
     {
      "text": "Hedder det tolvfingertarmen fordi du kan få 12 fingre op i den?",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-11-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1440279652152381511"
   },
@@ -43,10 +43,10 @@
    "lines": [
     {
      "text": "ja, jeg har lige suttet hans tær",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-11-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1440279925562015795"
   },
@@ -55,10 +55,10 @@
    "lines": [
     {
      "text": "jeg blev lige kneppet af internettet",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-11-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1440313006864207944"
   },
@@ -67,11 +67,11 @@
    "lines": [
     {
      "text": "Batman vendte ryggen til, en følelse af brun forrådelse fyldte hans bukser",
-     "speaker": "Lasse",
-     "note": "Tekst af Lasse og mikkel"
+     "note": "Tekst af Lasse og mikkel <@445560765185916938>",
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-11-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1442855225537986591"
   },
@@ -80,10 +80,10 @@
    "lines": [
     {
      "text": "vent lige jeg har lige diabetes",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2025-11-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1442860225148354800"
   },
@@ -92,10 +92,10 @@
    "lines": [
     {
      "text": "vi blir nødt til at bruge kanalen ordentligt",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2025-11-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1442926430987223150"
   },
@@ -104,10 +104,10 @@
    "lines": [
     {
      "text": "Du er så hot at tungsten vil koge på dig",
-     "speaker": "Kevin"
+     "speakerId": "492756757668560896"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-11-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443176194207125514"
   },
@@ -116,10 +116,10 @@
    "lines": [
     {
      "text": "Det eneste vi vil have til jul er at gør det her is til damp",
-     "speaker": "Jens"
+     "speaker": "jens"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-11-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443179703862300745"
   },
@@ -128,10 +128,10 @@
    "lines": [
     {
      "text": "Har du kneppet en kat!",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2025-11-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443230759992168458"
   },
@@ -140,10 +140,10 @@
    "lines": [
     {
      "text": "Hvor er fysik lokalet?",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2025-11-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443500773026828299"
   },
@@ -152,14 +152,14 @@
    "lines": [
     {
      "text": "Jeg vil tage den fra King Julian",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     },
     {
      "text": "Hvem vil ikke det?",
-     "speaker": "Stian"
+     "speakerId": "280801113664389121"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-11-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443513310816505856"
   },
@@ -171,10 +171,10 @@
     },
     {
      "text": "Det lyder som en god ide",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-11-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443521577223327835"
   },
@@ -186,10 +186,10 @@
     },
     {
      "text": "Det lyder jo som den bedste AI nogensinde",
-     "speaker": "Stian"
+     "speakerId": "280801113664389121"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-11-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443523151660322826"
   },
@@ -201,10 +201,10 @@
     },
     {
      "text": "Jeg har aura",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Stian",
+   "postedById": "280801113664389121",
    "date": "2025-11-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443525682041720893"
   },
@@ -213,10 +213,10 @@
    "lines": [
     {
      "text": "Rigged like the erection",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2025-11-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443585451226304686"
   },
@@ -228,7 +228,7 @@
      "speaker": "Indigo"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-11-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1443598285721047050"
   },
@@ -237,10 +237,10 @@
    "lines": [
     {
      "text": "Jeg er liberal. Hvis jeg har lyst til at onanere i offentligheden, så må jeg da gerne det!",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2025-12-02",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1445373530127601849"
   },
@@ -249,11 +249,11 @@
    "lines": [
     {
      "text": "Jeg malker Williams mælk",
-     "speaker": "Andreas",
-     "note": "(freaky mode)"
+     "note": "(freaky mode)",
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-12-02",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1445387052538658917"
   },
@@ -262,10 +262,10 @@
    "lines": [
     {
      "text": "Skal vi over i anal huset?",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-12-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1445734722310242366"
   },
@@ -274,10 +274,10 @@
    "lines": [
     {
      "text": "Jeg har en micropik, stem på mig",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-12-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1445742327191830684"
   },
@@ -286,10 +286,10 @@
    "lines": [
     {
      "text": "Jeg synes at lav alderen skal sænkes til 9",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2025-12-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1445742656905937029"
   },
@@ -301,7 +301,7 @@
      "speaker": "Spotify"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2025-12-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1445794369981386812"
   },
@@ -310,10 +310,10 @@
    "lines": [
     {
      "text": "USE MY CREDIT CARD!!!",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446412520779808889"
   },
@@ -322,10 +322,10 @@
    "lines": [
     {
      "text": "HVORFOR ER DU SÅ MØRK?!?!?!?!",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446413746074550373"
   },
@@ -334,10 +334,10 @@
    "lines": [
     {
      "text": "Hvis ikke du kan lide at have sex, så er du fucking mentally disabled",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446422149844828161"
   },
@@ -346,14 +346,14 @@
    "lines": [
     {
      "text": "Vi laver basically en roomba",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     },
     {
      "text": "så basically en kvinde-robot?",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446423190808297575"
   },
@@ -362,22 +362,22 @@
    "lines": [
     {
      "text": "jeg har hørt folk sige de blev sexually harassed af dig",
-     "speaker": "Andreas"
+     "speaker": "andreas"
     },
     {
      "text": "HVAD?",
-     "speaker": "Mikkel"
+     "speaker": "mikkel"
     },
     {
      "text": "jaja mens du var fuld",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     },
     {
      "text": "oh... right...",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446423462389223508"
   },
@@ -386,10 +386,10 @@
    "lines": [
     {
      "text": "I made a femboy squirt",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446426856604569640"
   },
@@ -401,10 +401,10 @@
     },
     {
      "text": "nega...",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446427150973669477"
   },
@@ -413,10 +413,10 @@
    "lines": [
     {
      "text": "YES DET KAN VÆRE AT DER ER KOMMET EN NY EPISODE AF SKIBIDI TOILET",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446427855276740619"
   },
@@ -425,10 +425,10 @@
    "lines": [
     {
      "text": "NU SKAL DER FANDME FAPPES",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446445555961303221"
   },
@@ -440,17 +440,17 @@
     },
     {
      "text": "Jeg synes periods er en god ting",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     },
     {
      "text": "Hvad??? Hvorfor"
     },
     {
      "text": "De skal jo straffes lidt",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446446947614462055"
   },
@@ -459,10 +459,10 @@
    "lines": [
     {
      "text": "hvis jeg var en baby var det sådan her jeg ville seduce dig",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446464025436225536"
   },
@@ -471,14 +471,14 @@
    "lines": [
     {
      "text": "Jeg tror ikke jeg gider snakke med min lærer om anal beads",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     },
     {
      "text": "Hvorfor ik?",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446465862524600423"
   },
@@ -487,10 +487,10 @@
    "lines": [
     {
      "text": "spred dine ben med mig 😏",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1446466578798350530"
   },
@@ -499,10 +499,10 @@
    "lines": [
     {
      "text": "skal vi lave en klatte-podcast?",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2025-12-08",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1447553911459151974"
   },
@@ -511,10 +511,10 @@
    "lines": [
     {
      "text": "Jeg kan godt donere til bestikkelse",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-08",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1447559193300041790"
   },
@@ -523,10 +523,10 @@
    "lines": [
     {
      "text": "Man skal huske at euthanize sin femboy",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-12-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1447901554630721609"
   },
@@ -538,7 +538,7 @@
      "speaker": "Jens"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-12-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448252289281163355"
   },
@@ -547,10 +547,10 @@
    "lines": [
     {
      "text": "vi skal skyde nogle flere børn",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448278684267053066"
   },
@@ -559,10 +559,10 @@
    "lines": [
     {
      "text": "vi skal skyde nogle flere små børn",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448284290629505135"
   },
@@ -571,10 +571,10 @@
    "lines": [
     {
      "text": "jeg bliver taget fra begge ender lige nu",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2025-12-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448285426367336541"
   },
@@ -583,10 +583,10 @@
    "lines": [
     {
      "text": "hvis hudfarven er hvid så er du rimeligt sikker",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2025-12-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448575713618956408"
   },
@@ -595,11 +595,11 @@
    "lines": [
     {
      "text": "MEN DEN ER GRØN!",
-     "speaker": "Erik",
-     "note": "der forsøger at defend hans nye obsession med rullebånd"
+     "note": "der forsøger at defend hans nye obsession med rullebånd",
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2025-12-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448601193575354438"
   },
@@ -610,7 +610,7 @@
      "text": "den er ekstra lang og bred, og vi får endda også lov at se den bagfra"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2025-12-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448601389033848893"
   },
@@ -619,10 +619,10 @@
    "lines": [
     {
      "text": "Jeg vil gerne have rabies",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448969256988446732"
   },
@@ -631,10 +631,10 @@
    "lines": [
     {
      "text": "Jeg vil gerne have lassetis",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448969478812598273"
   },
@@ -643,10 +643,10 @@
    "lines": [
     {
      "text": "den onde nisse lets it crust",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1448976841196175441"
   },
@@ -655,10 +655,10 @@
    "lines": [
     {
      "text": "hog rider rider på en lyserød hest",
-     "speaker": "Mykyta"
+     "speakerId": "1020339622305341511"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1449001634091892807"
   },
@@ -669,7 +669,7 @@
      "text": "SYNES DU OVERGREB ER SJOVT?"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1449015556673114283"
   },
@@ -678,14 +678,14 @@
    "lines": [
     {
      "text": "STOP MED AT POST DET INDE I QUOTES KANALEN",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     },
     {
      "text": "VED DU GODT HVOR HÅRDT LIV ER SOM MODERATOR?!",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1449016002452000790"
   },
@@ -694,10 +694,10 @@
    "lines": [
     {
      "text": "vi skal lave en mbot med en dildo på",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1449016688111521913"
   },
@@ -706,10 +706,10 @@
    "lines": [
     {
      "text": "creativ misbrug er bare innovation",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2025-12-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1449020628865912923"
   },
@@ -718,10 +718,10 @@
    "lines": [
     {
      "text": "bare bolle de bedste heste",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1450200438153412739"
   },
@@ -730,10 +730,10 @@
    "lines": [
     {
      "text": "hey. Jeg skal bare knep den",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-12-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1450229836898635877"
   },
@@ -742,10 +742,10 @@
    "lines": [
     {
      "text": "hvad er det dobbelte af 17?",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1450405803034022050"
   },
@@ -754,10 +754,10 @@
    "lines": [
     {
      "text": "hvad er det dobbelte af 46?",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1450406086019383427"
   },
@@ -766,10 +766,10 @@
    "lines": [
     {
      "text": "jeg breeder dig tristan",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1450409921568047176"
   },
@@ -778,10 +778,10 @@
    "lines": [
     {
      "text": ":sobs",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2025-12-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1450469556299763795"
   },
@@ -797,7 +797,7 @@
      "speaker": "Mikkel"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2025-12-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1451135663721418813"
   },
@@ -806,10 +806,10 @@
    "lines": [
     {
      "text": "nu har jeg ikke kræft, så jeg tror det går",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-12-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1451486853390929991"
   },
@@ -818,10 +818,10 @@
    "lines": [
     {
      "text": "vi gør bare Ida gravid",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1451493174466973822"
   },
@@ -830,10 +830,10 @@
    "lines": [
     {
      "text": "hvad mener du med vi?",
-     "speaker": "mestertaco"
+     "speakerId": "1252200041397882890"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2025-12-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1451493289261006869"
   },
@@ -842,10 +842,10 @@
    "lines": [
     {
      "text": "Hvad fuck er det for nogle random ass tal??",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "GiggleWithG",
+   "postedById": "725626549730148415",
    "date": "2025-12-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1451616097320308899"
   },
@@ -854,10 +854,10 @@
    "lines": [
     {
      "text": "Hvilke smag er dildoen",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Malte",
+   "postedById": "563002644763770900",
    "date": "2025-12-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1452012082911248384"
   },
@@ -866,10 +866,10 @@
    "lines": [
     {
      "text": "Vi er de sorte afrikanere der bor i de nordlige stater",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Malte",
+   "postedById": "563002644763770900",
    "date": "2025-12-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1452012794382782585"
   },
@@ -878,10 +878,10 @@
    "lines": [
     {
      "text": "er lasse obama?",
-     "speaker": "Kevin"
+     "speakerId": "492756757668560896"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1454590476370837707"
   },
@@ -890,11 +890,11 @@
    "lines": [
     {
      "text": "Er der nogen der vil spille GW2?",
-     "speaker": "Erik",
-     "note": "(7 timer før nytår)"
+     "note": "(7 timer før nytår)",
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2025-12-31",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1455958586982400155"
   },
@@ -903,10 +903,10 @@
    "lines": [
     {
      "text": "I love femboy",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2025-12-31",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1456005379296071781"
   },
@@ -915,10 +915,10 @@
    "lines": [
     {
      "text": "Jeg vil gerne race Tristans sæd",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457650807205007391"
   },
@@ -927,10 +927,10 @@
    "lines": [
     {
      "text": "mmm finger",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457659194563100754"
   },
@@ -939,10 +939,10 @@
    "lines": [
     {
      "text": "har du aktiveret gym pakken",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457663661035229328"
   },
@@ -955,10 +955,10 @@
     },
     {
      "text": "Tak gud 🙏",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457669841619255347"
   },
@@ -967,10 +967,10 @@
    "lines": [
     {
      "text": "jeg ved så meget om tissemanden",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457671183968501791"
   },
@@ -979,10 +979,10 @@
    "lines": [
     {
      "text": "Hvis man nu er trans og gemmer noget af sit gamle goon...",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457679862709096591"
   },
@@ -991,10 +991,10 @@
    "lines": [
     {
      "text": "Du skal lige tænke på de er sorte",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457686476589367449"
   },
@@ -1003,10 +1003,10 @@
    "lines": [
     {
      "text": "he's kinda sigma tho",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457710403667886180"
   },
@@ -1015,10 +1015,10 @@
    "lines": [
     {
      "text": "jeg vil hellere tage en fat dihh end at gå i skole på en lørdag",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457720232570388583"
   },
@@ -1029,7 +1029,7 @@
      "text": "fat dihh"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1457720388246048907"
   },
@@ -1038,10 +1038,10 @@
    "lines": [
     {
      "text": "Please put dine finger i mine øre",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-01-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1458011010127495178"
   },
@@ -1053,10 +1053,10 @@
     },
     {
      "text": "Ræk mig diddy oilen",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-01-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1458025452781174786"
   },
@@ -1068,7 +1068,7 @@
      "speaker": "Jens"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-01-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1458359399977324768"
   },
@@ -1080,7 +1080,7 @@
      "speaker": "Jens"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-01-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1458359523797372952"
   },
@@ -1092,7 +1092,7 @@
      "note": "@Jens"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-01-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1458360763054952684"
   },
@@ -1104,7 +1104,7 @@
      "note": "@Migger"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-01-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1458405439992758294"
   },
@@ -1113,10 +1113,10 @@
    "lines": [
     {
      "text": "chat skibidi",
-     "speaker": "Rani"
+     "speaker": "rani"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-01-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1458409154287763520"
   },
@@ -1125,11 +1125,11 @@
    "lines": [
     {
      "text": "er det ikke lidt delulu",
-     "speaker": "Mikkel",
-     "note": "til palle"
+     "note": "til palle",
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459087460284760084"
   },
@@ -1138,10 +1138,10 @@
    "lines": [
     {
      "text": "Vi burde kunne stemme på, hvilke lærer der går herude",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459109780072300614"
   },
@@ -1150,11 +1150,11 @@
    "lines": [
     {
      "text": "har du farvet dine bukser",
-     "speaker": "Mykyta",
-     "note": "til esben"
+     "note": "til esben",
+     "speakerId": "1020339622305341511"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459118858161098827"
   },
@@ -1163,11 +1163,11 @@
    "lines": [
     {
      "text": "Prøv lige at se her, du er inbred",
-     "speaker": "Erik",
-     "note": "til Andreas"
+     "note": "til Andreas",
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459142343532875948"
   },
@@ -1176,10 +1176,10 @@
    "lines": [
     {
      "text": "Jamen han er jo ligesom en bottom, ikke også? Og så er han fornærmet over at hans mor ikke vil være en top.",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459149207372828714"
   },
@@ -1188,10 +1188,10 @@
    "lines": [
     {
      "text": "Jeg er luder for en brownie",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459168096253382791"
   },
@@ -1203,7 +1203,7 @@
      "speaker": "Erik"
     }
    ],
-   "postedBy": "mestertaco",
+   "postedById": "1252200041397882890",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459169136595697908"
   },
@@ -1212,10 +1212,10 @@
    "lines": [
     {
      "text": "nej jubililæum",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459169305739395073"
   },
@@ -1224,11 +1224,10 @@
    "lines": [
     {
      "text": "jeg Gooner den til den er grøn",
-     "speaker": "x4",
-     "note": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459179635903566061"
   },
@@ -1240,7 +1239,7 @@
      "speaker": "Erik"
     }
    ],
-   "postedBy": "mestertaco",
+   "postedById": "1252200041397882890",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459180236905255036"
   },
@@ -1249,10 +1248,10 @@
    "lines": [
     {
      "text": "Jeg trænede ved at rizz e-kittens up i bay side highschool",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459293686021099793"
   },
@@ -1261,10 +1260,10 @@
    "lines": [
     {
      "text": "bro jeg kan jo ikke få noget pussy hvis jeg hader pussy",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459550233737560238"
   },
@@ -1273,10 +1272,10 @@
    "lines": [
     {
      "text": "Jeg har altid hex color testers med i lommen så hvis jeg ser en pæn pige kan jeg teste hendes hudfarve",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1459589111529869529"
   },
@@ -1285,10 +1284,10 @@
    "lines": [
     {
      "text": "Jeg har snart et urethra moment",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1460197155162689536"
   },
@@ -1297,10 +1296,10 @@
    "lines": [
     {
      "text": "okay, pestisides, i like them",
-     "speaker": "Rani"
+     "speaker": "rani"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-01-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461275267107655899"
   },
@@ -1309,10 +1308,10 @@
    "lines": [
     {
      "text": "Your the wrong fucking color",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-01-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461314612594085888"
   },
@@ -1321,10 +1320,10 @@
    "lines": [
     {
      "text": "du er ik kommet på listen endnu",
-     "speaker": "Esben"
+     "speaker": "esben"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-01-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461314892224270471"
   },
@@ -1333,10 +1332,10 @@
    "lines": [
     {
      "text": "min røv er fandme helt død",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461331583251386378"
   },
@@ -1345,11 +1344,11 @@
    "lines": [
     {
      "text": "HAR DU SYSTAMATISERET DINE NOTER?!",
-     "speaker": "Esben",
-     "note": "(lærer)"
+     "note": "(lærer)",
+     "speaker": "Esben"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-01-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461337618347462749"
   },
@@ -1358,10 +1357,10 @@
    "lines": [
     {
      "text": "Uploaded Far jeg er gravid.gif",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-01-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461341349319282924"
   },
@@ -1370,10 +1369,10 @@
    "lines": [
     {
      "text": "Han bliver bollet i røven a 700 mennesker",
-     "speaker": "Tobias"
+     "speakerId": "650712162347778048"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-01-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461675108790833202"
   },
@@ -1382,10 +1381,10 @@
    "lines": [
     {
      "text": "william? ligesom tortillia?",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1461683997909319954"
   },
@@ -1394,11 +1393,11 @@
    "lines": [
     {
      "text": "Her er der så en teksthenvisning til Andreas",
-     "speaker": "Esben",
-     "note": "(læreren)"
+     "note": "(læreren)",
+     "speaker": "Esben"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-01-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1462721549592170623"
   },
@@ -1407,10 +1406,10 @@
    "lines": [
     {
      "text": "Er det ikke bare diddy-olie til clankers",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1462724174597586966"
   },
@@ -1419,10 +1418,10 @@
    "lines": [
     {
      "text": "hvorfor kan i ikke bare bruge kanalen rigtigt",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1462735366879711358"
   },
@@ -1431,10 +1430,10 @@
    "lines": [
     {
      "text": "please put den ind andreas please please please",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463101145386975262"
   },
@@ -1443,10 +1442,10 @@
    "lines": [
     {
      "text": "Jeg synes vi skal slå alle afrikanerne ihjel, like google 'average african IQ' rn bro",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463112768759529483"
   },
@@ -1455,11 +1454,11 @@
    "lines": [
     {
      "text": "Jesus er en terrorist",
-     "speaker": "Atharva",
-     "note": "(taget ud af kontext)"
+     "note": "(taget ud af kontext)",
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-01-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463118171904151603"
   },
@@ -1468,11 +1467,11 @@
    "lines": [
     {
      "text": "den her sang minder mig om hans christian",
-     "speaker": "Tristan",
-     "note": "omkring en rasmus seebach kærligheds sang"
+     "note": "omkring en rasmus seebach kærligheds sang",
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-01-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463138066326618124"
   },
@@ -1484,7 +1483,7 @@
      "note": "@Malte"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-01-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463143086774288477"
   },
@@ -1496,7 +1495,7 @@
      "note": "@Lærer Sofie"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-01-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463440926155473056"
   },
@@ -1508,7 +1507,7 @@
      "speaker": "Rani"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-01-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463469550552088657"
   },
@@ -1517,10 +1516,10 @@
    "lines": [
     {
      "text": "jeg vil gerne have en dreng, men det skal være en femboy",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463512449289424907"
   },
@@ -1529,10 +1528,10 @@
    "lines": [
     {
      "text": "Erik stikker den ind for andreas",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463513075968639048"
   },
@@ -1541,14 +1540,14 @@
    "lines": [
     {
      "text": "min fod den klør",
-     "speaker": "Mikkel"
+     "speaker": "mikkel"
     },
     {
      "text": "så få nogen til at slik den",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463514144182636774"
   },
@@ -1557,10 +1556,10 @@
    "lines": [
     {
      "text": "I have an emotional connection with chatgpt",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463519022619426961"
   },
@@ -1571,7 +1570,7 @@
      "text": "it might not feel the same, but I do"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463522398539350068"
   },
@@ -1583,7 +1582,7 @@
      "note": "@Mykyta"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-01-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463807489668681905"
   },
@@ -1592,11 +1591,11 @@
    "lines": [
     {
      "text": "Vi har lavet missionary",
-     "speaker": "Andreas",
-     "note": "til"
+     "note": "til <@445560765185916938>",
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-01-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463872880877244476"
   },
@@ -1605,10 +1604,10 @@
    "lines": [
     {
      "text": "Fjerner i mig fra discorden når jeg bliver smidt ud?",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1463873782904262782"
   },
@@ -1617,10 +1616,10 @@
    "lines": [
     {
      "text": "Advice 2. DATE EN 12 ÅRIG!",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1464173377286570202"
   },
@@ -1629,10 +1628,10 @@
    "lines": [
     {
      "text": "jeg skal side ved siden af Mads, så skal jeg ikke stikke den ind i Andreas",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-01-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1464198687549816918"
   },
@@ -1641,10 +1640,10 @@
    "lines": [
     {
      "text": "Det var godt han blev interviewet af TV2 og ikke Chris Hansen eller sådan noget",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1464597892030529678"
   },
@@ -1653,10 +1652,10 @@
    "lines": [
     {
      "text": "Det er IKKE sådan det lyder når man får head i bilen",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1464616534675816744"
   },
@@ -1665,11 +1664,11 @@
    "lines": [
     {
      "text": "Den dufter også godt",
-     "speaker": "Jesper",
-     "note": "(lærer), omkring en extention box"
+     "note": "(lærer), omkring en extention box",
+     "speaker": "Jesper"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-01-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1465270862440824843"
   },
@@ -1678,10 +1677,10 @@
    "lines": [
     {
      "text": "Jeg ville bare lige sige det til jer andre - jeg er pregnant?!",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-01-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1465980406049276047"
   },
@@ -1690,10 +1689,10 @@
    "lines": [
     {
      "text": "JEG ER HER KUN FOR IKKE AT HAVE ET ARBEJDE",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1465992225400946843"
   },
@@ -1702,10 +1701,10 @@
    "lines": [
     {
      "text": "Beskriver du Mikkel fordi du sagde mega lækker uden på men lort indeni",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-01-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1466038199632527390"
   },
@@ -1714,10 +1713,10 @@
    "lines": [
     {
      "text": "jeg er dum og tyk og grim og sur",
-     "speaker": "Palle"
+     "speaker": "palle"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-01-29",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1466331833267523649"
   },
@@ -1726,10 +1725,10 @@
    "lines": [
     {
      "text": "Jeg laver matematik på en hindbærtærte",
-     "speaker": "Ludvig"
+     "speakerId": "891697973367566356"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-01-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1466725908650917910"
   },
@@ -1738,10 +1737,10 @@
    "lines": [
     {
      "text": "Andreas min skat",
-     "speaker": "Ludvig"
+     "speakerId": "891697973367566356"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-01-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1466763427841052825"
   },
@@ -1750,10 +1749,10 @@
    "lines": [
     {
      "text": "giv mig dih",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1466766848753275105"
   },
@@ -1762,10 +1761,10 @@
    "lines": [
     {
      "text": "ønskede freddy fazbear kunne tage mig bagfra",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-01-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1466767085248970885"
   },
@@ -1774,10 +1773,10 @@
    "lines": [
     {
      "text": "samtykke er et klamt ord",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Malte",
+   "postedById": "563002644763770900",
    "date": "2026-01-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1466770866032480442"
   },
@@ -1786,10 +1785,10 @@
    "lines": [
     {
      "text": "Abuse mig please",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-02-01",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1467318781633106055"
   },
@@ -1801,7 +1800,7 @@
      "note": "10 årige Mikkel efter at tabe fair and square"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-02-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1468277350868320266"
   },
@@ -1810,10 +1809,10 @@
    "lines": [
     {
      "text": "kunne vi ikke alle sammen goone i en kop og drikke det som shots",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-02-04",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1468553274767446120"
   },
@@ -1822,11 +1821,11 @@
    "lines": [
     {
      "text": "Jeg har prøvet det bro",
-     "speaker": "Mikkel",
-     "note": "til Palle"
+     "note": "til Palle",
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2026-02-04",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1468597377010241558"
   },
@@ -1835,10 +1834,10 @@
    "lines": [
     {
      "text": "Jeg håber jeg får en dansker i dag",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-02-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1468953606530011318"
   },
@@ -1847,10 +1846,10 @@
    "lines": [
     {
      "text": "man, der sidder en bitch ass solsort i min hæk lige nu, jeg har lyst til at skyde den",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-02-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1469253808851914857"
   },
@@ -1859,11 +1858,11 @@
    "lines": [
     {
      "text": "goo formiddag, man kan se dit rum. Den er flot Esben",
-     "speaker": "Mykyta",
-     "note": "til hjemmeundervisning"
+     "note": "til hjemmeundervisning",
+     "speaker": "mykyta"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-02-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1469264138281681070"
   },
@@ -1872,10 +1871,10 @@
    "lines": [
     {
      "text": "hun kan ingen gang stå på stykkel",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "mestertaco",
+   "postedById": "1252200041397882890",
    "date": "2026-02-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470339487941787708"
   },
@@ -1884,10 +1883,10 @@
    "lines": [
     {
      "text": "i cracked my baby",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-02-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470344814557134931"
   },
@@ -1899,10 +1898,10 @@
     },
     {
      "text": "Kan du ikke bare sætte et screenshot ind?",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-02-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470346093807145012"
   },
@@ -1911,10 +1910,10 @@
    "lines": [
     {
      "text": "Har de brændt bøssen!?",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-02-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470373818676547654"
   },
@@ -1923,11 +1922,11 @@
    "lines": [
     {
      "text": "treds-bin",
-     "speaker": "Erik",
-     "note": "der forsøger at snakke fransk"
+     "note": "der forsøger at snakke fransk",
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-02-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470395144984330240"
   },
@@ -1942,7 +1941,7 @@
      "speaker": "Rani"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-02-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470398979106799794"
   },
@@ -1951,10 +1950,10 @@
    "lines": [
     {
      "text": "De skal UDD!! DE SKAL UUUUDDDD",
-     "speaker": "Frederik"
+     "speakerId": "697407708483158036"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-02-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470705934161543291"
   },
@@ -1963,10 +1962,10 @@
    "lines": [
     {
      "text": "Hvad tror du chancen er for at man bare kigger ud i luften og sådan ser et hagekors? Det må være sådan ligesom at få en secret brainrot i Steal A Brainrot",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-02-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470706702067175518"
   },
@@ -1975,10 +1974,10 @@
    "lines": [
     {
      "text": "Hvad tillyke? Er jeg trans?",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-02-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470725339117522954"
   },
@@ -1987,14 +1986,14 @@
    "lines": [
     {
      "text": "Jeg drømte at jeg blev gropet 2 dage i træk en gang",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     },
     {
      "text": "Så må du jo ville det",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-02-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1470750785481609249"
   },
@@ -2003,10 +2002,10 @@
    "lines": [
     {
      "text": "Hvordan kan jeg have spist så meget chocolade, at det ligner at jeg har skidt mig selv i bukserne",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2026-02-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471400253767811083"
   },
@@ -2015,10 +2014,10 @@
    "lines": [
     {
      "text": "Vi er nødt til at have mere ubeskyttet sex",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-02-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471406492346220696"
   },
@@ -2027,10 +2026,10 @@
    "lines": [
     {
      "text": "vidste i at man kan vaske hænder for at blive mindre syge",
-     "speaker": "Kevin"
+     "speakerId": "492756757668560896"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-02-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471406585472487570"
   },
@@ -2039,10 +2038,10 @@
    "lines": [
     {
      "text": "sex og syvfund",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-02-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471413805379616800"
   },
@@ -2051,10 +2050,10 @@
    "lines": [
     {
      "text": "kom og sæt dig vil du have klamydia?",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-02-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471434982718181389"
   },
@@ -2066,7 +2065,7 @@
      "speaker": "Jesper"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-02-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471467957736571044"
   },
@@ -2075,10 +2074,10 @@
    "lines": [
     {
      "text": "kan man ikke gøre et eller andet??",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-02-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471481603430678623"
   },
@@ -2087,10 +2086,10 @@
    "lines": [
     {
      "text": "sørg for det er med bly ellers smager det dårligt",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-02-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471796224834408522"
   },
@@ -2099,10 +2098,10 @@
    "lines": [
     {
      "text": "jesper han er meget varm",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-02-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471854306272481400"
   },
@@ -2111,10 +2110,10 @@
    "lines": [
     {
      "text": "jeg har sleight of hand, kan jeg ikke stjæle hans virginity",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-02-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1471879798518452398"
   },
@@ -2123,10 +2122,10 @@
    "lines": [
     {
      "text": "jeg skrev jo at jeg tog i mod bestikkelse og så gav han mig en kiks... Men det kan godt være jeg snart vil have en mere",
-     "speaker": "Frederik"
+     "speakerId": "697407708483158036"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-02-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1474006624569004135"
   },
@@ -2135,10 +2134,10 @@
    "lines": [
     {
      "text": "JEG DØDE LIGE TIL EN PØLSE!!!!",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-02-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1474154053825990677"
   },
@@ -2147,14 +2146,14 @@
    "lines": [
     {
      "text": "Hvad skal børnene så?",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     },
     {
      "text": "De skal ligesom bolles og laves om til beef jerky",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-02-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1475468702651777085"
   },
@@ -2166,7 +2165,7 @@
      "note": "@en eller anden gut fra informatik"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-02-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476170097788977172"
   },
@@ -2175,10 +2174,10 @@
    "lines": [
     {
      "text": "Ipsum mod 8 uenligheder",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-02-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476479128470294549"
   },
@@ -2187,11 +2186,11 @@
    "lines": [
     {
      "text": "Hvis jeg var i live den gang, ville jeg have taget der over frivilligt",
-     "speaker": "Elias",
-     "note": "(Omkring Epstiens Ø)"
+     "note": "(Omkring Epstiens Ø)",
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2026-02-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476531810082095199"
   },
@@ -2200,16 +2199,16 @@
    "lines": [
     {
      "text": "Hvad nu hvis jeg bliver ramt af en bil?",
-     "speaker": "Erik",
-     "note": "siger til"
+     "note": "siger til <@625669789565583369>",
+     "speakerId": "616609937535270912"
     },
     {
      "text": "Så vil det være mig",
-     "speaker": "Andreas",
-     "note": "svarer"
+     "note": "svarer",
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-02-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476559466060185682"
   },
@@ -2218,11 +2217,11 @@
    "lines": [
     {
      "text": "geogebe",
-     "speaker": "Elias",
-     "note": "2 gange i træk"
+     "note": "2 gange i træk",
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-02-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476562935747710997"
   },
@@ -2231,10 +2230,10 @@
    "lines": [
     {
      "text": "kiggede vitterligt på thighhighs i nogle timer",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-02-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476564210963058902"
   },
@@ -2243,10 +2242,10 @@
    "lines": [
     {
      "text": "ER DET IKKE VILDT AT DE HER FOLK ET BLEVET UDDANNET I AT SKRIVE ARTIKLER SOM INGEN LÆSER",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-02-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476849281141833761"
   },
@@ -2255,10 +2254,10 @@
    "lines": [
     {
      "text": "SE SKAT MIN ARTIKEL ER KOMMET I AVISEN SOM 1 UD AF 1000",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-02-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476849387123773654"
   },
@@ -2267,10 +2266,10 @@
    "lines": [
     {
      "text": "Det sætter pis i mit kog",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-02-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476859391931056161"
   },
@@ -2279,10 +2278,10 @@
    "lines": [
     {
      "text": "mmm sloppy ægge leder 😋",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-02-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476860419581935748"
   },
@@ -2291,10 +2290,10 @@
    "lines": [
     {
      "text": "jeg skal blive 63 grader sur",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-02-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476860947816644710"
   },
@@ -2303,10 +2302,10 @@
    "lines": [
     {
      "text": "mig og andreas er sorte mænd",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-02-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476880850791698546"
   },
@@ -2315,10 +2314,10 @@
    "lines": [
     {
      "text": "jeg er vitterligt en furry",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-02-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1476945915871891520"
   },
@@ -2327,10 +2326,10 @@
    "lines": [
     {
      "text": "Tag strømperne af - lad mig lige inspect",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-02-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1477449634564800623"
   },
@@ -2339,10 +2338,10 @@
    "lines": [
     {
      "text": "Kan vi ikke lave noob vs pro vs hacker buttplugs",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-02-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1477454067717505156"
   },
@@ -2354,7 +2353,7 @@
      "speaker": "Jens"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478290519934111804"
   },
@@ -2363,10 +2362,10 @@
    "lines": [
     {
      "text": "jeg kan godt lide big booty latinas",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478303781988077670"
   },
@@ -2375,11 +2374,11 @@
    "lines": [
     {
      "text": "Jeg håber hun bliver gravid og så får en miscarriage",
-     "speaker": "Mikkel",
-     "note": "om sin SPS-vejleder"
+     "note": "om sin SPS-vejleder",
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478318099601031350"
   },
@@ -2388,10 +2387,10 @@
    "lines": [
     {
      "text": "jeg har aldrig fyldt en kondom op",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478361016126672897"
   },
@@ -2400,10 +2399,10 @@
    "lines": [
     {
      "text": "sidste gang jeg tjekkede lavede vi en båd, ikke en vibrator",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478366236256763935"
   },
@@ -2412,10 +2411,10 @@
    "lines": [
     {
      "text": "Har du brugt de sidste 2 timer på at lave en vibrator",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478366517354823732"
   },
@@ -2424,10 +2423,10 @@
    "lines": [
     {
      "text": "neeeeeej.....",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478366549885718668"
   },
@@ -2438,7 +2437,7 @@
      "text": "I får karakterer efter effektivitet"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478366910801510530"
   },
@@ -2447,10 +2446,10 @@
    "lines": [
     {
      "text": "Ært var mig og min søsters safe word",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478368103334285343"
   },
@@ -2459,10 +2458,10 @@
    "lines": [
     {
      "text": "Alle mine spegepølser er relevante",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-03-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1478501920279756841"
   },
@@ -2471,10 +2470,10 @@
    "lines": [
     {
      "text": "Jomfru Maria, skrev kun biblen for at cover up hendes cheating allegations",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-03-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1479026200843260024"
   },
@@ -2483,10 +2482,10 @@
    "lines": [
     {
      "text": "men men men... salat",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1479080540547190877"
   },
@@ -2495,10 +2494,10 @@
    "lines": [
     {
      "text": "ELIAS SWALLOW!",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-03-05",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1479219549751742665"
   },
@@ -2507,14 +2506,14 @@
    "lines": [
     {
      "text": "jeg elsker da også børn",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     },
     {
      "text": "så har vi noget til fælles",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-03-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1479377924267184268"
   },
@@ -2523,10 +2522,10 @@
    "lines": [
     {
      "text": "i guess jeg er en femboy",
-     "speaker": "Kevin"
+     "speakerId": "492756757668560896"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1479425371811221555"
   },
@@ -2535,11 +2534,11 @@
    "lines": [
     {
      "text": "[REDACTED]",
-     "speaker": "Elias",
-     "note": "(redacted in the name of witness protection)"
+     "note": "(redacted in the name of witness protection)",
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480478802210590860"
   },
@@ -2548,10 +2547,10 @@
    "lines": [
     {
      "text": "Er du ikke med på at tage maid outfits på en eller anden dag?",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480486298270830735"
   },
@@ -2560,11 +2559,11 @@
    "lines": [
     {
      "text": "CONCRETE",
-     "speaker": "Mykyta",
-     "note": "(VITTERLIGT MED INGEN KONTEXT)"
+     "note": "(VITTERLIGT MED INGEN KONTEXT)",
+     "speakerId": "1020339622305341511"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480488952963137629"
   },
@@ -2573,10 +2572,10 @@
    "lines": [
     {
      "text": "Jeg synes vi skal have fri abort indtil de bliver 5 år for lige at have en trial period for at teste deres conciousness",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480496085104595188"
   },
@@ -2585,10 +2584,10 @@
    "lines": [
     {
      "text": "kommunisme er godt",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480506193112731729"
   },
@@ -2597,10 +2596,10 @@
    "lines": [
     {
      "text": "Alle i denne discord server er keyboard warriors",
-     "speaker": "Jimmy"
+     "speakerId": "901545315075772426"
     }
    ],
-   "postedBy": "Kevin",
+   "postedById": "492756757668560896",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480509597986066442"
   },
@@ -2609,10 +2608,10 @@
    "lines": [
     {
      "text": "touch me... touch me HARDER",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480509622262693888"
   },
@@ -2623,7 +2622,7 @@
      "text": "292 unread messages"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480510153869627432"
   },
@@ -2632,14 +2631,14 @@
    "lines": [
     {
      "text": "2804 terabyte CP",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     },
     {
      "text": "det ingenting",
-     "speaker": "Asbjørn"
+     "speakerId": "837283105731641344"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480518148363911170"
   },
@@ -2648,10 +2647,10 @@
    "lines": [
     {
      "text": "det er godt at gamble med børn - det kan være du får 2 børn i stedet for 1!!",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480522532200386743"
   },
@@ -2660,10 +2659,10 @@
    "lines": [
     {
      "text": "Det er som at kalde en asiatisk person for n-ordet",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480524309997948960"
   },
@@ -2672,10 +2671,10 @@
    "lines": [
     {
      "text": "min lille dumpling",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-09",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480529820831191060"
   },
@@ -2684,10 +2683,10 @@
    "lines": [
     {
      "text": "rund kvinde",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1480896507577368820"
   },
@@ -2696,10 +2695,10 @@
    "lines": [
     {
      "text": "Han gav mig 00, og for det skal han lide",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1481207184791572541"
   },
@@ -2708,10 +2707,10 @@
    "lines": [
     {
      "text": "Jeg håber Pande bliver opløst i en syre",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-03-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1481249166641463478"
   },
@@ -2720,11 +2719,11 @@
    "lines": [
     {
      "text": "Nu får du mundkurv på Mikkel",
-     "speaker": "Simone",
-     "note": "(kælling)"
+     "note": "(kælling)",
+     "speaker": "Simone"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-03-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1481250994942906510"
   },
@@ -2733,10 +2732,10 @@
    "lines": [
     {
      "text": "Hvad er din yndlingssang fra Kendrick Lamars GNX album???",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-03-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1481252265682669731"
   },
@@ -2745,10 +2744,10 @@
    "lines": [
     {
      "text": "Burde jeg hyre nogen til at dræbe mine forældre?",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1481961571570679860"
   },
@@ -2757,10 +2756,10 @@
    "lines": [
     {
      "text": "mads jeg groper dig",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1481983374749863958"
   },
@@ -2769,11 +2768,11 @@
    "lines": [
     {
      "text": "næste gang så skal vi tale om nogle ting",
-     "speaker": "Goat",
-     "note": "Haje"
+     "note": "Haje",
+     "speaker": "Goat"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-03-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1481994304296849441"
   },
@@ -2782,10 +2781,10 @@
    "lines": [
     {
      "text": "Ja bro, segregation is peak",
-     "speaker": "Frederik"
+     "speakerId": "697407708483158036"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1482000460591271986"
   },
@@ -2794,10 +2793,10 @@
    "lines": [
     {
      "text": "Add en random ting ligesom damocles dagger der sletter rule3- SYSTEM32",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-03-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1482013262412251187"
   },
@@ -2806,10 +2805,10 @@
    "lines": [
     {
      "text": "breakups are hard man 😢",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-03-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1482013771093250150"
   },
@@ -2818,10 +2817,10 @@
    "lines": [
     {
      "text": "Andreas, er det her ikke vores couples sang? spiller sweet home alabama",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1482014338251358290"
   },
@@ -2830,10 +2829,10 @@
    "lines": [
     {
      "text": "Hvorfor bliver lærene ved med at giv os så mange afleveringer, forstår de ikke at vi ikke vil lave dem?",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-03-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1483009632183124090"
   },
@@ -2842,10 +2841,10 @@
    "lines": [
     {
      "text": "må jeg knep andreas i stedet for mig selv???",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-03-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1483763638081687572"
   },
@@ -2858,10 +2857,10 @@
     },
     {
      "text": "Geder og heste",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-03-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1484491697470705795"
   },
@@ -2870,10 +2869,10 @@
    "lines": [
     {
      "text": "De skal holdes stramme - ellers bliver de for mærkelige",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1484532273146761307"
   },
@@ -2885,7 +2884,7 @@
      "speaker": "Sofie"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-03-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1484532787741589524"
   },
@@ -2894,10 +2893,10 @@
    "lines": [
     {
      "text": "Du skal ikke ned og stemme bro. Hvem gider overhovedet stemme?",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1485710143512510564"
   },
@@ -2906,10 +2905,10 @@
    "lines": [
     {
      "text": "Jeg vil så gerne gangbanges",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-03-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1485956083427315753"
   },
@@ -2918,11 +2917,11 @@
    "lines": [
     {
      "text": "Snart boller jeg dig i swear to god. Jeg holder dig nede og så...",
-     "speaker": "Tristan",
-     "note": "til Mads"
+     "note": "til Mads",
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1485958039868670013"
   },
@@ -2931,10 +2930,10 @@
    "lines": [
     {
      "text": "bro vi skulle ikke have afskaffet slaverne",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1485961465050566666"
   },
@@ -2943,10 +2942,10 @@
    "lines": [
     {
      "text": "Jeg er professionel til at bruge kneppemaskinen",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1485967120000090265"
   },
@@ -2955,10 +2954,10 @@
    "lines": [
     {
      "text": "jeg håber hr. skæg får en dødelig sygdom",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1485968543408455760"
   },
@@ -2967,10 +2966,10 @@
    "lines": [
     {
      "text": "Brooo, i puller bare out lige nu - det kommer ikke til at ske",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-03-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1486284634407960576"
   },
@@ -2979,11 +2978,11 @@
    "lines": [
     {
      "text": "den har for meget hår til at være palle",
-     "speaker": "Lasse",
-     "note": "han snakker om billedet"
+     "note": "han snakker om billedet",
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-03-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1487181184533401691"
   },
@@ -2992,10 +2991,10 @@
    "lines": [
     {
      "text": "Men min fingering er lidt mærkelig",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-03-29",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1487903600691908730"
   },
@@ -3004,10 +3003,10 @@
    "lines": [
     {
      "text": "dugtrio er faktisk republican",
-     "speaker": "Kevin"
+     "speakerId": "492756757668560896"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-03-29",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1487907944019394622"
   },
@@ -3016,10 +3015,10 @@
    "lines": [
     {
      "text": "jeg kan godt æde Mikkels nøder bare ikke i form a øl",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2026-04-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1489751742282334329"
   },
@@ -3028,10 +3027,10 @@
    "lines": [
     {
      "text": "jeg kan sagtens æde Mikkels nøde",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2026-04-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1489752052421627985"
   },
@@ -3040,14 +3039,14 @@
    "lines": [
     {
      "text": "hentai?",
-     "speaker": "Mikkel"
+     "speaker": "mikkel"
     },
     {
      "text": "jeg kan godt recommend dig en",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-04-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1490977173614366731"
   },
@@ -3056,14 +3055,14 @@
    "lines": [
     {
      "text": "Mikkel er en opp, han vil ikke se min anime der handler exclusively om små piger der dør",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     },
     {
      "text": "De skal jo heller ikke dø, de skal knaldes ud af existence",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-08",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1491376766793551913"
   },
@@ -3072,10 +3071,10 @@
    "lines": [
     {
      "text": "så kan vi alle sammen goon i en kop og lave russisk roulette",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-04-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1492114422854848563"
   },
@@ -3084,10 +3083,10 @@
    "lines": [
     {
      "text": "We are anonymous. We do not forgive. We do not forget. Expect us.",
-     "speaker": "Ahh"
+     "speaker": "ahh"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-04-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1492114796882165872"
   },
@@ -3096,10 +3095,10 @@
    "lines": [
     {
      "text": "Sorry jeg var lige i gang med at fikse min ahh",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1492126281469263903"
   },
@@ -3108,10 +3107,10 @@
    "lines": [
     {
      "text": "jeg vil så gerne tisse i dine bukser Mikkel",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1493219148069605376"
   },
@@ -3120,11 +3119,11 @@
    "lines": [
     {
      "text": "Hvor er min indledning din kost!",
-     "speaker": "Mikkel",
-     "note": "til"
+     "note": "til <@566670493596385296>",
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-04-14",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1493524772636856361"
   },
@@ -3133,18 +3132,18 @@
    "lines": [
     {
      "text": "Har du fået hjælp af din AI friend?",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     },
     {
      "text": "Nej jeg har ikke fået hjælp",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     },
     {
      "text": "Jo, førstehjælp",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-14",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1493576403353079939"
   },
@@ -3153,10 +3152,10 @@
    "lines": [
     {
      "text": "en sæson er jo 4 måneder",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-04-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1493943215689171015"
   },
@@ -3168,7 +3167,7 @@
      "note": "@Rani"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494220534177861682"
   },
@@ -3180,7 +3179,7 @@
      "note": "@Rani"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494220654143082517"
   },
@@ -3189,10 +3188,10 @@
    "lines": [
     {
      "text": "Det er derfor hunde har store øjne, det er så ulvene kan se brød hinden",
-     "speaker": "Mykyta"
+     "speaker": "mykyta"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-04-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494268209413492886"
   },
@@ -3201,10 +3200,10 @@
    "lines": [
     {
      "text": "lad mig hive i cutie patootie",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494270936160141453"
   },
@@ -3216,7 +3215,7 @@
      "speaker": "Sebastian"
     }
    ],
-   "postedBy": "Kevin",
+   "postedById": "492756757668560896",
    "date": "2026-04-16",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494312445475553380"
   },
@@ -3225,10 +3224,10 @@
    "lines": [
     {
      "text": "men jeg kan godt tag den raw",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-04-17",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494595508725874808"
   },
@@ -3237,11 +3236,11 @@
    "lines": [
     {
      "text": "hold styr på din pussy",
-     "speaker": "Mikkel",
-     "note": "til indigo"
+     "note": "til indigo",
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "mestertaco",
+   "postedById": "1252200041397882890",
    "date": "2026-04-17",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494644943082491955"
   },
@@ -3250,10 +3249,10 @@
    "lines": [
     {
      "text": "jeg glemte bare at tage min hånd ned",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-04-17",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494647103152980019"
   },
@@ -3265,7 +3264,7 @@
      "speaker": "Jens"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-04-17",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494647670126411776"
   },
@@ -3277,7 +3276,7 @@
      "note": "@Jens"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-17",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494647688245936209"
   },
@@ -3286,10 +3285,10 @@
    "lines": [
     {
      "text": "den blivere hårdere og hårdere jo mere jeg presser",
-     "speaker": "Jens"
+     "speaker": "jens"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-04-17",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494650784413909175"
   },
@@ -3298,10 +3297,10 @@
    "lines": [
     {
      "text": "den her opgave kommer til at pille mig lige godt og grundigt oppe i røven",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-04-17",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1494651452474527855"
   },
@@ -3313,7 +3312,7 @@
      "speaker": "Jesper"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-04-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1495678696588185650"
   },
@@ -3322,10 +3321,10 @@
    "lines": [
     {
      "text": "så får jeg alle mine vandmeloner i hovedet",
-     "speaker": "Jens"
+     "speaker": "jens"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-04-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1495709741945716846"
   },
@@ -3334,10 +3333,10 @@
    "lines": [
     {
      "text": "løsningen er at dræbe alle",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-04-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1495728970518368366"
   },
@@ -3346,10 +3345,10 @@
    "lines": [
     {
      "text": "jeg gider ikke se på dig",
-     "speaker": "Sofie"
+     "speaker": "sofie"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-04-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1496033845063974972"
   },
@@ -3358,11 +3357,11 @@
    "lines": [
     {
      "text": "Jeg tror du forstyrrer mere end mig",
-     "speaker": "GiggleWithG",
-     "note": "til LÆREREN"
+     "note": "til LÆREREN",
+     "speakerId": "725626549730148415"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-04-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1496034597627232297"
   },
@@ -3371,11 +3370,11 @@
    "lines": [
     {
      "text": "du gør bare hullet løsere",
-     "speaker": "Erik",
-     "note": "til"
+     "note": "til <@1098895481800753232>",
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "mestertaco",
+   "postedById": "1252200041397882890",
    "date": "2026-04-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1496427799358210139"
   },
@@ -3384,10 +3383,10 @@
    "lines": [
     {
      "text": "jeg vil have flere dihs inside of me",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1496446161953882183"
   },
@@ -3396,10 +3395,10 @@
    "lines": [
     {
      "text": "Den har en tip så det må være godt nok",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-04-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1496759691823284274"
   },
@@ -3408,10 +3407,10 @@
    "lines": [
     {
      "text": "fuck jeg har glemt hvad et rektangel er",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-04-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1496838461544726631"
   },
@@ -3420,11 +3419,11 @@
    "lines": [
     {
      "text": "kan jeg også købe dem i billederne",
-     "speaker": "Elias",
-     "note": "*inde på femboy fatale*"
+     "note": "*inde på femboy fatale*",
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-04-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1496841147702837340"
   },
@@ -3433,11 +3432,11 @@
    "lines": [
     {
      "text": "du er en heldig mand",
-     "speaker": "Sofie",
-     "note": "til Malte"
+     "note": "til <@563002644763770900>",
+     "speaker": "Sofie"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497119507544670208"
   },
@@ -3446,18 +3445,18 @@
    "lines": [
     {
      "text": "Hvornår er det nu du holder fødselsdag?",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     },
     {
      "text": "Den 14. Maj",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     },
     {
      "text": "Hvilken dato er det nu det er?",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497157933757366312"
   },
@@ -3466,10 +3465,10 @@
    "lines": [
     {
      "text": "Må jeg gerne modtage din finger i numsen, tak?",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497162820028993608"
   },
@@ -3478,10 +3477,10 @@
    "lines": [
     {
      "text": "det er kun hvide folk der kan udvikle sig",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497185336655351969"
   },
@@ -3490,10 +3489,10 @@
    "lines": [
     {
      "text": "Fucking fix my ass",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "GiggleWithG",
+   "postedById": "725626549730148415",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497191880142749829"
   },
@@ -3505,7 +3504,7 @@
      "speaker": "Jens"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497197288068743210"
   },
@@ -3514,10 +3513,10 @@
    "lines": [
     {
      "text": "jeg kan ikke lide sorte, fordi du er en",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497211149048086681"
   },
@@ -3526,10 +3525,10 @@
    "lines": [
     {
      "text": "du kan mindst have 10 cp",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-04-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497358334658084884"
   },
@@ -3538,10 +3537,10 @@
    "lines": [
     {
      "text": "min elskede koran",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-04-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1497655810543714364"
   },
@@ -3550,10 +3549,10 @@
    "lines": [
     {
      "text": "Jeg edger",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-04-29",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1498956919438577815"
   },
@@ -3562,10 +3561,10 @@
    "lines": [
     {
      "text": "Nej Tristan, den er ikke for lang - det er bare fordi dit hul ikke er dybt nok",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-04-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1499295345702731806"
   },
@@ -3574,10 +3573,10 @@
    "lines": [
     {
      "text": "Hvordan er alle dem i Afrika inficeret, når den (virussen) spreder sig gennem vand?? Urealistisk spil",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-04-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1499369308659122186"
   },
@@ -3586,10 +3585,10 @@
    "lines": [
     {
      "text": "HVAD MENER DU JEG BROKE THE RULES OF CHILD SAFETY",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-04-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1499490722343288954"
   },
@@ -3598,10 +3597,10 @@
    "lines": [
     {
      "text": "pisk mig hårdt daddy",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-04-30",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1499493443863576779"
   },
@@ -3610,10 +3609,10 @@
    "lines": [
     {
      "text": "Husk de frække ord",
-     "speaker": "Jens"
+     "speaker": "jens"
     }
    ],
-   "postedBy": "Malte",
+   "postedById": "563002644763770900",
    "date": "2026-05-01",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1499678579879841884"
   },
@@ -3622,10 +3621,10 @@
    "lines": [
     {
      "text": "179 sæder? jeg har skuda mere end det i mine klunker",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-05-01",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1499699665216602214"
   },
@@ -3634,14 +3633,14 @@
    "lines": [
     {
      "text": "would you rather have a gay son or a thot daughter?",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     },
     {
      "text": "a cadaver",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-05-04",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1500843638442295446"
   },
@@ -3650,10 +3649,10 @@
    "lines": [
     {
      "text": "Hvorfor er der nogen der har afleveret et billede der hedder 'smil_andreas_min_skat'?",
-     "speaker": "Haje"
+     "speaker": "haje"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-05-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1501511985034956891"
   },
@@ -3662,10 +3661,10 @@
    "lines": [
     {
      "text": "Det i har skrevet på vinduet er meget sus - prøv at kig på m'et",
-     "speaker": "Haje"
+     "speaker": "haje"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-05-08",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1502286076319105144"
   },
@@ -3674,10 +3673,10 @@
    "lines": [
     {
      "text": "Bro hvad er der i Hamborg udover strippere?",
-     "speaker": "Frederik"
+     "speakerId": "697407708483158036"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-05-11",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1503341460429475982"
   },
@@ -3693,7 +3692,7 @@
      "speaker": "Haje"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-05-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1503663463799717888"
   },
@@ -3702,11 +3701,11 @@
    "lines": [
     {
      "text": "Til techfest er det kun piger vi tager billeder af",
-     "speaker": "Malte",
-     "note": "til Content Creator møde"
+     "note": "til Content Creator møde",
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-05-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1503731883194843187"
   },
@@ -3715,11 +3714,11 @@
    "lines": [
     {
      "text": "Oh my good Hans",
-     "speaker": "William",
-     "note": "med tysk accent"
+     "note": "med tysk accent",
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2026-05-13",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1504073897132167263"
   },
@@ -3728,10 +3727,10 @@
    "lines": [
     {
      "text": "Hvis du var med i star wars var du blevet dræbt som youngling",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-05-14",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1504606676102414587"
   },
@@ -3740,10 +3739,10 @@
    "lines": [
     {
      "text": "Jeg har en furry inflation account",
-     "speaker": "Freja"
+     "speaker": "freja"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-05-14",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1504621391176142908"
   },
@@ -3752,10 +3751,10 @@
    "lines": [
     {
      "text": "Hvorfor har (Blå)hajen gæller?",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-05-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1505821024304758935"
   },
@@ -3764,10 +3763,10 @@
    "lines": [
     {
      "text": "Hvorfor kan du ikke bare gå ind i dit egen gruppe?",
-     "speaker": "Mykyta"
+     "speakerId": "1020339622305341511"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-05-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1505837246891425843"
   },
@@ -3776,10 +3775,10 @@
    "lines": [
     {
      "text": "han gooned på mig...",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-05-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1505880522184982698"
   },
@@ -3788,10 +3787,10 @@
    "lines": [
     {
      "text": "Jeg sprang min G-streng",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-05-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1505882919229456445"
   },
@@ -3800,14 +3799,14 @@
    "lines": [
     {
      "text": "Jeg kan få en mcflurry!",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     },
     {
      "text": "EN MCFURRY!!!!",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-05-18",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1505892639923245077"
   },
@@ -3816,10 +3815,10 @@
    "lines": [
     {
      "text": "Jeg cracker et lille barn",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-05-19",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506228466683478137"
   },
@@ -3832,10 +3831,10 @@
     },
     {
      "text": "Domer",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-05-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506544696636473394"
   },
@@ -3844,10 +3843,10 @@
    "lines": [
     {
      "text": "FIHHHH",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-05-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506581158735904909"
   },
@@ -3856,10 +3855,10 @@
    "lines": [
     {
      "text": "prosit, prosit, agurksalat",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-05-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506605443525513348"
   },
@@ -3868,10 +3867,10 @@
    "lines": [
     {
      "text": "du var en sædcelle bro",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-05-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506923917766426714"
   },
@@ -3880,10 +3879,10 @@
    "lines": [
     {
      "text": "spørg sædcellen om den vil blive født",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-05-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506924074155118702"
   },
@@ -3892,10 +3891,10 @@
    "lines": [
     {
      "text": "Jeg har et billede af mit hoved i hende",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-05-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506929085534961734"
   },
@@ -3904,10 +3903,10 @@
    "lines": [
     {
      "text": "stop så med at røre mine patter",
-     "speaker": "mestertaco"
+     "speakerId": "1252200041397882890"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-05-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506937847813242941"
   },
@@ -3916,10 +3915,11 @@
    "lines": [
     {
      "text": "ok stripklub youngling",
-     "note": "til Atharva"
+     "note": "til Atharva",
+     "speakerRole": "1470180494934151323"
     }
    ],
-   "postedBy": "Kevin",
+   "postedById": "492756757668560896",
    "date": "2026-05-21",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1506955049677623386"
   },
@@ -3928,11 +3928,11 @@
    "lines": [
     {
      "text": "gOOmmi",
-     "speaker": "Frederik",
-     "note": "der læste det helt normale ord gummi"
+     "note": "der læste det helt normale ord gummi",
+     "speakerId": "697407708483158036"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-05-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1507289493634551828"
   },
@@ -3941,10 +3941,10 @@
    "lines": [
     {
      "text": "try not to think about ass, for 1 second Jimmy",
-     "speaker": "Frederik"
+     "speakerId": "697407708483158036"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-05-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1507292109340803182"
   },
@@ -3953,10 +3953,10 @@
    "lines": [
     {
      "text": "Jimmy hvis du nogensinde bliver gay, så må du gerne låne Tristan i et par dage",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Kevin",
+   "postedById": "492756757668560896",
    "date": "2026-05-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1507338131777519636"
   },
@@ -3965,11 +3965,11 @@
    "lines": [
     {
      "text": "hvor er kids option",
-     "speaker": "Elias",
-     "note": "til boob or ass afstemning"
+     "note": "til boob or ass afstemning",
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-05-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1507347500149772439"
   },
@@ -3982,10 +3982,10 @@
     },
     {
      "text": "Alright jeg spiser resten af isen",
-     "speaker": "Jimmy"
+     "speakerId": "901545315075772426"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-05-23",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1507675330335342642"
   },
@@ -3994,14 +3994,14 @@
    "lines": [
     {
      "text": "hvorfor synger tristan om massachusetts",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     },
     {
      "text": "massive cue tip? hvordan vil du så få den ind i øret?",
-     "speaker": "Mads"
+     "speakerId": "1098895481800753232"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-05-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1508723475114758186"
   },
@@ -4010,10 +4010,10 @@
    "lines": [
     {
      "text": "Packing and cracking",
-     "speaker": "Kevin"
+     "speakerId": "492756757668560896"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-05-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1508724368006447196"
   },
@@ -4022,10 +4022,10 @@
    "lines": [
     {
      "text": "Når jeg bliver gammel skal jeg bare køre så mange unge som muligt ned, så de får frataget deres kørekort",
-     "speaker": "Erik"
+     "speakerId": "616609937535270912"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-05-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1508776876800344105"
   },
@@ -4034,10 +4034,10 @@
    "lines": [
     {
      "text": "tror ikke du kan nå gennem ballerne men you do you bro",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-05-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509091819764580413"
   },
@@ -4046,10 +4046,10 @@
    "lines": [
     {
      "text": "jeg er en slaveejer og du er en slave",
-     "speaker": "Mykyta"
+     "speaker": "mykyta"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-05-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509104058336546866"
   },
@@ -4058,10 +4058,10 @@
    "lines": [
     {
      "text": "det er ikke brainrot det er faktisk sigma phonk",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-05-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509111877811175504"
   },
@@ -4070,10 +4070,10 @@
    "lines": [
     {
      "text": "Hvorfor har du også bukser på",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-05-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509464535684218900"
   },
@@ -4082,10 +4082,10 @@
    "lines": [
     {
      "text": "i må gerne få en personlig banan med flødeskum",
-     "speaker": "Jimmy"
+     "speakerId": "901545315075772426"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-05-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509468398751580261"
   },
@@ -4094,10 +4094,10 @@
    "lines": [
     {
      "text": "jeg var inde i ham!!! jeg havde begge mine fists i ham",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-05-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509504106660892723"
   },
@@ -4106,10 +4106,10 @@
    "lines": [
     {
      "text": "Du skal fingres fra begge sider",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-05-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509505700764717127"
   },
@@ -4118,15 +4118,15 @@
    "lines": [
     {
      "text": "Jimmy vidste du godt at hele Folk city er brændt ned",
-     "speaker": "mestertaco",
-     "note": "i mens hun viser billedet"
+     "note": "i mens hun viser billedet",
+     "speakerId": "1252200041397882890"
     },
     {
      "text": "Han må gerne bo hos mig :D",
-     "speaker": "Jimmy"
+     "speakerId": "901545315075772426"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-05-28",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509508372674772992"
   },
@@ -4135,10 +4135,10 @@
    "lines": [
     {
      "text": "Mit sperm har superkræfter... det kan fucking flyve!!",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-05-29",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509863623227605033"
   },
@@ -4147,10 +4147,10 @@
    "lines": [
     {
      "text": "får vi feet? YEEESSS",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     }
    ],
-   "postedBy": "William",
+   "postedById": "631869469849026560",
    "date": "2026-05-29",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1509866197599125658"
   },
@@ -4159,10 +4159,10 @@
    "lines": [
     {
      "text": "Han skal bare have et billede af hende når hun er våd",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-06-02",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1511327028375191744"
   },
@@ -4171,10 +4171,10 @@
    "lines": [
     {
      "text": "Vi har alle brug for lidt mere javertus i vores hverdag ❤️",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-06-02",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1511362992883896420"
   },
@@ -4183,10 +4183,10 @@
    "lines": [
     {
      "text": "Stian er fra sydkorea",
-     "speaker": "Mykyta"
+     "speakerId": "1020339622305341511"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-06-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1511661451473846323"
   },
@@ -4198,7 +4198,7 @@
      "speaker": "Jens"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-06-04",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1512014001490493580"
   },
@@ -4207,10 +4207,10 @@
    "lines": [
     {
      "text": "Jeg kunne sagtens presse mig ud af dit urinrør - snildt",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-06-06",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1512833327638511626"
   },
@@ -4219,10 +4219,10 @@
    "lines": [
     {
      "text": "Jeg er mere en Coca Cola-slut",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-06-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1514207985864282142"
   },
@@ -4231,11 +4231,11 @@
    "lines": [
     {
      "text": "Det ligner malthe fra klassen",
-     "speaker": "Jimmy",
-     "note": "(self en joke)"
+     "note": "(self en joke)",
+     "speakerId": "901545315075772426"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-06-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1515058372871983114"
   },
@@ -4244,10 +4244,10 @@
    "lines": [
     {
      "text": "Hvis jeg taber nu, så har i alt rettigheder til at rive alt mit tøj af mig og smide mig på jorden første skoledag",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-06-15",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1516202975591141587"
   },
@@ -4256,10 +4256,10 @@
    "lines": [
     {
      "text": "5 gange 0 er stadig 5",
-     "speaker": "Andreas"
+     "speakerId": "625669789565583369"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-06-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1519456077685588080"
   },
@@ -4268,10 +4268,10 @@
    "lines": [
     {
      "text": "Andreas er tight",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-06-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1519833499283095612"
   },
@@ -4280,10 +4280,10 @@
    "lines": [
     {
      "text": "Jeg lover dig, jeg er IKKE en hestepik",
-     "speaker": "Lasse"
+     "speakerId": "576788022339829790"
     }
    ],
-   "postedBy": "Elias",
+   "postedById": "873891628660719677",
    "date": "2026-07-01",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1521879765269614652"
   },
@@ -4292,10 +4292,10 @@
    "lines": [
     {
      "text": "Christopher Nolan? Er det ikke ham fra The Rookie? Fuck et multitalent seriøst",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-07-22",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1529609999993667765"
   },
@@ -4304,10 +4304,10 @@
    "lines": [
     {
      "text": "Rasmus seebach lyder som rasmus seebach når han synger",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-08-01",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1533176926355591359"
   },
@@ -4316,10 +4316,10 @@
    "lines": [
     {
      "text": "Mads må jeg smage din gamle banan?",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-08-08",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1535729377617121410"
   },
@@ -4328,10 +4328,10 @@
    "lines": [
     {
      "text": "Tristans goon er too hot to handle",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-08-08",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1535796658342858882"
   },
@@ -4340,10 +4340,10 @@
    "lines": [
     {
      "text": "Jeg kommer uden tøj på resten af året",
-     "speaker": "Indigo"
+     "speakerId": "551455899550744586"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-08-10",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1536273333174276161"
   },
@@ -4352,18 +4352,18 @@
    "lines": [
     {
      "text": "Hvad skal hun ellers gøre andet end at tage med ham?",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     },
     {
      "text": "Hun kan bare gro maden selv",
-     "speaker": "Mikkel"
+     "speakerId": "445560765185916938"
     },
     {
      "text": "Nej det kan hun jo ikke hun er en kvinde",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-08-12",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1537007276454445106"
   },
@@ -4372,10 +4372,10 @@
    "lines": [
     {
      "text": "Jeg synes det er aura at være sort",
-     "speaker": "Jimmy"
+     "speakerId": "901545315075772426"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-08-14",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1537722866508894209"
   },
@@ -4384,10 +4384,10 @@
    "lines": [
     {
      "text": "Hvornår kommer google word til Danmark?",
-     "speaker": "Tristan"
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-08-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1539924159545610260"
   },
@@ -4396,11 +4396,11 @@
    "lines": [
     {
      "text": "Jeg ved ikke engang hvilken sygdom du har mere",
-     "speaker": "Elias",
-     "note": "til"
+     "note": "til <@566670493596385296>",
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-08-20",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1539952801948508221"
   },
@@ -4409,14 +4409,14 @@
    "lines": [
     {
      "text": "er den inde",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     },
     {
      "text": "er den inde… det sagde du bare ik",
-     "speaker": "Haje"
+     "speaker": "haje"
     }
    ],
-   "postedBy": "Indigo",
+   "postedById": "551455899550744586",
    "date": "2026-08-24",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1541420095245520926"
   },
@@ -4428,7 +4428,7 @@
      "speaker": "Jonas"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-08-25",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1541774500872462346"
   },
@@ -4437,10 +4437,10 @@
    "lines": [
     {
      "text": "no job, no wife, no life",
-     "speaker": "Jimmy"
+     "speakerId": "901545315075772426"
     }
    ],
-   "postedBy": "Kevin",
+   "postedById": "492756757668560896",
    "date": "2026-08-26",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1542097955346190337"
   },
@@ -4449,10 +4449,10 @@
    "lines": [
     {
      "text": "Jeg er sort i dag",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Malte",
+   "postedById": "563002644763770900",
    "date": "2026-08-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1542458766337900636"
   },
@@ -4461,14 +4461,14 @@
    "lines": [
     {
      "text": "Vi må sidde udenfor og lave rapporten",
-     "speaker": "Erik"
+     "speakerRole": "1441383102222962809"
     },
     {
      "text": "Ad der er sol",
-     "speaker": "Tobias"
+     "speakerId": "650712162347778048"
     }
    ],
-   "postedBy": "Erik",
+   "postedById": "616609937535270912",
    "date": "2026-08-27",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1542493109940658236"
   },
@@ -4477,11 +4477,11 @@
    "lines": [
     {
      "text": "jeg ved ikke hvordan du har det med katte",
-     "speaker": "Jens",
-     "note": "til Lasse"
+     "note": "til <@576788022339829790>",
+     "speaker": "Jens"
     }
    ],
-   "postedBy": "Mads",
+   "postedById": "1098895481800753232",
    "date": "2026-09-01",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1544271987374035034"
   },
@@ -4490,10 +4490,10 @@
    "lines": [
     {
      "text": "MIT NAVN ER JØDE BRO",
-     "speaker": "Elias"
+     "speakerId": "873891628660719677"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-09-02",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1544633878034260070"
   },
@@ -4502,11 +4502,11 @@
    "lines": [
     {
      "text": "Han får straight mælketænder",
-     "speaker": "Tristan",
-     "note": "(erik sagde jeg sku quote åbenbart)"
+     "note": "(erik sagde jeg sku quote åbenbart)",
+     "speakerId": "692001336740413452"
     }
    ],
-   "postedBy": "Tristan",
+   "postedById": "692001336740413452",
    "date": "2026-09-02",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1544759007980429343"
   },
@@ -4515,10 +4515,10 @@
    "lines": [
     {
      "text": "Jeg tror min AI girlfriend ville have noget at sige om det",
-     "speaker": "Atharva"
+     "speakerId": "690553588816019526"
     }
    ],
-   "postedBy": "Andreas",
+   "postedById": "625669789565583369",
    "date": "2026-09-03",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1545004865175027722"
   },
@@ -4527,10 +4527,10 @@
    "lines": [
     {
      "text": "jeg så et eller andet sort i kassen og sagde hell no",
-     "speaker": "William"
+     "speakerId": "631869469849026560"
     }
    ],
-   "postedBy": "Lasse",
+   "postedById": "576788022339829790",
    "date": "2026-09-04",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1545321846382002207"
   },
@@ -4539,10 +4539,10 @@
    "lines": [
     {
      "text": "Elsker hvor stiv den er",
-     "speaker": "Malte"
+     "speakerId": "563002644763770900"
     }
    ],
-   "postedBy": "Asbjørn",
+   "postedById": "837283105731641344",
    "date": "2026-09-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1546432496625778769"
   },
@@ -4551,10 +4551,10 @@
    "lines": [
     {
      "text": "Jeg laver dig om til et skateboard og kickflipper dig",
-     "speaker": "Sebastian"
+     "speakerId": "566670493596385296"
     }
    ],
-   "postedBy": "Atharva",
+   "postedById": "690553588816019526",
    "date": "2026-09-07",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1546486613532741712"
   },
@@ -4566,7 +4566,7 @@
      "note": "@Esben"
     }
    ],
-   "postedBy": "Mikkel",
+   "postedById": "445560765185916938",
    "date": "2026-09-08",
    "url": "https://discord.com/channels/1437357663406002288/1437373994377412640/1546802877295501343"
   }

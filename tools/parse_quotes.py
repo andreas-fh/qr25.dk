@@ -82,15 +82,27 @@ def strip_markup(text):
 MD_BOLD_ITALIC = re.compile(r"(\*{1,3}|_{2,3}|~~|\|\|)")
 
 
+def hide_mentions(text, names):
+    """Turn pings at people who asked to be left off the site into 'nogen'.
+
+    Everybody else keeps their ping. Names are not written into quotes.json at
+    all: the ping stays in, and the browser looks the id up in navne.json, so
+    a nickname changed on discord this morning is the one on the page now.
+    Hiding somebody is the one thing that cannot wait for that, so it happens
+    here, where the ping is thrown away instead of resolved.
+    """
+    text = MENTION.sub(
+        lambda m: "@nogen" if names.is_hidden(m.group(1)) else m.group(0), text)
+    return text
+
+
 def render_text(text, names):
     """What the quote should look like on the page.
 
-    Discord markup is written for Discord: a ping is an opaque id, a custom
-    emoji is an id too, and asterisks are formatting. None of that survives
-    outside the client, so resolve what can be resolved and drop the rest.
+    Custom emoji and asterisks are written for discord and mean nothing
+    outside it, so they go. The pings stay, see hide_mentions.
     """
-    text = MENTION.sub(lambda m: "@" + (names.user(m.group(1)) or "nogen"), text)
-    text = ROLE_MENTION.sub(lambda m: "@" + (names.role(m.group(1)) or "nogen"), text)
+    text = hide_mentions(text, names)
     text = CUSTOM_EMOJI.sub(lambda m: "", text)
     text = MD_BOLD_ITALIC.sub("", text)
     return re.sub(r"\s+", " ", text).strip()
@@ -110,20 +122,31 @@ def fold(text):
 
 
 class Names:
-    def __init__(self, names_path):
-        data = load_json(names_path)
-        self.users = data.get("users", {})
+    """Who a discord id belongs to, as the server spells it right now.
+
+    Nothing here is maintained by hand. tools/members.json is a dump of the
+    server, so somebody who renames themselves renames themselves on the site
+    too, jokes and all: the id 873891628660719677 prints as "Den mest
+    eksotiske white-guy" because that is what it says on discord.
+
+    A name that was typed by hand instead of pinged is left exactly as typed.
+    Those are teachers and other people who are not on the server, so there is
+    no id to look up and no second spelling to prefer.
+    """
+
+    def __init__(self, members_path, hide_path):
+        data = load_json(members_path)
+        self.users = {uid: u["navn"] for uid, u in data.get("users", {}).items()}
+        self.alias = {uid: set(u.get("alias", [])) | {u["navn"]}
+                      for uid, u in data.get("users", {}).items()}
         self.roles = data.get("roles", {})
-        self.hidden = set(data.get("hide", []))
+        self.hidden = set(load_json(hide_path).get("hide", []))
         # Hiding someone has to cover the name typed by hand as well as the
         # ping, otherwise '- Mikkel <@mikkel>' hides the ping and prints the
         # name anyway. Names inside the quote itself are left alone: that is
         # what the person said, not who the site says said it.
-        self._hidden_names = {fold(self.users[uid]) for uid in self.hidden
-                              if self.users.get(uid)}
-        self._by_fold = {fold(v): v for uid, v in self.users.items()
-                         if v and uid not in self.hidden}
-        self._by_fold.update({fold(v): v for v in self.roles.values() if v})
+        self._hidden_names = {fold(n) for uid in self.hidden
+                              for n in self.alias.get(uid, ()) if n}
 
     def user(self, uid):
         if uid in self.hidden:
@@ -139,25 +162,29 @@ class Names:
     def role(self, rid):
         return self.roles.get(rid)
 
-    def canonical(self, name):
-        """Match a hand-typed name back to how the site spells it.
+    def is_same_person(self, uid, name):
+        """Is this hand-typed name the person behind this ping?
 
-        Teachers are not in the server, so there is no id to look up and the
-        only spelling is whatever the person posting typed. Half the channel
-        writes 'haje' and half writes 'Haje'; pick one so the archive does not
-        read as two different people.
+        '- Mikkel <@445...>' is one person named twice, but the site prints him
+        as Timothy Tangherlini, so comparing against the printed name alone
+        would read it as Mikkel saying something to somebody else. Every name
+        the account has counts: nickname, display name and username.
         """
-        known = self._by_fold.get(fold(name))
-        if known:
-            return known
-        if name.isalpha() and name.islower():
-            return name.capitalize()
-        return name
+        if not name:
+            return False
+        target = fold(name)
+        return any(fold(a) == target for a in self.alias.get(uid, ()) if a)
 
 
 def clean_note(text):
-    """Whatever is left of an attribution once the name is out of it."""
-    text = strip_markup(text)
+    """Whatever is left of an attribution once the name is out of it.
+
+    Pings bliver stående. De bliver slået op i browseren ligesom i selve
+    citatet, så 'til <@id>' står med det navn personen har lige nu.
+    """
+    text = CUSTOM_EMOJI.sub(" ", text)
+    text = TIMESTAMP.sub(" ", text)
+    text = URL.sub(" ", text)
     text = re.sub(r"\s+", " ", text).strip()
     text = re.sub(r"^[\s,.:;)\]\-\u2010-\u2015\u2212]+", "", text)
     text = re.sub(r"[\s,.:;(\[\-\u2010-\u2015\u2212]+$", "", text)
@@ -166,7 +193,8 @@ def clean_note(text):
     if text.count("(") != text.count(")"):
         text = text.replace("(", "").replace(")", "")
     text = text.strip()
-    if len(text) > 120 or len(letters_only(text)) < 3:
+    vejet = ROLE_MENTION.sub(" navn ", MENTION.sub(" navn ", text))
+    if len(text) > 120 or len(letters_only(vejet)) < 3:
         return ""
     return text
 
@@ -193,7 +221,9 @@ def parse_attribution(tail, names):
             return bare.group(1), clean_note(head[bare.end():]), True
         return None, clean_note(tail), False
 
-    resolved = names.user(mention.group(1)) if mention else names.role(role.group(1))
+    # Bliver ikke til et navn her. Et ping går videre som et ping og bliver
+    # først til et navn i browseren, hvor navnet er det aktuelle.
+    resolved = hit.group(0) if (role or not names.is_hidden(mention.group(1))) else None
     before = LEAD_DASH.sub("", tail[: hit.start()])
     after = tail[hit.end():]
 
@@ -206,8 +236,22 @@ def parse_attribution(tail, names):
         rest = before[bare.end():] if bare else before
         return None, clean_note(rest + " " + after), True
 
-    if lead and resolved and fold(lead) == fold(resolved):
-        # '- Mikkel <@mikkel>': the name and the ping are the same person.
+    # '- Tristan <@id>' er én person nævnt to gange, '- Sofie til <@malte>' er
+    # to. Forskellen står imellem dem: er der ingenting mellem navnet og
+    # pinget, er det den samme. Navnene behøver ikke ligne hinanden, folk
+    # skriver "Tristan" om en der hedder "Trisdan" på serveren.
+    mellem = before[bare.end():].strip(" ,.:;-()") if bare else ""
+    if lead and not mellem:
+        same = True
+    elif mention:
+        same = names.is_same_person(mention.group(1), lead)
+    else:
+        rollenavn = names.role(role.group(1))
+        same = bool(lead and rollenavn and fold(lead) == fold(rollenavn))
+
+    if lead and resolved and same:
+        # '- Mikkel <@mikkel>': the name and the ping are the same person, and
+        # the ping is the half that follows him when he renames himself.
         return resolved, clean_note(before[bare.end():] + " " + after), True
 
     if lead and resolved:
@@ -266,10 +310,11 @@ def parse_message(msg, names):
                 speaker = prefix_speaker
                 attributed = True
 
-            if speaker:
+            if speaker and not MENTION.fullmatch(speaker) and not ROLE_MENTION.fullmatch(speaker):
+                # Left as typed on purpose. A hand-typed name is somebody
+                # who is not on the server to ask, usually a teacher, so the
+                # spelling in the quote is the only one there is.
                 speaker = re.sub(r"\s+", " ", speaker).strip(" ,.:;-")
-                # '- mykyta' and '<@mykyta>' should print the same way.
-                speaker = names.canonical(speaker)
                 if names.is_hidden_name(speaker):
                     speaker = None
 
@@ -290,17 +335,29 @@ def parse_message(msg, names):
 
     for line in lines:
         del line["attributed"]
-        if not line["speaker"]:
-            del line["speaker"]
         if not line["note"]:
             del line["note"]
+        # Et ping bliver til et id i filen, et håndskrevet navn bliver til
+        # tekst. Browseren kender forskellen og slår kun id'et op.
+        taler = line.pop("speaker")
+        if not taler:
+            continue
+        person = MENTION.fullmatch(taler)
+        rolle = ROLE_MENTION.fullmatch(taler)
+        if person:
+            line["speakerId"] = person.group(1)
+        elif rolle:
+            line["speakerRole"] = rolle.group(1)
+        else:
+            line["speaker"] = taler
 
     return lines
 
 
 def main():
     raw_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "quotes_raw.json")
-    names = Names(os.path.join(HERE, "names.json"))
+    names = Names(os.path.join(HERE, "members.json"),
+                  os.path.join(HERE, "names.json"))
     blocked_words = [fold(w) for w in read_list(os.path.join(HERE, "blocklist.txt"))]
     blocked_words = [w for w in blocked_words if w]
     excluded_ids = set(read_list(os.path.join(HERE, "exclude.txt")))
@@ -337,7 +394,9 @@ def main():
         entry = {
             "id": msg["id"],
             "lines": lines,
-            "postedBy": names.user(msg["author"]["id"]) or "anonym",
+            # Hvem der skrev citatet ind, som id. Navnet slår browseren op.
+            "postedById": (None if names.is_hidden(msg["author"]["id"])
+                           else msg["author"]["id"]),
             "date": msg["timestamp"][:10],
             "url": f"https://discord.com/channels/{GUILD_ID}/{CHANNEL_ID}/{msg['id']}",
         }

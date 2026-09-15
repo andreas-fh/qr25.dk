@@ -22,7 +22,9 @@ public/assets/app.js       uret og udvælgelsen af dagens citat
 public/data/quotes.json    de citater der er godkendt til at ligge offentligt
 tools/fetch_quotes.py      henter #quotes ned fra Discord
 tools/parse_quotes.py      laver rådataene om til quotes.json
-tools/names.json           hvilket navn der bliver vist for hvilket Discord-id
+tools/fetch_members.py     henter kaldenavnene ned, så parseren kan genkende dem
+tools/members.json         kaldenavnene på det tidspunkt filen blev hentet
+tools/names.json           hvem der ikke skal nævnes ved navn
 tools/blocklist.txt        ord der holder et citat væk fra siden
 tools/exclude.txt          enkelte beskeder der aldrig må med
 tools/include.txt          enkelte beskeder der springer blocklisten over
@@ -56,13 +58,65 @@ DISCORD_TOKEN=... python3 tools/fetch_quotes.py
 python3 tools/parse_quotes.py
 ```
 
+Skifter nogen kaldenavn, skal du ikke gøre noget. Se "Navnene" nedenfor.
+Parseren bruger `tools/members.json` til at genkende hvem der er hvem mens den
+læser, og den behøver ikke være dugfrisk, men vil du opdatere den:
+
+```
+ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 - /tmp/members.json' < tools/fetch_members.py
+scp root@vps:/tmp/members.json tools/members.json
+```
+
 `parse_quotes.py` skriver `public/data/quotes.json` og fortæller hvor mange
 beskeder der blev sorteret fra og hvorfor. Commit `public/data/quotes.json`.
 `tools/quotes_raw.json` bliver ikke committet, se `.gitignore`.
 
+### Navnene
+
+Der står ingen navne i `quotes.json`. Der står discord-id'er, og navnet bliver
+slået op i browseren hver gang siden åbnes:
+
+```
+"lines": [{"text": "...", "speakerId": "873891628660719677"}]
+```
+
+Opslaget er `https://data.qr25.dk/navne.json`, som VPS'en bygger ud fra discord
+hvert kvarter. Skifter nogen kaldenavn, står det nye navn på siden inden for et
+kvarter, uden at nogen skal køre en parser eller pushe noget. Folk skifter navn
+tit, og det er hele pointen med at gøre det sådan.
+
+Pings inde i selve citatteksten bliver også stående som pings og slået op på
+samme måde, og det samme gør et ping i noten (`til <@id>`).
+
+Svarer `navne.json` ikke, bruger siden det den så sidst, gemt i browseren. Har
+den heller ikke det, står der "nogen". Citatet står der stadig.
+
+Et navn der er skrevet i hånden i stedet for pinget er ikke et id og bliver
+aldrig slået op. Det er lærerne og andre der ikke er på serveren, så der er
+hverken et id eller en anden stavemåde. Står der "haje", står der "haje". Af de
+364 citater har 325 linjer et ping, 51 et håndskrevet navn og 29 ingen af
+delene.
+
+`- Tristan <@id>` er én person nævnt to gange, `- Sofie til <@malte>` er to.
+Parseren kender forskellen på hvad der står imellem dem: er der ingenting
+mellem navnet og pinget, er det den samme person, og pinget vinder. Navnene
+behøver ikke ligne hinanden, folk skriver "Tristan" om en der hedder "Trisdan"
+på serveren.
+
+Vil nogen ikke nævnes, så sæt deres id i `hide` i `tools/names.json` og kør
+parseren. Så bliver pinget smidt væk i stedet for skrevet i filen, og der er
+ikke noget at slå op. Skal de også være væk fra afstemningerne, så skriv id'et
+i `/opt/qr25-data/skjul.json` på VPS'en som en liste.
+
+`tools/members.json` bliver kun brugt mens parseren læser, til at genkende at
+"Mikkel" og `<@445...>` er den samme. Den afgør ikke hvad der står på siden.
+
+Blocklisten kigger ikke på navne længere, for der er ingen navne i filen at
+kigge på. Den kigger på citatteksten og på noten.
+
 ## Vedtægterne og afstemningerne
 
-De to kasser henter fra `https://data.qr25.dk`, som er nginx på VPS'en
+Kasserne henter fra `https://data.qr25.dk`, som er nginx på VPS'en
 (161.97.159.207). qr25.dk er statiske filer på Cloudflare og kan ikke selv nå
 ind til DemokratiClanker, så VPS'en bygger to json-filer og serverer dem med
 CORS for qr25.dk.
@@ -72,11 +126,16 @@ qr25.dk (Cloudflare)                     VPS (161.97.159.207)
   public/assets/app.js  --- fetch --->   nginx: data.qr25.dk
                                            /var/www/qr25-data/vedtaegter.json
                                            /var/www/qr25-data/polls.json
+                                           /var/www/qr25-data/navne.json
                                                  ^
                                            cron hvert minut
                                            /opt/qr25-data/build.py
                                              <- /var/lib/demokraticlanker/store.json
                                              <- nyeste pdf i #rules (Discord API)
+
+                        --- POST /tael -->   nginx -> 127.0.0.1:8787
+                                           /opt/qr25-data/taeller.py
+                                             -> /var/lib/qr25-tael/tael
 ```
 
 Alt det på VPS'en ligger uden for dette repo. Filerne er:
@@ -84,11 +143,14 @@ Alt det på VPS'en ligger uden for dette repo. Filerne er:
 | på VPS'en | hvad |
 | --- | --- |
 | `/opt/qr25-data/build.py` | bygger begge json-filer |
-| `/opt/qr25-data/navne.json` | kopi af `tools/names.json`, så navnene er de samme overalt |
+| `/opt/qr25-data/taeller.py` | besøgstælleren, én http-service på 127.0.0.1:8787 |
+| `/etc/systemd/system/qr25-tael.service` | holder tælleren kørende |
+| `/var/lib/qr25-tael/tael` | selve tallet, én linje |
 | `/etc/nginx/sites-available/data.qr25.dk.conf` | vhost med CORS |
 | `/etc/cron.d/qr25-data` | kører build.py hvert minut |
 | `/var/www/qr25-data/` | de færdige filer |
 | `/var/lib/qr25-data/` | cache af navne og hvornår discord sidst blev spurgt |
+| `/opt/qr25-data/skjul.json` | valgfri liste af id'er der ikke skal nævnes |
 | `/var/log/qr25-data.log` | hvad cron fangede |
 
 ### Vedtægterne
@@ -134,17 +196,17 @@ sted en stemme kan afgives, ellers holder §6 ikke.
 ```
 apt-get install -y poppler-utils
 mkdir -p /opt/qr25-data /var/www/qr25-data /var/lib/qr25-data
-# læg build.py og navne.json i /opt/qr25-data
+# læg build.py og taeller.py i /opt/qr25-data
 # læg vhosten i sites-available og symlink den til sites-enabled
 certbot --nginx -d data.qr25.dk
 systemctl reload nginx
 python3 /opt/qr25-data/build.py --nu
+# læg qr25-tael.service i /etc/systemd/system
+systemctl enable --now qr25-tael
 ```
 
 DNS: `data.qr25.dk` skal være en A-record mod 161.97.159.207 i qr25.dk-zonen
 på Cloudflare.
-
-## Hvad der bliver sorteret fra
 
 ## Hvad der bliver sorteret fra
 
@@ -187,8 +249,7 @@ En kasse er en `<div class="kasse">` inde i `<div id="scene">` i
 ```
 
 Kopier en af de andre og skriv dit eget i. Den bliver automatisk taget med når
-kasserne bliver smidt ud på siden, du skal ikke røre `app.js`. Der ligger en
-huskeliste i en af kasserne med det vi har snakket om.
+kasserne bliver smidt ud på siden, du skal ikke røre `app.js`.
 
 ## Sådan ligger kasserne
 
@@ -228,7 +289,7 @@ Reglerne står øverst i `public/assets/style.css`:
 Så det er regnbue i baggrunden hele tiden, hvide kasser med `outset`-kanter
 smidt ud over hele skærmen, Impact i overskriften, Verdana i brødteksten,
 Georgia i citaterne, et rullebånd i toppen med nedtællingen til kagepausen, og
-en besøgstæller der kun tæller i din egen browser.
+en besøgstæller.
 
 Citatet står ét sted. Rullebåndet havde et tilfældigt citat i sig før, men så
 var der to forskellige citater på siden på samme tid, og det var forvirrende.

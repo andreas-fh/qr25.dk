@@ -18,6 +18,9 @@
 
   var DAGE = ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"];
 
+  // vedtægter, afstemninger, navne og besøgstælleren. resten er filer herfra.
+  var DATA = "https://data.qr25.dk";
+
 
   function id(name) { return document.getElementById(name); }
 
@@ -124,6 +127,68 @@
   tik();
   setInterval(tik, 1000);
 
+  // ---------------- navne ----------------
+
+  /* der står ingen navne i quotes.json. der står discord-id'er, og navnet
+     bliver slået op her, hver gang siden åbnes. folk skifter kaldenavn tit,
+     og så skal siden følge med uden at nogen skal køre en parser igen.
+
+     navnene kommer fra data.qr25.dk, som henter dem fra discord hvert
+     kvarter. svarer den ikke, bruger vi det vi så sidst, for en side fuld af
+     "nogen" er værre end et navn der er en dag gammelt.
+
+     et navn der står skrevet i hånden i citatet er ikke et id og bliver
+     aldrig slået op. det er lærerne. */
+
+  var PING = /<@!?(\d+)>/g;
+  var ROLLEPING = /<@&(\d+)>/g;
+  var NAVNE = { navne: {}, roller: {} };
+
+  function huskNavne(opslag) {
+    if (!opslag || !opslag.navne) return false;
+    NAVNE = { navne: opslag.navne, roller: opslag.roller || {} };
+    return true;
+  }
+
+  function navn(uid) { return NAVNE.navne[uid] || "nogen"; }
+  function rolle(rid) { return NAVNE.roller[rid] || "nogen"; }
+
+  function udskriv(tekst) {
+    return String(tekst)
+      .replace(ROLLEPING, function (_, rid) { return "@" + rolle(rid); })
+      .replace(PING, function (_, uid) { return "@" + navn(uid); });
+  }
+
+  function afsender(linje) {
+    if (linje.speakerId) return navn(linje.speakerId);
+    if (linje.speakerRole) return rolle(linje.speakerRole);
+    return linje.speaker || "";
+  }
+
+  function hentNavne() {
+    try {
+      huskNavne(JSON.parse(localStorage.getItem("qr25-navne")));
+    } catch (e) {
+      // ikke noget gemt, eller privat vindue. så venter vi på serveren
+    }
+    return fetch(DATA + "/navne.json", { cache: "no-cache" })
+      .then(function (svar) {
+        if (!svar.ok) throw new Error(svar.status);
+        return svar.json();
+      })
+      .then(function (opslag) {
+        if (!huskNavne(opslag)) return;
+        try {
+          localStorage.setItem("qr25-navne", JSON.stringify(opslag));
+        } catch (e) {
+          // pyt, så slår vi dem bare op igen næste gang
+        }
+      })
+      .catch(function () {
+        // så står der det vi havde i forvejen
+      });
+  }
+
   // ---------------- dagens citat ----------------
 
   /* lille frøbaseret tilfældighed, så rækkefølgen ligger fast men ikke er til
@@ -167,11 +232,12 @@
     i.textContent = "";
     citat.lines.forEach(function (linje) {
       var blok = lav("div", "quote-line");
-      blok.appendChild(lav("p", "quote-text", "»" + linje.text + "«"));
-      if (linje.speaker || linje.note) {
+      blok.appendChild(lav("p", "quote-text", "»" + udskriv(linje.text) + "«"));
+      var hvemDenneLinje = afsender(linje);
+      if (hvemDenneLinje || linje.note) {
         var attr = lav("p", "quote-attr");
-        attr.appendChild(lav("span", "who", linje.speaker || "ukendt"));
-        if (linje.note) attr.appendChild(lav("span", "note", " " + linje.note));
+        attr.appendChild(lav("span", "who", hvemDenneLinje || "ukendt"));
+        if (linje.note) attr.appendChild(lav("span", "note", " " + udskriv(linje.note)));
         blok.appendChild(attr);
       }
       i.appendChild(blok);
@@ -179,23 +245,28 @@
   }
 
   function foerste(citat) {
-    return "»" + citat.lines[0].text + "«" + (citat.lines.length > 1 ? " ..." : "");
+    return "»" + udskriv(citat.lines[0].text) + "«" + (citat.lines.length > 1 ? " ..." : "");
   }
 
   function hvem(citat) {
     var set = [];
     citat.lines.forEach(function (l) {
-      if (l.speaker && set.indexOf(l.speaker) === -1) set.push(l.speaker);
+      var n = afsender(l);
+      if (n && set.indexOf(n) === -1) set.push(n);
     });
     return set.join(", ");
   }
 
-  fetch("/data/quotes.json", { cache: "no-cache" })
-    .then(function (svar) {
+  Promise.all([
+    fetch("/data/quotes.json", { cache: "no-cache" }).then(function (svar) {
       if (!svar.ok) throw new Error("HTTP " + svar.status);
       return svar.json();
-    })
-    .then(function (data) {
+    }),
+    // navnene må gerne fejle. så står der "nogen", og citatet står der stadig.
+    hentNavne(),
+  ])
+    .then(function (svar) {
+      var data = svar[0];
       var citater = data.quotes || [];
       var idag = dagnr(dele(new Date()));
       var kasse = id("quote");
@@ -259,7 +330,6 @@
      eneste knap her nede der sender noget nogen steder hen, og det skal der
      heller ikke komme. */
 
-  var DATA = "https://data.qr25.dk";
 
   function hent(sti) {
     return fetch(DATA + sti, { cache: "no-cache" }).then(function (svar) {
@@ -513,18 +583,44 @@
 
   // ---------------- besøgstæller ----------------
 
-  /* den tæller kun i din egen browser. det står der også. en rigtig tæller
-     kræver en server, og siden er bare filer. */
+  /* ét tal for alle. serveren lægger en til hver gang siden bliver hentet og
+     sender det samlede antal tilbage, så det er ikke dit eget besøg du kigger
+     på, det er alles. svarer serveren ikke, viser vi det sidste tal vi så, i
+     stedet for at hoppe ned på nul og lade som om ingen har været her. */
   (function () {
-    var n = 1;
-    try {
-      n = (parseInt(localStorage.getItem("qr25-besog"), 10) || 0) + 1;
-      localStorage.setItem("qr25-besog", String(n));
-    } catch (e) {
-      // privat vindue, eller blokerede cookies. så tæller vi bare til 1
+    var felt = id("tal");
+
+    function vis(n) {
+      var tal = String(n);
+      while (tal.length < 6) tal = "0" + tal;
+      felt.textContent = tal;
     }
-    var tal = String(n);
-    while (tal.length < 6) tal = "0" + tal;
-    id("tal").textContent = tal;
+
+    var sidste = null;
+    try {
+      sidste = parseInt(localStorage.getItem("qr25-besog-sidst"), 10);
+    } catch (e) {
+      // privat vindue. så står der nuller indtil serveren svarer
+    }
+    if (sidste > 0) vis(sidste);
+
+    fetch(DATA + "/tael", { method: "POST", cache: "no-store" })
+      .then(function (svar) {
+        if (!svar.ok) throw new Error(svar.status);
+        return svar.json();
+      })
+      .then(function (data) {
+        var n = parseInt(data.besog, 10);
+        if (!(n > 0)) return;
+        vis(n);
+        try {
+          localStorage.setItem("qr25-besog-sidst", String(n));
+        } catch (e) {
+          // ingen grund til at gøre mere ud af det
+        }
+      })
+      .catch(function () {
+        // tælleren er ikke vigtigere end resten af siden
+      });
   })();
 })();
