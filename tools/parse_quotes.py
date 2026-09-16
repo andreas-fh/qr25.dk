@@ -16,6 +16,29 @@ import unicodedata
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
+# Hvad et billede på et citat må være. Alt andet — video, lyd, pdf, zip —
+# bliver ikke lagt ud, og filen kommer til at hedde det her i stedet for det
+# navn afsenderen gav den. Så er der ikke et filnavn fra en chat der havner på
+# disken.
+BILLEDTYPER = {
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/gif": "gif",
+    "image/webp": "webp",
+}
+# Den anden vej, til at læse en endelse. Discord opbevarer nogle billeder som
+# webp og skriver det i content_type, men serverer stadig den png der blev
+# uploadet. Så endelsen på filnavnet er den der holder, og content_type er kun
+# noget vi falder tilbage på.
+ENDELSER = {
+    "png": "image/png",
+    "jpg": "image/jpeg",
+    "jpeg": "image/jpeg",
+    "gif": "image/gif",
+    "webp": "image/webp",
+}
+MEDIE_MAX = 8 * 1024 * 1024     # samme loft som botten bruger på gif'erne
+
 GUILD_ID = "1437357663406002288"
 CHANNEL_ID = "1437373994377412640"
 
@@ -354,6 +377,34 @@ def parse_message(msg, names):
     return lines
 
 
+def billeder(msg):
+    """Billederne der sad i samme besked som citatet.
+
+    Indi spurgte om dem. Kun metadata her: urlerne fra discord er signerede og
+    er døde inden for et døgn, så selve filerne hentes af
+    tools/fetch_quote_medie.py, som slår beskeden op igen for at få en frisk
+    url. Filnavnet er beskedens id og et løbenummer, så det er det samme navn
+    hver gang og kan caches.
+
+    Et citat der ryger ud — blocklisten eller exclude.txt — kommer aldrig
+    hertil, så billedet følger med ud.
+    """
+    ud = []
+    for nr, a in enumerate(msg.get("attachments", [])):
+        endelse = (a.get("filename") or "").rsplit(".", 1)[-1].lower()
+        type_ = ENDELSER.get(endelse) or (a.get("content_type") or "").split(";")[0]
+        slut = BILLEDTYPER.get(type_)
+        if not slut or (a.get("size") or 0) > MEDIE_MAX:
+            continue
+        ud.append({
+            "fil": f"{msg['id']}-{nr}.{slut}",
+            "type": type_,
+            "bredde": a.get("width"),
+            "hoejde": a.get("height"),
+        })
+    return ud
+
+
 def main():
     raw_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "quotes_raw.json")
     names = Names(os.path.join(HERE, "members.json"),
@@ -401,6 +452,10 @@ def main():
             "url": f"https://discord.com/channels/{GUILD_ID}/{CHANNEL_ID}/{msg['id']}",
         }
 
+        medie = billeder(msg)
+        if medie:
+            entry["medie"] = medie
+
         if msg["id"] in excluded_ids:
             counts["excluded"] += 1
             continue
@@ -437,6 +492,9 @@ def main():
     print(f"messages seen   {counts['total']}")
     print(f"not a quote     {counts['not_a_quote']}")
     print(f"duplicates      {counts['duplicate']}")
+    med_medie = sum(1 for q in quotes if q.get("medie"))
+    if med_medie:
+        print(f"med billede     {med_medie}  (hent dem med tools/fetch_quote_medie.py)")
     print(f"in exclude.txt  {counts['excluded']}")
     print(f"hit blocklist   {counts['blocked']}  (written to tools/flagged.json)")
     print(f"published       {len(quotes)}  -> public/data/quotes.json")

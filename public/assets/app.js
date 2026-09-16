@@ -127,6 +127,51 @@
   tik();
   setInterval(tik, 1000);
 
+  // ---------------- cookies ----------------
+
+  /* Tristan bad om en cookie-boks hvor nej-knappen ikke virker.
+
+     Den er bygget som der blev bedt om: man kommer ikke videre uden at trykke
+     accepter, og "nej tak" gør ingenting andet end at sige at den ikke virker.
+     Men den lyver ikke om noget. Siden bruger ingen cookies til andet end det
+     her, der er ingen sporing at sige nej til, og det står i boksen.
+
+     Den cookie den sætter, er den eneste på hele siden: den husker at du har
+     trykket, så du ikke skal se boksen hver gang. Et år, SameSite=Lax, ikke
+     andet end et ja. */
+
+  var COOKIE = "qr25-cookies";
+
+  function harAccepteret() {
+    return document.cookie.split(";").some(function (c) {
+      return c.trim().indexOf(COOKIE + "=ja") === 0;
+    });
+  }
+
+  function cookies() {
+    var boks = id("cookie");
+    if (!boks) return;
+    if (harAccepteret()) return;
+
+    boks.hidden = false;
+    var svar = id("cookie-svar");
+
+    id("cookie-ja").addEventListener("click", function () {
+      var et_aar = new Date(Date.now() + 365 * 24 * 3600 * 1000).toUTCString();
+      document.cookie = COOKIE + "=ja; expires=" + et_aar + "; path=/; SameSite=Lax";
+      boks.hidden = true;
+    });
+
+    // det er hele pointen. den siger det den gør, og gør ikke andet
+    id("cookie-nej").addEventListener("click", function () {
+      svar.textContent = "nej-knappen virker ikke";
+    });
+
+    id("cookie-ja").focus();
+  }
+
+  cookies();
+
   // ---------------- navne ----------------
 
   /* der står ingen navne i quotes.json. der står discord-id'er, og navnet
@@ -233,6 +278,31 @@
     return n;
   }
 
+  /* Indi spurgte om at få de billeder med, der sad i samme besked som citatet.
+     De ligger på data.qr25.dk: discords egne urler er signerede og dør inden
+     for et døgn, så tools/fetch_quote_medie.py henter dem ned. Filnavnet er
+     beskedens id, så det peger altid på det samme billede.
+
+     Er billedet der ikke — det er lige kommet ind, og henteren er ikke kørt
+     endnu — ryger elementet bare ud igen. Citatet står der stadig. */
+  function tegnCitatBilleder(citat, i) {
+    (citat.medie || []).forEach(function (m) {
+      if (!m || !m.fil) return;
+      var billede = document.createElement("img");
+      billede.className = "quote-billede";
+      billede.src = DATA + "/quote-medie/" + m.fil;
+      billede.alt = "billedet der fulgte med citatet";
+      billede.loading = "lazy";
+      // målene står i quotes.json, så pladsen er der inden filen er hentet
+      if (m.bredde) billede.width = m.bredde;
+      if (m.hoejde) billede.height = m.hoejde;
+      billede.onerror = function () {
+        if (billede.parentNode) billede.parentNode.removeChild(billede);
+      };
+      i.appendChild(billede);
+    });
+  }
+
   function tegn(citat, i) {
     i.textContent = "";
     citat.lines.forEach(function (linje) {
@@ -247,6 +317,7 @@
       }
       i.appendChild(blok);
     });
+    tegnCitatBilleder(citat, i);
   }
 
   function foerste(citat) {
@@ -348,12 +419,20 @@
 
       var kilde = id("kilde");
       var nu = dagens;
+      function harBillede(c) { return !!(c && c.medie && c.medie.length); }
+
       function vis(citat) {
+        var havde = harBillede(nu);
         nu = citat;
         tegn(citat, kasse);
         kilde.href = citat.url;
         // et nyt citat midt i en oplæsning: så skal den gamle tie stille
         if (taler) stopTale();
+        /* et citat med billede er en hel del højere end et uden. kasserne blev
+           målt op da siden kom ind, så når det skifter, skal der måles igen —
+           ellers lægger den sig oven i naboen. målene står på img'et, så
+           højden er kendt inden filen er hentet. */
+        if (havde !== harBillede(citat)) spred();
       }
 
       vis(dagens);

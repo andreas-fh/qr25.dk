@@ -15,6 +15,31 @@
 
 <noscript><p class="advarsel">siden skal bruge javascript. kagepause 10:20 til 10:30, man til fre.</p></noscript>
 
+<!-- tristan bad om en cookie-boks hvor nej-knappen ikke virker. det er joken,
+     og den er holdt ærlig: siden bruger ingen cookies til noget som helst, og
+     den eneste der nogensinde bliver sat, er den der husker at du trykkede
+     accepter. der står det samme i boksen. -->
+<div id="cookie" hidden>
+  <div id="cookie-kasse" role="dialog" aria-modal="true" aria-labelledby="cookie-top">
+    <p id="cookie-top"><b>cookies</b></p>
+    <p>
+      qr25.dk bruger ingen cookies. Der er ingen sporing, ingen analytics og
+      ingen der bliver solgt videre. Den eneste cookie der nogensinde bliver
+      sat på den her side, er den der husker at du trykkede accepter, så du
+      ikke skal se boksen her igen.
+    </p>
+    <p>
+      Nej-knappen virker ikke. Det er der bedt om i #hjemmeside-changelog-og-ideer,
+      og det er den eneste grund til at boksen findes.
+    </p>
+    <p>
+      <button type="button" id="cookie-ja">accepter alle</button>
+      <button type="button" id="cookie-nej">nej tak</button>
+      <span id="cookie-svar" aria-live="polite"></span>
+    </p>
+  </div>
+</div>
+
 <div id="top">
   <h1>qr25.dk</h1>
 

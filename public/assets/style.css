@@ -29,6 +29,39 @@ a { color: #1a1aa8; }
 a:visited { color: #6a1a9a; }
 a:hover { color: #c22a1c; }
 
+/* ---- cookie-boksen ---- */
+
+/* der blev bedt om en. den ligger over det hele indtil man trykker accepter,
+   for ellers er det ikke en cookie-boks */
+#cookie {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  /* ingen sløring. massiv sort med huller i, som alt andet på siden */
+  background: rgba(17, 17, 17, 0.72);
+}
+
+#cookie[hidden] { display: none; }
+
+#cookie-kasse {
+  max-width: 460px;
+  border: 5px outset #ddd8c6;
+  background: #fff;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+#cookie-kasse p { margin: 0 0 10px; }
+#cookie-kasse p:last-child { margin-bottom: 0; }
+#cookie-kasse button + button { margin-left: 6px; }
+
+#cookie-svar { font-size: 11px; color: #55503f; margin-left: 6px; }
+
 /* ---- toppen ---- */
 
 h1 {
@@ -128,6 +161,20 @@ button {
 }
 
 button:active { border-style: inset; }
+
+/* billedet der sad i samme besked som citatet. et foto fra en telefon er
+   3000 px bredt, så det skal holdes nede — og det må ikke være så højt at
+   kassen vokser ned i naboen når man ruller til et andet citat */
+.quote-billede {
+  display: block;
+  margin: 10px 0 0;
+  max-width: 100%;
+  max-height: 220px;
+  width: auto;
+  height: auto;
+  border: 1px solid #b8b3a0;
+  background: #efece0;
+}
 
 #kilde { font-size: 11px; margin-left: 4px; }
 

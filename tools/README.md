@@ -5,6 +5,7 @@ Intet herinde bliver serveret. Se `../README.md` for hele forklaringen.
 | fil | hvad |
 | --- | --- |
 | `fetch_quotes.py` | henter alle beskeder i #quotes til `quotes_raw.json` |
+| `fetch_quote_medie.py` | henter billederne fra citat-beskederne ned på VPS'en |
 | `parse_quotes.py` | laver `quotes_raw.json` om til `../public/data/quotes.json` |
 | `fetch_members.py` | henter kaldenavnene til `members.json` |
 | `members.json` | kaldenavne, kun brugt til at genkende hvem der er hvem |

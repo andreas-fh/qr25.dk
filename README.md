@@ -8,8 +8,9 @@ Klassesiden for QR25, Aalborg Tekniske Gymnasium. Den svarer på to spørgsmål:
 4. Hvad bliver der stemt om lige nu?
 
 Og så det folk har bedt om i #hjemmeside-changelog-og-ideer: Tristans nyeste
-gif, Dangus' profilbillede, et kinesisk flag der flager, og en sang. Resten
-står der ikke, og det er med vilje.
+gif, Dangus' profilbillede, et kinesisk flag der flager, en sang, og en
+cookie-boks hvor nej-knappen ikke virker. Resten står der ikke, og det er med
+vilje.
 
 Ren HTML, CSS og JavaScript. Intet byggetrin, ingen framework, ingen
 `node_modules`, ingen skrifttyper hentet ude fra. Alt der bliver serveret ligger
@@ -24,6 +25,7 @@ public/assets/app.js       uret, dagens citat og resten af kasserne
 public/data/quotes.json    de citater der er godkendt til at ligge offentligt
 tools/fetch_quotes.py      henter #quotes ned fra Discord
 tools/parse_quotes.py      laver rådataene om til quotes.json
+tools/fetch_quote_medie.py henter billederne fra citat-beskederne ned på VPS'en
 tools/fetch_members.py     henter kaldenavnene ned, så parseren kan genkende dem
 tools/members.json         kaldenavnene på det tidspunkt filen blev hentet
 tools/names.json           hvem der ikke skal nævnes ved navn
@@ -170,6 +172,7 @@ Alt det på VPS'en ligger uden for dette repo. Filerne er:
 | `/var/www/qr25-data/live/` | det botten selv skriver. eget ejerskab, så den ikke rører resten |
 | `/var/www/qr25-data/live/medie/` | selve gif'erne. det er dem siden viser |
 | `/var/lib/demokraticlanker/senest.json` | hans fem seneste gif'er, så en sletning har noget at falde tilbage på |
+| `/var/www/qr25-data/quote-medie/` | billederne der hører til citaterne |
 
 ### Vedtægterne
 
@@ -263,6 +266,47 @@ fleste af dem er tekst, så den bliver ved nedad indtil ringen er fuld:
 set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
+
+### Billeder på citaterne
+
+Indi spurgte om at få fotos og vedhæftninger med, når de sad i samme besked som
+citatet. `parse_quotes.py` skriver hvilke billeder der hører til hvilket citat
+ind i `quotes.json` under `medie`, men ikke selve filerne. Discords urler er
+signerede og er døde inden for et døgn, så et link ville ikke virke i morgen.
+
+Filerne bliver hentet ned på VPS'en i stedet og serveret fra
+`data.qr25.dk/quote-medie/`. De ligger med vilje ikke i repoet: det er billeder
+af folk fra klassen, og de skal ikke ligge i et offentligt git-repo ved siden
+af koden.
+
+```
+scp tools/fetch_quote_medie.py root@vps:/tmp/qm.py
+ssh root@vps 'set -a; . /etc/demokraticlanker/env; set +a; python3 /tmp/qm.py'
+```
+
+Listen bliver hentet fra den `quotes.json` der rent faktisk ligger på qr25.dk.
+Det er med vilje: et citat skal først igennem blocklisten, være committet og
+være pushet, før billedet bliver hentet. Ryger citatet ud igen — blocklisten,
+`exclude.txt`, eller beskeden bliver slettet — sletter næste kørsel billedet.
+Filen hedder beskedens id og et løbenummer, så navnet peger altid på det samme
+billede, og der bliver kun hentet fra Discords egne værter, kun billeder, og
+kun op til 8 MB.
+
+Discord opbevarer nogle billeder som webp og skriver det i `content_type`, men
+serverer stadig den png der blev uploadet. Derfor er det endelsen på filnavnet
+der bestemmer typen, og `content_type` er kun noget parseren falder tilbage på.
+
+### Cookie-boksen
+
+Tristan bad om en cookie-boks hvor nej-knappen ikke virker. Det er præcis hvad
+den er: man kommer ikke videre uden at trykke accepter, og "nej tak" skriver
+bare "nej-knappen virker ikke".
+
+Den lyver ikke om noget. Siden har ingen sporing, ingen analytics og ingen
+tredjepart, og der står i boksen at der ikke er nogen cookies. Den ene cookie
+den sætter — `qr25-cookies=ja`, et år, `SameSite=Lax` — er den der husker at du
+trykkede, så boksen ikke kommer igen. Det er den eneste cookie siden nogensinde
+sætter, og det står der også.
 
 ### Dagens citat læst højt
 
