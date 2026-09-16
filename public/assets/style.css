@@ -202,11 +202,87 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
 .poll.hemmelig .valg { color: #3a382e; }
 
+/* ---- dangus' profilbillede ---- */
+
+/* han bad selv om at komme på. billedet kommer fra discords cdn og er tit
+   animeret, så det skal ikke hedde noget med gif i css'en — det er bare et
+   billede der kan finde på at bevæge sig */
+#avatar { min-height: 128px; }
+
+.avatar-billede {
+  display: block;
+  width: 128px;
+  height: 128px;
+  border: 3px inset #cfcab6;
+  background: #efece0;
+  image-rendering: auto;
+}
+
+/* ---- flaget ---- */
+
+/* der blev bedt om en gif af et kinesisk flag der flager 24/7. en gif er en
+   fil der skal hentes og kan holde op med at findes, så flaget er tegnet som
+   svg herinde i stedet. app.js skærer det i lodrette strimler, og hver strimmel
+   kører den samme bølge lidt senere end naboen til venstre. det er hele
+   tricket: et flag der flager, uden en eneste fil. */
+#flag {
+  --flag: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2030%2020%22%3E%3Crect%20width=%2230%22%20height=%2220%22%20fill=%22%23de2910%22/%3E%3Cg%20fill=%22%23ffde00%22%3E%3Cpolygon%20points=%225.000,2.000%205.674,4.073%207.853,4.073%206.090,5.354%206.763,7.427%205.000,6.146%203.237,7.427%203.910,5.354%202.147,4.073%204.326,4.073%22/%3E%3Cpolygon%20points=%229.143,2.514%209.619,1.966%209.246,1.343%209.914,1.628%2010.391,1.080%2010.328,1.803%2010.996,2.088%2010.288,2.251%2010.224,2.975%209.851,2.352%22/%3E%3Cpolygon%20points=%2211.010,4.141%2011.662,3.821%2011.560,3.102%2012.065,3.624%2012.718,3.304%2012.378,3.946%2012.884,4.467%2012.168,4.343%2011.829,4.985%2011.726,4.266%22/%3E%3Cpolygon%20points=%2211.038,6.725%2011.765,6.699%2011.964,6.001%2012.213,6.683%2012.939,6.657%2012.367,7.105%2012.616,7.787%2012.014,7.382%2011.442,7.830%2011.641,7.131%22/%3E%3Cpolygon%20points=%229.219,8.375%209.899,8.632%2010.353,8.064%2010.319,8.790%2010.999,9.046%2010.298,9.239%2010.265,9.964%209.865,9.357%209.165,9.550%209.618,8.982%22/%3E%3C/g%3E%3C/svg%3E");
+  position: relative;
+  width: 180px;
+  height: 120px;
+  margin: 0 auto;
+  display: flex;
+  overflow: hidden;
+  border: 3px inset #cfcab6;
+  background: #de2910;
+}
+
+#flag i {
+  display: block;
+  flex: 0 0 auto;
+  width: 6px;
+  height: 100%;
+  background-image: var(--flag);
+  background-repeat: no-repeat;
+  background-size: 180px 120px;
+  animation: flagrer 1.9s ease-in-out infinite;
+  will-change: transform, filter;
+}
+
+/* op og ned, lidt smallere når den er på vej væk fra en, og en skygge i
+   foldene. tre små ting, og så ligner det stof */
+@keyframes flagrer {
+  0%, 100% { transform: translateY(-5px) scaleY(1); filter: brightness(1.06); }
+  50%      { transform: translateY(5px) scaleY(0.93); filter: brightness(0.78); }
+}
+
+/* det flager stadig, det står bare stille imens */
+@media (prefers-reduced-motion: reduce) {
+  #flag i { animation: none; }
+}
+
+/* ---- sangen ---- */
+
+/* rammen er højere end knappen, og kasserne bliver målt op én gang når siden
+   hentes. så står højden fast, ellers ville kassen vokse ned i naboen i det
+   sekund nogen trykker spil */
+#sang { min-height: 206px; }
+
+#sang iframe {
+  display: block;
+  width: 100%;
+  height: 170px;
+  border: 3px inset #cfcab6;
+  background: #111;
+}
+
+#sang .tom { margin-top: 6px; }
+
 /* ---- tælleren ---- */
 
-/* kassen henter sig selv igen mens man kigger, og en besked kan være ét ord
-   eller fire linjer. så den har fast højde og ruller indeni, ellers ville
-   siden lægge alle kasserne om hver gang han skriver noget */
+/* kassen henter sig selv igen mens man kigger, og en gif kan være bred og lav
+   eller høj og smal. så den har fast højde og ruller indeni, ellers ville
+   siden lægge alle kasserne om hver gang han sender noget */
 #senest {
   height: 188px;
   overflow-y: auto;
@@ -225,15 +301,6 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
   height: auto;
   border: 1px solid #b8b3a0;
   background: #efece0;
-}
-
-.senest-tekst {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.45;
-  /* det er en besked fra discord, ikke et citat, så den skal ikke se ud som
-     om nogen har sagt noget klogt */
-  word-break: break-word;
 }
 
 #taeller { margin: 0; font-size: 13px; }

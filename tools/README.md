@@ -39,7 +39,7 @@ i `exclude.txt`. Beskedens id får du i Discord med højreklik og "Kopier
 beskeds-id" (kræver udviklertilstand).
 
 `blocklist.txt` skal også ligge på VPS'en som `/opt/qr25-data/blocklist.txt`.
-Botten læser den, når den skriver Tristans nyeste besked. Retter du i listen,
+Botten læser den, når den skriver Tristans nyeste gif. Retter du i listen,
 så kopier den derover — den bliver læst forfra af sig selv, når filen er ny.
 
 ## Changelog- og idékanalen

@@ -7,7 +7,9 @@ Klassesiden for QR25, Aalborg Tekniske Gymnasium. Den svarer på to spørgsmål:
 3. Hvad står der i vedtægterne?
 4. Hvad bliver der stemt om lige nu?
 
-Der står ikke ret meget andet på den, og det er med vilje.
+Og så det folk har bedt om i #hjemmeside-changelog-og-ideer: Tristans nyeste
+gif, Dangus' profilbillede, et kinesisk flag der flager, og en sang. Resten
+står der ikke, og det er med vilje.
 
 Ren HTML, CSS og JavaScript. Intet byggetrin, ingen framework, ingen
 `node_modules`, ingen skrifttyper hentet ude fra. Alt der bliver serveret ligger
@@ -18,7 +20,7 @@ i `public/`. Cloudflare Workers hoster mappen som statiske filer.
 ```
 public/index.html          siden
 public/assets/style.css    hele stilen
-public/assets/app.js       uret og udvælgelsen af dagens citat
+public/assets/app.js       uret, dagens citat og resten af kasserne
 public/data/quotes.json    de citater der er godkendt til at ligge offentligt
 tools/fetch_quotes.py      henter #quotes ned fra Discord
 tools/parse_quotes.py      laver rådataene om til quotes.json
@@ -163,11 +165,11 @@ Alt det på VPS'en ligger uden for dette repo. Filerne er:
 | `/opt/qr25-data/skjul.json` | valgfri liste af id'er der ikke skal nævnes |
 | `/opt/qr25-data/blocklist.txt` | kopi af `tools/blocklist.txt`, så botten kan filtrere |
 | `/var/log/qr25-data.log` | hvad cron fangede |
-| `/opt/demokraticlanker/src/senest.js` | skriver `senest.json` når han skriver noget |
-| `/opt/demokraticlanker/scripts/senest-backfill.js` | finder hans nyeste besked bagfra, hvis filen mangler |
+| `/opt/demokraticlanker/src/senest.js` | skriver `senest.json` når han sender en gif |
+| `/opt/demokraticlanker/scripts/senest-backfill.js` | finder hans nyeste gif'er bagfra, hvis filen mangler |
 | `/var/www/qr25-data/live/` | det botten selv skriver. eget ejerskab, så den ikke rører resten |
-| `/var/www/qr25-data/live/medie/` | gif'en eller billedet der hører til beskeden |
-| `/var/lib/demokraticlanker/senest.json` | hans seneste ti beskeder, så en sletning har noget at falde tilbage på |
+| `/var/www/qr25-data/live/medie/` | selve gif'erne. det er dem siden viser |
+| `/var/lib/demokraticlanker/senest.json` | hans fem seneste gif'er, så en sletning har noget at falde tilbage på |
 
 ### Vedtægterne
 
@@ -207,10 +209,11 @@ formular og der er ikke en linje javascript der sender noget. Der er et link
 til #afstemninger, og det er det. Botten skal blive ved med at være det eneste
 sted en stemme kan afgives, ellers holder §6 ikke.
 
-### Tristans nyeste besked
+### Tristans nyeste gif
 
 Han bad om at få sin nyeste besked på forsiden, og Dangus bad om den før ham.
-Alle kanaler tæller med.
+Bagefter bad han om kun at få gif'erne — ikke det han skriver — så det er
+gif'er kassen viser nu. Alle kanaler tæller med.
 
 Det er ikke `build.py` der laver den. DemokratiClanker sidder allerede på
 discords gateway, så den ved det i samme sekund han trykker enter, og skriver
@@ -223,10 +226,16 @@ Teksten hentes over REST for den ene besked det handler om. Så botten læser
 præcis én persons beskeder i stedet for at få hele serverens indhold ind ad
 døren, og `MessageContent` behøver aldrig blive tændt i udviklerportalen.
 
-Teksten kommer gennem den samme blocklist som citaterne, klippet ved 280 tegn.
-Pings bliver stående som `<@id>` i filen og slået op i `navne.json` i browseren,
-præcis som i citaterne. Retter han beskeden, retter siden med. Sletter han den,
-falder den tilbage på den forrige.
+En besked uden billede bliver slet ikke lagt ud: den forrige gif bliver
+stående. Teksten bliver stadig læst, for blocklisten skal have noget at kigge
+på — står der noget grimt over gif'en, kommer gif'en heller ikke ud. Den står
+bare ikke på siden nogen steder. Retter han beskeden, retter siden med. Sletter
+han den, falder den tilbage på den forrige.
+
+Skriver han bare et link til en gif, er der ikke noget billede i beskeden når
+den kommer ind. Discord henter linket bagefter og sender en opdatering med et
+embed i, så `messageUpdate` kigger også på beskeder botten ikke har liggende i
+forvejen — ellers ville et gif-link aldrig nå frem.
 
 Hvem det er, står i `SENEST_BRUGER` i `senest.js`. Det er med vilje ikke noget
 man kan skifte udefra: der skal ikke være en generel "skriv hvad som helst
@@ -246,13 +255,59 @@ Discord laver gif'er udefra om til mp4, så en "gif" er tit en video. Den bliver
 vist som `<video autoplay loop muted playsinline>`, altså præcis som en gif.
 
 Botten ved kun det den har set, siden den startede. Skal der fyldes ud bagfra
-— første gang, eller hvis filen er gået tabt — leder det her script i
-kanalerne og sender fundet den samme vej som en levende besked:
+— første gang, eller hvis filen er gået tabt — går det her script hans nyeste
+beskeder igennem bagfra og sender dem den samme vej som en levende besked. De
+fleste af dem er tekst, så den bliver ved nedad indtil ringen er fuld:
 
 ```
 set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
+
+### Dagens citat læst højt
+
+Tristan bad om text to speech på dagens citat når man kommer ind på siden.
+Browsere lader ikke en side sige noget før man har rørt den, så den prøver, og
+går det ikke, står der en `læs op`-knap i stedet. Trykker man `stop`, er det
+også et svar: så gemmer den `qr25-laesop=nej` i `localStorage` og holder op med
+at prøve af sig selv.
+
+Det er `SpeechSynthesis`, som ligger i browseren i forvejen. Der bliver ikke
+hentet et bibliotek og ikke sendt en stavelse nogen steder hen. Er der en dansk
+stemme på maskinen, bliver det den.
+
+### Dangus' profilbillede
+
+Han bad om at få sit nuværende profilbillede op at stå. Det kommer med i
+`navne.json` under `avatarer`, for det er den samme tur ud til Discord som
+navnene — `build.py` henter det hvert kvarter, så skifter han billede, følger
+siden med.
+
+Det er den modsatte vej rundt af `skjul.json`: kun de id'er der står i
+`AVATARER` i `build.py` kommer med. Et billede af en er ikke det samme som et
+navn, så man skal selv have bedt om det. Serverens eget billede vinder over
+kontoens, og starter hashet med `a_`, er billedet animeret og hentes som `.gif`.
+Urlen er Discords egen og er ikke signeret, så den holder — der er ikke noget at
+hente ned her.
+
+### Flaget
+
+"Indsæt en aktiv gif af et kinesisk flag der flager 24/7". Det er ikke en gif.
+Flaget er tegnet som svg direkte i `style.css`, og `app.js` skærer det i 30
+lodrette strimler der hver kører den samme bølge lidt senere end naboen til
+venstre. Så løber bølgen hen over flaget, og der er ikke en fil nogen steder
+der kan holde op med at findes. Står der `prefers-reduced-motion`, står det
+stille.
+
+### Sangen
+
+Indi bad om en sang der spiller fra 0:28 og om igen. En side må ikke selv sætte
+lyd i gang — browseren stopper den — så der er en knap. Youtube bliver først
+spurgt når nogen trykker på den: indtil da er der ikke hentet en byte
+derudefra, og trykker man `stop`, ryger rammen ud igen.
+
+`loop=1` virker kun sammen med `playlist=` på en enkelt video. Sådan er deres
+afspiller skruet sammen.
 
 ### Hvis det skal sættes op forfra
 
@@ -267,7 +322,7 @@ python3 /opt/qr25-data/build.py --nu
 # læg qr25-tael.service i /etc/systemd/system
 systemctl enable --now qr25-tael
 
-# tristans nyeste besked: botten skriver den, så den skal have et sted at
+# tristans nyeste gif: botten skriver den, så den skal have et sted at
 # skrive hen, og lov til det inde i sin egen ProtectSystem=strict
 cp tools/blocklist.txt /opt/qr25-data/blocklist.txt
 install -d -o demokrati -g www-data -m 0755 /var/www/qr25-data/live

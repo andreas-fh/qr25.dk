@@ -43,6 +43,10 @@
       <p>
         <button type="button" id="rul">tilfældigt</button>
         <button type="button" id="tilbage" hidden>dagens</button>
+        <!-- tristan bad om at få citatet læst højt når man kommer ind. den
+             starter af sig selv hvis browseren vil være med, og ellers står
+             knappen der. trykker man stop, holder den også op næste gang. -->
+        <button type="button" id="laesop" hidden>læs op</button>
         <a id="kilde" href="#" rel="noreferrer">discord</a>
       </p>
       <details id="arkiv">
@@ -71,12 +75,47 @@
 
   <!-- tristan bad om at få sin nyeste besked op at stå, og dangus bad om den
        før ham. den bliver fundet på VPS'en: en statisk side kan ikke selv nå
-       ind til discord. -->
+       ind til discord. han bad siden om kun at vise gif'erne, så det han
+       skriver bliver ikke vist — kun det han sender. -->
   <div class="kasse" id="kasse-senest">
     <div class="indhold">
-      <p class="kassetop">seneste fra <span id="senest-hvem">Trisdan</span></p>
+      <p class="kassetop">seneste gif fra <span id="senest-hvem">Trisdan</span></p>
       <div id="senest"><p class="tom">henter</p></div>
       <p class="kassebund"><a id="senest-kilde" href="https://discord.com/channels/1437357663406002288/1448282502778064896" rel="noreferrer">discord</a></p>
+    </div>
+  </div>
+
+  <!-- dangus bad om at få sit eget profilbillede op at stå. billedet ligger
+       på discords cdn, og den url er ikke signeret, så den holder. hvem der
+       er med står i AVATARER i build.py på VPS'en — man skal selv have
+       spurgt for at komme med. -->
+  <div class="kasse" id="kasse-avatar">
+    <div class="indhold">
+      <p class="kassetop"><span id="avatar-hvem">Dangus</span></p>
+      <div id="avatar"><p class="tom">henter</p></div>
+      <p class="kassebund">han bad selv om at komme på</p>
+    </div>
+  </div>
+
+  <!-- "indsæt en aktiv gif af et kinesisk flag der flager 24/7". det er ikke
+       en gif: flaget er tegnet som svg i css'en og skåret i strimler der
+       bølger. så er der ingen fil at hente og ingen der stopper. -->
+  <div class="kasse" id="kasse-flag">
+    <div class="indhold">
+      <p class="kassetop">flag <span>24/7</span></p>
+      <div id="flag" role="img" aria-label="det kinesiske flag, der flager"></div>
+      <p class="kassebund">dangus bad om et der flager døgnet rundt</p>
+    </div>
+  </div>
+
+  <!-- indi bad om en sang der spiller fra 0:28 og om igen. en side må ikke
+       selv sætte lyd i gang, så der er en knap. youtube bliver først spurgt
+       når nogen trykker på den — indtil da er der ikke hentet noget. -->
+  <div class="kasse" id="kasse-sang">
+    <div class="indhold">
+      <p class="kassetop">sangen</p>
+      <div id="sang"><p class="tom">henter</p></div>
+      <p class="kassebund">indi bad om den. den starter 0:28 inde og går om igen</p>
     </div>
   </div>
 

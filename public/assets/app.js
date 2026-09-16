@@ -142,11 +142,16 @@
 
   var PING = /<@!?(\d+)>/g;
   var ROLLEPING = /<@&(\d+)>/g;
-  var NAVNE = { navne: {}, roller: {} };
+  var NAVNE = { navne: {}, roller: {}, avatarer: {} };
 
   function huskNavne(opslag) {
     if (!opslag || !opslag.navne) return false;
-    NAVNE = { navne: opslag.navne, roller: opslag.roller || {} };
+    NAVNE = {
+      navne: opslag.navne,
+      roller: opslag.roller || {},
+      // kun dem der selv har bedt om det står her. se AVATARER i build.py
+      avatarer: opslag.avatarer || {},
+    };
     return true;
   }
 
@@ -257,6 +262,69 @@
     return set.join(", ");
   }
 
+  /* --- læs dagens citat højt ---
+
+     Tristan bad om text to speech på dagens citat når man kommer ind på
+     siden. Browsere lader ikke en side sige noget uden at man har rørt den
+     først, så den prøver, og går det ikke, står knappen der i stedet. Trykker
+     man stop, er det også et svar: så holder den op med at prøve af sig selv.
+
+     SpeechSynthesis er indbygget. Der bliver ikke sendt noget nogen steder
+     hen, og der er ikke hentet et bibliotek for det. */
+
+  var TTS = window.speechSynthesis;
+  var HUSK_TTS = "qr25-laesop";
+  var taler = false;
+
+  function maaTale() {
+    try { return localStorage.getItem(HUSK_TTS) !== "nej"; } catch (e) { return true; }
+  }
+
+  function husk(svar) {
+    try { localStorage.setItem(HUSK_TTS, svar); } catch (e) {}
+  }
+
+  // dansk hvis der er en dansk stemme på maskinen. ellers den browseren selv
+  // vælger — en engelsk stemme der læser dansk er stadig sjovere end ingenting
+  function dansk() {
+    var stemmer = TTS.getVoices() || [];
+    for (var i = 0; i < stemmer.length; i++) {
+      if (String(stemmer[i].lang || "").toLowerCase().indexOf("da") === 0) return stemmer[i];
+    }
+    return null;
+  }
+
+  function oplaesning(citat) {
+    var dele = [];
+    citat.lines.forEach(function (linje) {
+      var hvemDer = afsender(linje);
+      dele.push(udskriv(linje.text) + (hvemDer ? ", sagde " + hvemDer : ""));
+    });
+    return dele.join(". ");
+  }
+
+  function stopTale() {
+    taler = false;
+    TTS.cancel();
+    id("laesop").textContent = "læs op";
+  }
+
+  function talHoejt(citat) {
+    var ord = oplaesning(citat);
+    if (!ord) return;
+    TTS.cancel();
+    var sig = new SpeechSynthesisUtterance(ord);
+    var stemme = dansk();
+    if (stemme) sig.voice = stemme;
+    sig.lang = stemme ? stemme.lang : "da-DK";
+    sig.rate = 0.95;
+    sig.onend = stopTale;
+    sig.onerror = stopTale;
+    taler = true;
+    id("laesop").textContent = "stop";
+    TTS.speak(sig);
+  }
+
   Promise.all([
     fetch("/data/quotes.json", { cache: "no-cache" }).then(function (svar) {
       if (!svar.ok) throw new Error("HTTP " + svar.status);
@@ -267,6 +335,7 @@
   ])
     .then(function (svar) {
       var data = svar[0];
+      tegnAvatar();
       var citater = data.quotes || [];
       var idag = dagnr(dele(new Date()));
       var kasse = id("quote");
@@ -278,12 +347,39 @@
       }
 
       var kilde = id("kilde");
+      var nu = dagens;
       function vis(citat) {
+        nu = citat;
         tegn(citat, kasse);
         kilde.href = citat.url;
+        // et nyt citat midt i en oplæsning: så skal den gamle tie stille
+        if (taler) stopTale();
       }
 
       vis(dagens);
+
+      if (TTS && typeof SpeechSynthesisUtterance === "function") {
+        var knap = id("laesop");
+        knap.hidden = false;
+        knap.addEventListener("click", function () {
+          if (taler) { stopTale(); husk("nej"); return; }
+          husk("ja");
+          talHoejt(nu);
+        });
+
+        /* Stemmerne kommer først ind i chrome et øjeblik efter, og en side der
+           lige er hentet har ingen der har rørt den. Så: prøv, og lad være
+           igen hvis browseren ikke vil. Der kommer ingen fejl ud af det. */
+        if (maaTale()) {
+          var start = function () { if (!taler) talHoejt(nu); };
+          if ((TTS.getVoices() || []).length) start();
+          else TTS.addEventListener("voiceschanged", start, { once: true });
+          setTimeout(start, 1200);
+        }
+
+        // ellers bliver den ved med at snakke efter man er gået videre
+        window.addEventListener("pagehide", function () { TTS.cancel(); });
+      }
 
       var rul = id("rul");
       var tilbage = id("tilbage");
@@ -315,6 +411,7 @@
     })
     .catch(function (fejl) {
       id("quote").textContent = "kunne ikke hente citaterne (" + fejl.message + ")";
+      tegnAvatar();
       spred();
     });
 
@@ -442,7 +539,7 @@
     });
   }
 
-  // --- tristans nyeste besked ---
+  // --- tristans nyeste gif ---
 
   /* Tristan bad om at få sin nyeste besked op at stå, og Dangus bad om den før
      ham. DemokratiClanker sidder på discords gateway, så den ved det i samme
@@ -450,8 +547,9 @@
      det bare en fil. Vi henter den igen hvert halve minut, for en side der
      står åben i en time skal ikke vise noget der er en time gammelt.
 
-     Teksten står med pings i behold, præcis som citaterne, så den skal gennem
-     udskriv() for at <@692...> bliver til et navn. */
+     Han bad selv om at få det han skriver ud af kassen igen, så der står kun
+     gif'er tilbage. Skriver han noget uden billede, bliver den forrige gif
+     stående — botten udgiver slet ikke beskeder uden medie. */
 
   var SENEST_ID = "692001336740413452";
 
@@ -478,41 +576,37 @@
     kasse.innerHTML = "";
     senestNavn();
 
-    if (!data || (!data.tekst && !data.medie)) {
-      kasse.appendChild(lav("p", "tom", "han har ikke sagt noget endnu"));
+    if (!data || !data.medie || !data.medie.url) {
+      kasse.appendChild(lav("p", "tom", "han har ikke sendt en gif endnu"));
       return;
     }
-
-    if (data.tekst) kasse.appendChild(lav("p", "senest-tekst", udskriv(data.tekst)));
 
     /* Sender han en gif, ligger selve filen på data.qr25.dk. Discord laver gif'er
        om til mp4 når de kommer udefra, og det er den vi får, så en "gif" er tit
        en video. Den skal opføre sig som en gif: kør, kør igen, ingen lyd, og
        ingen afspiller-knapper. */
-    if (data.medie && data.medie.url) {
-      var m = data.medie;
-      var er = String(m.type || "");
-      var node;
-      if (er.indexOf("video/") === 0) {
-        node = document.createElement("video");
-        node.autoplay = true;
-        node.loop = true;
-        node.muted = true;
-        node.playsInline = true;
-        node.setAttribute("muted", "");
-        node.setAttribute("playsinline", "");
-      } else {
-        node = document.createElement("img");
-        node.alt = "det han sendte";
-        node.loading = "lazy";
-      }
-      node.className = "senest-medie";
-      node.src = m.url;
-      // så pladsen er der med det samme og kassen ikke hopper mens den henter
-      if (m.bredde) node.width = m.bredde;
-      if (m.hoejde) node.height = m.hoejde;
-      kasse.appendChild(node);
+    var m = data.medie;
+    var er = String(m.type || "");
+    var node;
+    if (er.indexOf("video/") === 0) {
+      node = document.createElement("video");
+      node.autoplay = true;
+      node.loop = true;
+      node.muted = true;
+      node.playsInline = true;
+      node.setAttribute("muted", "");
+      node.setAttribute("playsinline", "");
+    } else {
+      node = document.createElement("img");
+      node.alt = "det han sendte";
+      node.loading = "lazy";
     }
+    node.className = "senest-medie";
+    node.src = m.url;
+    // så pladsen er der med det samme og kassen ikke hopper mens den henter
+    if (m.bredde) node.width = m.bredde;
+    if (m.hoejde) node.height = m.hoejde;
+    kasse.appendChild(node);
 
     var naar = data.dato ? new Date(data.dato) : null;
     var dele = [];
@@ -547,6 +641,115 @@
     opdaterPolls(false).catch(function () {});
     hent("/senest.json").then(tegnSenest).catch(function () {});
   }, 30000);
+
+  // --- dangus' profilbillede ---
+
+  /* Han bad om at få sit nuværende profilbillede op at stå. Det står i
+     navne.json sammen med navnene, for det er den samme tur ud til discord —
+     og det er kun dem der selv har spurgt der er med i den liste.
+
+     Urlen er discords egen og er ikke signeret, så den holder. Er hans billede
+     animeret, er filen en gif, og så flytter den sig af sig selv. */
+
+  var AVATAR_ID = "616609937535270912";
+
+  function tegnAvatar() {
+    var kasse = id("avatar");
+    var url = NAVNE.avatarer[AVATAR_ID];
+    var navnet = NAVNE.navne[AVATAR_ID];
+    if (navnet) id("avatar-hvem").textContent = navnet;
+
+    kasse.innerHTML = "";
+    if (!url) {
+      kasse.appendChild(lav("p", "tom", "han har ikke noget profilbillede"));
+      return;
+    }
+    var img = document.createElement("img");
+    img.className = "avatar-billede";
+    img.src = url;
+    img.width = 128;
+    img.height = 128;
+    img.alt = "profilbilledet " + (navnet || "han") + " har på discord lige nu";
+    img.onerror = function () {
+      kasse.innerHTML = "";
+      kasse.appendChild(lav("p", "tom", "billedet ville ikke hentes"));
+    };
+    kasse.appendChild(img);
+  }
+
+  // --- flaget ---
+
+  /* "indsæt en aktiv gif af et kinesisk flag der flager 24/7".
+
+     Flaget er tegnet som svg i style.css. Her bliver det skåret i lodrette
+     strimler, og hver strimmel får den samme bølge lidt senere end den til
+     venstre for sig. Så løber bølgen hen over flaget, og der er ikke en fil
+     nogen steder der kan holde op med at virke. */
+
+  function tegnFlag() {
+    var kasse = id("flag");
+    if (!kasse) return;
+    var BREDDE = 180, STRIMMEL = 6, TID = 1.9;
+    var antal = BREDDE / STRIMMEL;
+    for (var i = 0; i < antal; i++) {
+      var s = document.createElement("i");
+      s.style.backgroundPositionX = -(i * STRIMMEL) + "px";
+      // en hel bølge fordelt over de to tredjedele af flaget der er længst
+      // fra stangen. tættest på stangen sidder det fast, som et rigtigt flag
+      s.style.animationDelay = (-(i / antal) * TID * 0.66).toFixed(3) + "s";
+      kasse.appendChild(s);
+    }
+  }
+
+  // --- sangen ---
+
+  /* Indi bad om en sang der spiller fra 0:28 og om igen når man er inde på
+     siden. En side må ikke selv sætte lyd i gang — browseren stopper den — så
+     der er en knap i stedet.
+
+     youtube bliver først spurgt når nogen trykker. Indtil da står der ikke
+     andet end en knap, og der er ikke hentet en eneste byte derudefra. */
+
+  var SANG = "LPFwrH1w468";
+  var SANG_START = 28;
+
+  function tegnSang() {
+    var kasse = id("sang");
+    if (!kasse) return;
+
+    function knappen() {
+      kasse.innerHTML = "";
+      var knap = lav("button", null, "spil");
+      knap.type = "button";
+      knap.addEventListener("click", spil);
+      kasse.appendChild(knap);
+      kasse.appendChild(lav("p", "tom", "friendly father. den kommer fra youtube"));
+    }
+
+    function spil() {
+      kasse.innerHTML = "";
+      var ramme = document.createElement("iframe");
+      /* loop=1 virker kun sammen med playlist på en enkelt video — sådan er
+         youtubes afspiller skruet sammen. start=28 er der bedt om. */
+      ramme.src = "https://www.youtube-nocookie.com/embed/" + SANG +
+        "?autoplay=1&start=" + SANG_START + "&loop=1&playlist=" + SANG;
+      ramme.title = "friendly father";
+      ramme.allow = "autoplay; encrypted-media; picture-in-picture";
+      ramme.referrerPolicy = "strict-origin-when-cross-origin";
+      ramme.setAttribute("allowfullscreen", "");
+      kasse.appendChild(ramme);
+
+      var stop = lav("button", null, "stop");
+      stop.type = "button";
+      stop.addEventListener("click", knappen);   // rammen ryger ud, og så tier den
+      kasse.appendChild(stop);
+    }
+
+    knappen();
+  }
+
+  tegnFlag();
+  tegnSang();
 
   // ---------------- smid kasserne ud på siden ----------------
 
