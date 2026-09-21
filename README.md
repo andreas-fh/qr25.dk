@@ -16,10 +16,40 @@ Ren HTML, CSS og JavaScript. Intet byggetrin, ingen framework, ingen
 `node_modules`, ingen skrifttyper hentet ude fra. Alt der bliver serveret ligger
 i `public/`. Cloudflare Workers hoster mappen som statiske filer.
 
+## MIDLERTIDIG: siden er lånt ud indtil torsdag 24-09-2026 kl 20:00
+
+Andreas bad den 20-09-2026 om at hele forsiden blev lagt væk indtil torsdag
+den 24-09-2026 kl 20:00, og at der **kun** blev vist manualen "Sådan afvæbner
+du en bombe 101" imens. Siden skal bruges til marketing i de dage.
+
+- `public/index.html` er manualen. Ikke andet.
+- `public/manual/side-1.png` til `side-7.png` er pdf'ens sider, kørt gennem
+  `pdftoppm -png -r 150`.
+- `public/assets/manual.css` er stilen til den, og kun til den.
+- **Den rigtige forside ligger urørt i `public/qr25.html`** og virker som den
+  plejer. Der kan arbejdes videre på den bag kulisserne, præcis som Andreas
+  bad om — den bruger stadig `assets/style.css` og `assets/app.js`.
+
+Når tiden er gået, byttes de to filer tilbage:
+
+```
+git rm public/index.html public/assets/manual.css
+git rm -r public/manual
+git mv public/qr25.html public/index.html
+```
+
+Bliver det glemt, sender et lille script nederst i `index.html` folk videre
+til `/qr25.html` efter kl 20:00 dansk tid, så der ikke står marketing på
+forsiden i ugevis. Det er en nødbremse, ikke en erstatning for at bytte
+filerne tilbage.
+
 ## Sådan hænger det sammen
 
 ```
-public/index.html          siden
+public/index.html          MIDLERTIDIG: manualen. se afsnittet ovenfor
+public/qr25.html           den rigtige side, mens forsiden er lånt ud
+public/manual/             manualens sider som png, midlertidigt
+public/assets/manual.css   stilen til manualen, midlertidigt
 public/assets/style.css    hele stilen
 public/assets/app.js       uret, dagens citat og resten af kasserne
 public/data/quotes.json    de citater der er godkendt til at ligge offentligt

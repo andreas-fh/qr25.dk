@@ -1,0 +1,65 @@
+/* Manualen, midlertidigt.
+ *
+ * Siden er lånt ud til marketing indtil torsdag den 24-09-2026 kl 20:00.
+ * Den rigtige stil står i style.css og bliver ikke rørt — den her fil
+ * forsvinder igen sammen med public/index.html når lånet er slut.
+ *
+ * Det skal være en pdf man kan rulle i, og ikke andet. Ingen regnbue, ingen
+ * kasser der ligger skævt, ingen knapper. Bare siderne, under hinanden, store
+ * nok til at kunne læses på en telefon.
+ */
+
+html { background: #3a3a3a; }
+
+body {
+  margin: 0;
+  padding: 0 0 40px;
+  color: #111;
+  font: 15px/1.5 Verdana, Geneva, "DejaVu Sans", sans-serif;
+  background: #3a3a3a;
+}
+
+/* pdf-læsere viser arket midt i en mørk baggrund. det gør den her også, så
+   det ligner det den er */
+#ark {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 12px 0;
+}
+
+h1 {
+  margin: 0 0 2px;
+  font: 400 30px/1.15 Impact, Haettenschweiler, "Arial Narrow Bold", "DejaVu Sans Condensed", sans-serif;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 3px 3px 0 #111;
+}
+
+#byline {
+  margin: 0 0 18px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #cfcac0;
+}
+
+/* hver side er et ark. målene står på elementet, så pladsen er der inden
+   filen er hentet og der ikke bliver hoppet rundt mens man ruller */
+.side {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 16px;
+  background: #fff;
+  border: 1px solid #111;
+  /* hård skygge, ikke sløret — samme regel som resten af siden følger */
+  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.45);
+}
+
+.side:last-child { margin-bottom: 0; }
+
+@media (max-width: 700px) {
+  #ark { padding: 14px 8px 0; }
+  h1 { font-size: 22px; }
+  .side { box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45); }
+}
