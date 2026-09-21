@@ -9,8 +9,8 @@ Klassesiden for QR25, Aalborg Tekniske Gymnasium. Den svarer på to spørgsmål:
 
 Og så det folk har bedt om i #hjemmeside-changelog-og-ideer: Tristans nyeste
 gif, Dangus' profilbillede, et kinesisk flag der flager, en sang, og en
-cookie-boks hvor nej-knappen ikke virker. Resten står der ikke, og det er med
-vilje.
+cookie-boks hvor nej-knappen ikke virker, og en nedtælling på 69 år. Resten
+står der ikke, og det er med vilje.
 
 Ren HTML, CSS og JavaScript. Intet byggetrin, ingen framework, ingen
 `node_modules`, ingen skrifttyper hentet ude fra. Alt der bliver serveret ligger
@@ -295,6 +295,18 @@ kun op til 8 MB.
 Discord opbevarer nogle billeder som webp og skriver det i `content_type`, men
 serverer stadig den png der blev uploadet. Derfor er det endelsen på filnavnet
 der bestemmer typen, og `content_type` er kun noget parseren falder tilbage på.
+
+### Nedtællingen til erik
+
+Tristan bad om "en countdown på 69 år" der hedder "tid til erik dør". Erik er
+en rolle på serveren og et gennemgående klassegag, ikke en udpeget person.
+
+Målet er 2095-09-16 klokken 10:20 — 69 år fra den dag der blev spurgt, og
+klokken kagepause. Det står som et fast tidspunkt i `app.js`, så tallet er det
+samme for alle og ikke noget der starter forfra hver gang siden hentes.
+
+Den tæller i hele kalenderår, ikke i 365 dage. Der er 17 skudår undervejs, og
+en nedtælling der springer en dag om året er ikke en nedtælling.
 
 ### Cookie-boksen
 

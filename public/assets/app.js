@@ -21,6 +21,11 @@
   // vedtægter, afstemninger, navne og besøgstælleren. resten er filer herfra.
   var DATA = "https://data.qr25.dk";
 
+  /* Alt det siden har hentet, samlet ét sted. Mikkel slår op i det, og han er
+     det eneste der læser herfra — resten af siden bruger sine egne data
+     direkte. Er en af dem ikke hentet endnu, er listen bare tom. */
+  var VIDEN = { citater: [], kapitler: [], polls: [] };
+
 
   function id(name) { return document.getElementById(name); }
 
@@ -103,6 +108,49 @@
     return stumper.slice(0, -1).join(", ") + " og " + stumper[stumper.length - 1];
   }
 
+  // ---------------- nedtællingen til erik ----------------
+
+  /* Tristan bad om "en countdown på 69 år" der hedder "tid til erik dør".
+     Erik er en rolle på serveren og et gennemgående klassegag, ikke en
+     udpeget person, og 69 år er 69 år.
+
+     Regnet fra den dag der blev spurgt, så tallet er det samme for alle og
+     ikke noget der starter forfra hver gang siden hentes. */
+
+  var ERIK_AAR = 2095, ERIK_MD = 9, ERIK_DAG = 16;   // 2026-09-16 + 69 år
+  var ERIK = tidspunkt(ERIK_AAR, ERIK_MD, ERIK_DAG, 10, 20);   // kagepausen, selvfølgelig
+
+  function toCifre(n) { return (n < 10 ? "0" : "") + n; }
+
+  function tilErik(nu) {
+    if (nu >= ERIK) return "tiden er gået";
+
+    var p = dele(new Date(nu));
+    /* Hele kalenderår, ikke 365 dage: der er 17 skudår undervejs, og en
+       nedtælling der springer en dag om året er ikke en nedtælling. Årsforskellen
+       rammer plet på nær lige omkring den 16. september, så ét skridt tilbage
+       er nok. */
+    var aar = ERIK_AAR - p.year;
+    var anker;
+    do {
+      anker = tidspunkt(p.year + aar, p.month, p.day, p.hour, p.minute) + p.second * 1000;
+      if (anker <= ERIK) break;
+      aar -= 1;
+    } while (aar > 0);
+
+    var rest = Math.max(0, ERIK - anker);
+    var alt = Math.floor(rest / 1000);
+    var dage = Math.floor(alt / 86400);
+    var t = Math.floor((alt % 86400) / 3600);
+    var m = Math.floor((alt % 3600) / 60);
+    var sek = alt % 60;
+
+    // "år" hedder det samme uanset hvor mange der er. "dag" gør ikke
+    return aar + " år, " +
+      dage + (dage === 1 ? " dag, " : " dage, ") +
+      toCifre(t) + ":" + toCifre(m) + ":" + toCifre(sek);
+  }
+
   function tik() {
     var nu = Date.now();
     var p = dele(new Date(nu));
@@ -122,6 +170,8 @@
       id("detail").innerHTML = "om <b>" + indtil + "</b>";
       id("banner-tekst").textContent = "der er kagepause om " + indtil;
     }
+
+    id("erik-ur").textContent = tilErik(nu);
   }
 
   tik();
@@ -202,6 +252,18 @@
 
   function navn(uid) { return NAVNE.navne[uid] || "nogen"; }
   function rolle(rid) { return NAVNE.roller[rid] || "nogen"; }
+
+  /* Ned i småt og uden accenter, så "Ångström" og "angstrom" er det samme ord
+     når Mikkel leder. Tegnsætningen bliver stående — den skal bruges til at
+     dele i ord bagefter. Det er ikke den samme barbering som blocklisten
+     laver: den smider også mellemrum væk, og så kan man ikke se hvor et ord
+     slutter. */
+  function fladt(tekst) {
+    return String(tekst)
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
 
   function udskriv(tekst) {
     return String(tekst)
@@ -408,6 +470,7 @@
       var data = svar[0];
       tegnAvatar();
       var citater = data.quotes || [];
+      VIDEN.citater = citater;
       var idag = dagnr(dele(new Date()));
       var kasse = id("quote");
 
@@ -517,6 +580,7 @@
   // --- vedtægter ---
 
   function tegnVedtaegter(data) {
+    VIDEN.kapitler = data.kapitler || [];
     var kasse = id("vedtaegter");
     kasse.innerHTML = "";
 
@@ -555,6 +619,7 @@
   }
 
   function tegnPolls(data) {
+    VIDEN.polls = (data && data.afstemninger) || [];
     var kasse = id("polls");
     kasse.innerHTML = "";
 
@@ -827,8 +892,176 @@
     knappen();
   }
 
+  // --- mikkel ai ---
+
+  /* Tristan bad om "en ai service bot, så man kan stille spørgsmål om
+     klassen", og Dangus bad om at den skulle hedde Mikkel.
+
+     Han er ikke en model. Der er ikke noget endepunkt, ingen nøgle og ingen
+     regning: han slår op i de filer siden allerede har hentet — citaterne,
+     vedtægterne og de åbne afstemninger — og svarer med det han finder.
+     Spørgsmålet forlader aldrig browseren. Det står også i kassen, for en
+     kasse der hedder "ai" og lader som om der sidder en model bagved er en
+     løgn, og siden lyver ikke om den slags.
+
+     Skal han en dag have en rigtig model bagved, er det her stedet: svar()
+     skal bare returnere noget andet. Resten af kassen kan blive som den er. */
+
+  var MIKKEL_MAX = 200;
+  // point er summen af længden på de ord der blev fundet. fire er et kort navn
+  // som "erik", og det skal kunne slå igennem. lavere end det er rent støj.
+  var MIN_POINT = 4;
+
+  // samme barbering som blocklisten: ned i småt, uden accenter og tegn
+  function ord(tekst) {
+    return fladt(tekst).split(/[^a-z0-9]+/).filter(function (o) { return o.length > 2; });
+  }
+
+  // ord alle sætninger er fulde af. de siger ikke noget om hvad der spørges om
+  var FYLD = ("hvad hvem hvor hvornår hvorfor hvordan kan skal vil man den det " +
+    "der som med for til fra ikke jeg mig min vores klassen siger sagde har " +
+    "havde var være bliver blev nogen noget alle").split(" ");
+
+  function traef(soeg, hoestak) {
+    var h = fladt(hoestak);
+    var point = 0;
+    soeg.forEach(function (o) {
+      if (FYLD.indexOf(o) !== -1) return;
+      if (h.indexOf(o) !== -1) point += o.length;
+    });
+    return point;
+  }
+
+  function citatTekst(c) {
+    return c.lines.map(function (l) {
+      return udskriv(l.text) + " " + (afsender(l) || "") + " " + udskriv(l.note || "");
+    }).join(" ");
+  }
+
+  /* Et svar er en liste af {klasse, tekst}, så en paragraf og et citat kan se
+     forskellige ud uden at der skal html ind i en streng. */
+  function svar(spoergsmaal) {
+    var soeg = ord(spoergsmaal);
+    if (!soeg.length) return [{ tekst: "spørg om noget." }];
+
+    var f = fladt(spoergsmaal);
+
+    // "er det kagepause" skal have uret. "hvad siger vedtægterne om kagepause"
+    // skal have vedtægterne, så genvejen viger for den slags spørgsmål
+    var omReglerne = /vedtaegt|vedtægt|paragraf|regel|regler|§/.test(f);
+    if (f.indexOf("kagepause") !== -1 && !omReglerne) {
+      return [{ tekst: document.body.classList.contains("kagepause")
+        ? "ja. løb." : "nej. der står hvor længe der er til oppe i kassen." }];
+    }
+
+    if (f.indexOf("stemme") !== -1 || f.indexOf("afstemning") !== -1) {
+      if (!VIDEN.polls.length) return [{ tekst: "der er ingen åbne afstemninger lige nu." }];
+      return [{ tekst: "der er " + VIDEN.polls.length + " åben" +
+        (VIDEN.polls.length === 1 ? "" : "e") + ": " +
+        VIDEN.polls.map(function (p) { return p.spoergsmaal; }).join(" — ") +
+        ". du stemmer i discord, ikke her." }];
+    }
+
+    /* "hvem er X". Et navn er tit kort, og korte ord drukner i pointgivningen
+       nedenfor, så det spørgsmål får sin egen vej: tæl hvor mange citater der
+       overhovedet nævner navnet, og vis et af dem. */
+    var hvemEr = f.match(/hvem\s+(?:er|var)\s+(.+?)[\s?.!]*$/);
+    if (hvemEr) {
+      var hvemNavn = hvemEr[1].trim();
+      var deres = VIDEN.citater.filter(function (c) {
+        return fladt(citatTekst(c)).indexOf(hvemNavn) !== -1;
+      });
+      if (deres.length) {
+        var et = deres[deres.length - 1];
+        return [
+          { tekst: hvemNavn + " er nævnt i " + deres.length +
+            (deres.length === 1 ? " citat. det er det her:" : " citater. det nyeste:") },
+          { klasse: "mikkel-citat", tekst: foerste(et) },
+          { tekst: (hvem(et) ? hvem(et) + ", " : "") + et.date },
+        ];
+      }
+      return [{ tekst: hvemNavn + " står der ikke noget om." }];
+    }
+
+    // vedtægterne først: spørger nogen om en regel, er en paragraf et bedre
+    // svar end et citat der tilfældigvis bruger de samme ord
+    var bedstP = null, bedstPPoint = 0;
+    VIDEN.kapitler.forEach(function (k) {
+      (k.paragraffer || []).forEach(function (p) {
+        var point = traef(soeg, p.tekst + " " + (k.titel || "") +
+          (p.punkter || []).map(function (pt) { return " " + pt.tekst; }).join(""));
+        if (point > bedstPPoint) { bedstPPoint = point; bedstP = p; }
+      });
+    });
+
+    var bedstC = null, bedstCPoint = 0;
+    VIDEN.citater.forEach(function (c) {
+      var point = traef(soeg, citatTekst(c));
+      if (point > bedstCPoint) { bedstCPoint = point; bedstC = c; }
+    });
+
+    if (bedstP && bedstPPoint >= bedstCPoint && bedstPPoint >= MIN_POINT) {
+      return [
+        { tekst: "vedtægterne siger:" },
+        { klasse: "mikkel-citat", tekst: "\u00a7" + bedstP.nr + " " + bedstP.tekst },
+      ];
+    }
+
+    if (bedstC && bedstCPoint >= MIN_POINT) {
+      var hvemDer = hvem(bedstC);
+      return [
+        { tekst: "det nærmeste jeg har:" },
+        { klasse: "mikkel-citat", tekst: foerste(bedstC) },
+        { tekst: (hvemDer ? hvemDer + ", " : "") + bedstC.date },
+      ];
+    }
+
+    var tilfaeldigt = VIDEN.citater.length
+      ? VIDEN.citater[Math.floor(Math.random() * VIDEN.citater.length)] : null;
+    if (!tilfaeldigt) return [{ tekst: "jeg har ikke hentet noget endnu. prøv om lidt." }];
+    return [
+      { tekst: "aner det ikke. her er et citat i stedet:" },
+      { klasse: "mikkel-citat", tekst: foerste(tilfaeldigt) },
+    ];
+  }
+
+  function mikkel() {
+    var log = id("mikkel-log");
+    var felt = id("mikkel-felt");
+    if (!log || !felt) return;
+
+    function sig(klasse, dele) {
+      var tur = lav("p", "mikkel-tur " + klasse);
+      dele.forEach(function (d, nr) {
+        if (nr) tur.appendChild(document.createElement("br"));
+        tur.appendChild(d.klasse ? lav("span", d.klasse, d.tekst)
+                                 : document.createTextNode(d.tekst));
+      });
+      log.appendChild(tur);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    sig("mikkel-ham", [{ tekst: "spørg om klassen. jeg kigger i citaterne, " +
+      "vedtægterne og afstemningerne, og jeg kigger ikke andre steder." }]);
+
+    function spoerg() {
+      var t = felt.value.trim().slice(0, MIKKEL_MAX);
+      if (!t) return;
+      felt.value = "";
+      sig("mikkel-dig", [{ tekst: t }]);
+      sig("mikkel-ham", svar(t));
+    }
+
+    id("mikkel-send").addEventListener("click", spoerg);
+    // ingen <form>: der er ikke noget her der må kunne sende noget nogen steder
+    felt.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); spoerg(); }
+    });
+  }
+
   tegnFlag();
   tegnSang();
+  mikkel();
 
   // ---------------- smid kasserne ud på siden ----------------
 

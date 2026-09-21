@@ -350,6 +350,53 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
   background: #efece0;
 }
 
+/* ---- mikkel ai ---- */
+
+/* han kan svare med et citat eller en hel paragraf, så loggen har fast højde
+   og ruller indeni. ellers voksede kassen ned i naboen ved hvert svar */
+#mikkel-log {
+  height: 150px;
+  overflow-y: auto;
+  border-top: 1px dotted #b8b3a0;
+  border-bottom: 1px dotted #b8b3a0;
+  padding: 8px 0;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.mikkel-tur { margin: 0 0 8px; }
+.mikkel-tur:last-child { margin-bottom: 0; }
+
+.mikkel-dig { font-weight: bold; }
+.mikkel-dig::before { content: "du: "; font-weight: normal; color: #55503f; }
+.mikkel-ham::before { content: "mikkel: "; font-weight: bold; color: #1a1aa8; }
+
+.mikkel-citat { font: italic 14px Georgia, "Times New Roman", serif; }
+
+#mikkel-felt {
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 3px 6px;
+  border: 3px inset #cfcab6;
+  background: #fff;
+  color: #111;
+  width: 58%;
+}
+
+/* ---- nedtællingen til erik ---- */
+
+/* samme grønne rude som besøgstælleren. det er en nedtælling på 69 år, så
+   linjen er lang: den må gerne bryde i stedet for at sprænge kassen */
+#erik-ur {
+  margin: 0;
+  font: bold 15px/1.5 "Courier New", Courier, monospace;
+  letter-spacing: 1px;
+  background: #111;
+  color: #38d038;
+  padding: 5px 8px;
+  border: 3px inset #777;
+}
+
 #taeller { margin: 0; font-size: 13px; }
 
 #tal {
