@@ -3,56 +3,182 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sådan afvæbner du en bombe 101</title>
+<title>qr25.dk</title>
 <meta name="color-scheme" content="light">
-<!-- klassens interne ting skal ikke ligge i google ved siden af skolens navn.
-     det gælder også mens siden er lånt ud til det her -->
+<!-- klassens interne citater skal ikke ligge i google ved siden af skolens navn.
+     slet linjen her hvis I vil have siden med i søgeresultater -->
 <meta name="robots" content="noindex, nofollow">
-<link rel="stylesheet" href="/assets/manual.css">
+<link rel="stylesheet" href="/assets/style.css">
 <link rel="icon" href="/assets/kage.svg" type="image/svg+xml">
 </head>
 <body>
 
-<!-- MIDLERTIDIG.
-     Andreas bad den 20-09-2026 om at hele siden blev lagt væk indtil torsdag
-     den 24-09-2026 kl 20:00, og at der KUN blev vist den her manual imens.
-     Siden skal bruges til marketing i de dage.
+<noscript><p class="advarsel">siden skal bruge javascript. kagepause 10:20 til 10:30, man til fre.</p></noscript>
 
-     Den rigtige forside ligger urørt i public/qr25.html og bliver ved med at
-     virke, så der kan arbejdes videre på den bag kulisserne. Når tiden er
-     gået, er det bare at bytte de to filer tilbage:
-
-         git mv public/qr25.html public/index.html
-
-     Skulle det blive glemt, sørger scriptet nederst for at folk bliver sendt
-     videre til den rigtige side i stedet for at stå og kigge på marketing i
-     al evighed. -->
-
-<div id="ark">
-  <h1>Sådan afvæbner du en bombe 101</h1>
-  <p id="byline">R25</p>
-
-  <img class="side" src="/manual/side-1.png" width="1241" height="1754" alt="Side 1 af 7">
-  <img class="side" src="/manual/side-2.png" width="1241" height="1754" alt="Side 2 af 7" loading="lazy">
-  <img class="side" src="/manual/side-3.png" width="1241" height="1754" alt="Side 3 af 7" loading="lazy">
-  <img class="side" src="/manual/side-4.png" width="1241" height="1754" alt="Side 4 af 7" loading="lazy">
-  <img class="side" src="/manual/side-5.png" width="1241" height="1754" alt="Side 5 af 7" loading="lazy">
-  <img class="side" src="/manual/side-6.png" width="1241" height="1754" alt="Side 6 af 7" loading="lazy">
-  <img class="side" src="/manual/side-7.png" width="1241" height="1754" alt="Side 7 af 7" loading="lazy">
+<!-- tristan bad om en cookie-boks hvor nej-knappen ikke virker. det er joken,
+     og den er holdt ærlig: siden bruger ingen cookies til noget som helst, og
+     den eneste der nogensinde bliver sat, er den der husker at du trykkede
+     accepter. der står det samme i boksen. -->
+<div id="cookie" hidden>
+  <div id="cookie-kasse" role="dialog" aria-modal="true" aria-labelledby="cookie-top">
+    <p id="cookie-top"><b>cookies</b></p>
+    <p>
+      qr25.dk bruger ingen cookies. Der er ingen sporing, ingen analytics og
+      ingen der bliver solgt videre. Den eneste cookie der nogensinde bliver
+      sat på den her side, er den der husker at du trykkede accepter, så du
+      ikke skal se boksen her igen.
+    </p>
+    <p>
+      Nej-knappen virker ikke. Det er der bedt om i #hjemmeside-changelog-og-ideer,
+      og det er den eneste grund til at boksen findes.
+    </p>
+    <p>
+      <button type="button" id="cookie-ja">accepter alle</button>
+      <button type="button" id="cookie-nej">nej tak</button>
+      <span id="cookie-svar" aria-live="polite"></span>
+    </p>
+  </div>
 </div>
 
-<script>
-/* Efter torsdag den 24-09-2026 kl 20:00 dansk tid er lånet slut. Normalt
-   bliver filerne byttet tilbage med en commit, men bliver det glemt, skal
-   der ikke stå marketing her i ugevis: så sender vi folk videre til den
-   rigtige forside i stedet.
+<div id="top">
+  <h1>qr25.dk</h1>
 
-   Tidspunktet er regnet ud i dansk tid, ikke i brugerens egen: 20:00 er
-   20:00 i Aalborg, uanset hvor telefonen tror den er. */
-(function () {
-  var SLUT = Date.UTC(2026, 8, 24, 18, 0, 0);   // 20:00 CEST = 18:00 UTC
-  if (Date.now() >= SLUT) location.replace("/qr25.html");
-})();
-</script>
+  <!-- rullebåndet. det er ikke et rigtigt <marquee>: den starter forfra hver
+       gang man skriver i den, og nedtællingen skriver i den hvert sekund -->
+  <div id="banner" aria-hidden="true"><span id="banner-tekst"></span></div>
+
+  <p><button type="button" id="bland">bland</button></p>
+</div>
+
+<!-- kasserne bliver smidt tilfældige steder ud på #scene af app.js.
+     uden javascript står de bare under hinanden, og det er også fint -->
+<div id="scene">
+
+  <div class="kasse" id="kasse-kage">
+    <div class="indhold">
+      <p class="spg">er det kagepause?</p>
+      <p id="verdict">?</p>
+      <p id="detail" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div class="kasse" id="kasse-citat">
+    <div class="indhold">
+      <div id="quote"></div>
+      <p>
+        <button type="button" id="rul">tilfældigt</button>
+        <button type="button" id="tilbage" hidden>dagens</button>
+        <!-- tristan bad om at få citatet læst højt når man kommer ind. den
+             starter af sig selv hvis browseren vil være med, og ellers står
+             knappen der. trykker man stop, holder den også op næste gang. -->
+        <button type="button" id="laesop" hidden>læs op</button>
+        <a id="kilde" href="#" rel="noreferrer">discord</a>
+      </p>
+      <details id="arkiv">
+        <summary>arkiv</summary>
+        <ol id="archive-list"></ol>
+      </details>
+    </div>
+  </div>
+
+  <div class="kasse" id="kasse-vedtaegter">
+    <div class="indhold">
+      <p class="kassetop">vedtægter <span id="vedt-version"></span></p>
+      <div id="vedtaegter"><p class="tom">henter</p></div>
+    </div>
+  </div>
+
+  <!-- afstemningerne er til at kigge på. man stemmer i discord, ikke her.
+       der er ingen knapper, ingen formular og intet der sender noget. -->
+  <div class="kasse" id="kasse-polls">
+    <div class="indhold">
+      <p class="kassetop">åbne afstemninger</p>
+      <div id="polls"><p class="tom">henter</p></div>
+      <p class="kassebund">der stemmes i <a id="polls-kanal" href="https://discord.com/channels/1437357663406002288/1468899893677396099" rel="noreferrer">#afstemninger</a></p>
+    </div>
+  </div>
+
+  <!-- tristan bad om at få sin nyeste besked op at stå, og dangus bad om den
+       før ham. den bliver fundet på VPS'en: en statisk side kan ikke selv nå
+       ind til discord. han bad siden om kun at vise gif'erne, så det han
+       skriver bliver ikke vist — kun det han sender. -->
+  <div class="kasse" id="kasse-senest">
+    <div class="indhold">
+      <p class="kassetop">seneste gif fra <span id="senest-hvem">Trisdan</span></p>
+      <div id="senest"><p class="tom">henter</p></div>
+      <p class="kassebund"><a id="senest-kilde" href="https://discord.com/channels/1437357663406002288/1448282502778064896" rel="noreferrer">discord</a></p>
+    </div>
+  </div>
+
+  <!-- dangus bad om at få sit eget profilbillede op at stå. billedet ligger
+       på discords cdn, og den url er ikke signeret, så den holder. hvem der
+       er med står i AVATARER i build.py på VPS'en — man skal selv have
+       spurgt for at komme med. -->
+  <div class="kasse" id="kasse-avatar">
+    <div class="indhold">
+      <p class="kassetop"><span id="avatar-hvem">Dangus</span></p>
+      <div id="avatar"><p class="tom">henter</p></div>
+      <p class="kassebund">han bad selv om at komme på</p>
+    </div>
+  </div>
+
+  <!-- "indsæt en aktiv gif af et kinesisk flag der flager 24/7". det er ikke
+       en gif: flaget er tegnet som svg i css'en og skåret i strimler der
+       bølger. så er der ingen fil at hente og ingen der stopper. -->
+  <div class="kasse" id="kasse-flag">
+    <div class="indhold">
+      <p class="kassetop">flag <span>24/7</span></p>
+      <div id="flag" role="img" aria-label="det kinesiske flag, der flager"></div>
+      <p class="kassebund">dangus bad om et der flager døgnet rundt</p>
+    </div>
+  </div>
+
+  <!-- indi bad om en sang der spiller fra 0:28 og om igen. en side må ikke
+       selv sætte lyd i gang, så der er en knap. youtube bliver først spurgt
+       når nogen trykker på den — indtil da er der ikke hentet noget. -->
+  <div class="kasse" id="kasse-sang">
+    <div class="indhold">
+      <p class="kassetop">sangen</p>
+      <div id="sang"><p class="tom">henter</p></div>
+      <p class="kassebund">indi bad om den. den starter 0:28 inde og går om igen</p>
+    </div>
+  </div>
+
+  <!-- tristan bad om en ai-servicebot man kan stille spørgsmål om klassen,
+       og dangus bad om at den skulle hedde mikkel. den kalder ingen model og
+       sender ingenting nogen steder hen: den søger i de filer siden allerede
+       har hentet. det står der også i kassen. -->
+  <div class="kasse" id="kasse-mikkel">
+    <div class="indhold">
+      <p class="kassetop">mikkel ai</p>
+      <div id="mikkel-log" aria-live="polite"></div>
+      <p>
+        <input type="text" id="mikkel-felt" placeholder="spørg om klassen" autocomplete="off" maxlength="200">
+        <button type="button" id="mikkel-send">spørg</button>
+      </p>
+      <p class="kassebund">han er ikke en rigtig ai. han slår op i det der står på siden</p>
+    </div>
+  </div>
+
+  <!-- tristan bad om en nedtælling på 69 år der hedder "tid til erik dør".
+       erik er en rolle på serveren og et gennemgående klassegag, ikke en
+       udpeget person. 69 år fra den dag der blev spurgt. -->
+  <div class="kasse" id="kasse-erik">
+    <div class="indhold">
+      <p class="kassetop">tid til erik dør</p>
+      <p id="erik-ur">&nbsp;</p>
+      <p class="kassebund">tristan bad om 69 år. der er stadig et stykke igen</p>
+    </div>
+  </div>
+
+  <div class="kasse" id="kasse-om">
+    <div class="indhold">
+      <p id="taeller">besøg <span id="tal">000000</span></p>
+    </div>
+  </div>
+
+</div>
+
+<script src="/assets/app.js"></script>
 </body>
 </html>
