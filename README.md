@@ -267,6 +267,30 @@ set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
 
+### Kagepause-alarmen
+
+Der blev bedt om at alle der har siden åben når kagepausen starter, får en høj
+alarm der også siger "KAGEPAUSE" med SAM.
+
+**Det er ikke den rigtige SAM.** SAM er en formantsynthesizer fra 1982, og at
+hente en port af den ind ville være det første bibliotek på siden. Stemmen er i
+stedet skrevet i hånden med den samme teknik: en savtakket summetone på 112 Hz
+kørt gennem to båndpasfiltre der står på vokalens formanter, plus støj gennem
+et højpas til k, p og s. Ét ord er til at skrive i hånden, og det skurrer
+ligesom originalen. Vil I have den ægte vare, er det `sigKagepause()` der skal
+skiftes ud.
+
+Alarmen går på skiftet fra ikke-kagepause til kagepause, ikke på at klokken
+*er* 10:20. Så går den for dem der sad med siden åben, og ikke for dem der
+åbner den 10:24. Afprøvet sekund for sekund over tre døgn: én gang per hverdag
+klokken 10:20:00, ingenting i weekenden.
+
+En browser må ikke starte lyd af sig selv, så `AudioContext` bliver lavet på
+det første klik på siden. Cookie-boksen skal klikkes væk på hvert besøg, så
+den er altid klar i god tid. Knapperne i kagekassen slår alarmen fra —
+`qr25-alarm=nej` i `localStorage` — og `prøv` afspiller den med det samme, for
+en alarm man ikke kan høre inden den går, er ikke til at tage stilling til.
+
 ### Billeder på citaterne
 
 Indi spurgte om at få fotos og vedhæftninger med, når de sad i samme besked som

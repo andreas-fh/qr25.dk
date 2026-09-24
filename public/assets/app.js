@@ -108,6 +108,185 @@
     return stumper.slice(0, -1).join(", ") + " og " + stumper[stumper.length - 1];
   }
 
+  // ---------------- kagepause-alarmen ----------------
+
+  /* Der blev bedt om at alle der har siden åben når kagepausen starter, får en
+     høj alarm der også siger "KAGEPAUSE" med SAM.
+
+     Det er ikke den rigtige SAM. SAM er en formantsynthesizer fra 1982, og at
+     hente en port af den ind ville være det første bibliotek på siden. I
+     stedet er stemmen skrevet her med den samme teknik: en summende firkantet
+     tone kørt gennem to båndpasfiltre der står på vokalens formanter, og støj
+     til k'erne og s'et. Ét ord er til at skrive i hånden, og det skurrer
+     ligesom originalen.
+
+     Lyd må ikke starte af sig selv, så der bliver lavet en AudioContext første
+     gang nogen rører siden. Cookie-boksen skal klikkes væk på hvert besøg, så
+     den er altid rørt inden klokken bliver 10:20. */
+
+  var LYD = null;
+  var ALARM_HUSK = "qr25-alarm";
+  var STOEJ = null;
+  var GRUND = 112;          // hz. dybt og fladt, som en maskine
+  var alarmKoerer = false;
+
+  function alarmTil() {
+    try { return localStorage.getItem(ALARM_HUSK) !== "nej"; } catch (e) { return true; }
+  }
+
+  function vaekLyd() {
+    if (!LYD) {
+      var C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return null;
+      try { LYD = new C(); } catch (e) { return null; }
+    }
+    if (LYD.state === "suspended") LYD.resume();
+    return LYD;
+  }
+
+  // hvid støj, lavet én gang og brugt igen. den er til k, p og s
+  function stoej(ctx) {
+    if (STOEJ) return STOEJ;
+    var n = Math.floor(ctx.sampleRate * 0.5);
+    STOEJ = ctx.createBuffer(1, n, ctx.sampleRate);
+    var d = STOEJ.getChannelData(0);
+    for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    return STOEJ;
+  }
+
+  function omslag(ctx, node, t, laengde, styrke) {
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(styrke, t + 0.012);
+    g.gain.setValueAtTime(styrke, t + laengde - 0.02);
+    g.gain.linearRampToValueAtTime(0, t + laengde);
+    node.connect(g);
+    return g;
+  }
+
+  /* En vokal: summetonen gennem to båndpas der står på formanterne. F1 og F2
+     er det øret bruger til at høre forskel på a og u, og når de står fast i
+     stedet for at glide, lyder det som en maskine. */
+  function vokal(ctx, ud, t, laengde, f1, f2, styrke) {
+    var o = ctx.createOscillator();
+    o.type = "sawtooth";
+    o.frequency.setValueAtTime(GRUND, t);
+
+    [f1, f2].forEach(function (f, nr) {
+      var b = ctx.createBiquadFilter();
+      b.type = "bandpass";
+      b.frequency.setValueAtTime(f, t);
+      b.Q.setValueAtTime(nr === 0 ? 9 : 12, t);
+      o.connect(b);
+      omslag(ctx, b, t, laengde, styrke * (nr === 0 ? 1 : 0.7)).connect(ud);
+    });
+
+    o.start(t);
+    o.stop(t + laengde + 0.05);
+  }
+
+  // En konsonant: et pust støj over et knæk. k og p er korte, s er lang
+  function pust(ctx, ud, t, laengde, knaek, styrke) {
+    var k = ctx.createBufferSource();
+    k.buffer = stoej(ctx);
+    k.loop = true;
+    var b = ctx.createBiquadFilter();
+    b.type = "highpass";
+    b.frequency.setValueAtTime(knaek, t);
+    k.connect(b);
+    omslag(ctx, b, t, laengde, styrke).connect(ud);
+    k.start(t);
+    k.stop(t + laengde + 0.05);
+  }
+
+  /* "kagepause", stykke for stykke. Tallene er formanterne for de danske
+     vokaler, rundet af til det der lyder rigtigt gennem en firkantet tone.
+     Returnerer hvor lang tid det hele tog. */
+  function sigKagepause(ctx, ud, t0) {
+    var t = t0;
+    function v(laengde, f1, f2) { vokal(ctx, ud, t, laengde, f1, f2, 0.5); t += laengde; }
+    function p(laengde, knaek, styrke) { pust(ctx, ud, t, laengde, knaek, styrke); t += laengde; }
+
+    p(0.045, 2400, 0.35);    // k
+    v(0.20, 700, 1600);      // a
+    v(0.07, 320, 2300);      // g, der er et j i dansk
+    v(0.07, 480, 1500);      // e
+    t += 0.03;               // lukket mund inden p'et
+    p(0.04, 1100, 0.32);     // p
+    v(0.17, 700, 1600);      // a
+    v(0.09, 360, 820);       // u
+    p(0.13, 4200, 0.22);     // s
+    v(0.13, 480, 1500);      // e
+    return t - t0;
+  }
+
+  /* Sirenen. To toner der skifter, ikke en glidende: den skærer bedre igennem,
+     og det er en alarm og ikke en ambulance i en film. */
+  function sirene(ctx, ud, t0, gange) {
+    var o = ctx.createOscillator();
+    o.type = "square";
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0, t0);
+    var t = t0;
+    for (var i = 0; i < gange; i++) {
+      o.frequency.setValueAtTime(i % 2 ? 700 : 990, t);
+      g.gain.setValueAtTime(0.18, t + 0.005);
+      g.gain.setValueAtTime(0.18, t + 0.16);
+      g.gain.linearRampToValueAtTime(0, t + 0.18);
+      t += 0.19;
+    }
+    o.connect(g);
+    g.connect(ud);
+    o.start(t0);
+    o.stop(t + 0.05);
+    return t - t0;
+  }
+
+  function alarm() {
+    var ctx = vaekLyd();
+    if (!ctx || alarmKoerer) return;
+
+    var ud = ctx.createGain();
+    ud.gain.value = 0.9;
+    ud.connect(ctx.destination);
+
+    var t = ctx.currentTime + 0.05;
+    t += sirene(ctx, ud, t, 6) + 0.12;
+    t += sigKagepause(ctx, ud, t) + 0.18;
+    t += sirene(ctx, ud, t, 4);
+
+    alarmKoerer = true;
+    document.body.classList.add("alarmerer");
+    setTimeout(function () {
+      alarmKoerer = false;
+      document.body.classList.remove("alarmerer");
+    }, Math.ceil((t - ctx.currentTime) * 1000));
+  }
+
+  function alarmKnapper() {
+    var rad = id("alarm-rad");
+    if (!rad || !(window.AudioContext || window.webkitAudioContext)) return;
+    rad.hidden = false;
+
+    var knap = id("alarm-til");
+    function vis() { knap.textContent = "alarm: " + (alarmTil() ? "til" : "fra"); }
+    vis();
+
+    knap.addEventListener("click", function () {
+      try { localStorage.setItem(ALARM_HUSK, alarmTil() ? "nej" : "ja"); } catch (e) {}
+      vis();
+    });
+
+    id("alarm-proev").addEventListener("click", function () { vaekLyd(); alarm(); });
+
+    // en lyd må ikke starte af sig selv. så vi tager fat i det første klik der
+    // kommer, og har konteksten klar længe inden klokken bliver 10:20
+    document.addEventListener("pointerdown", function foerste() {
+      vaekLyd();
+      document.removeEventListener("pointerdown", foerste);
+    });
+  }
+
   // ---------------- nedtællingen til erik ----------------
 
   /* Tristan bad om "en countdown på 69 år" der hedder "tid til erik dør".
@@ -151,12 +330,20 @@
       toCifre(t) + ":" + toCifre(m) + ":" + toCifre(sek);
   }
 
+  var varKage = null;   // null = vi har ikke kigget endnu
+
   function tik() {
     var nu = Date.now();
     var p = dele(new Date(nu));
     var minutter = p.hour * 60 + p.minute;
     var wd = ugedag(p);
     var kage = wd >= 1 && wd <= 5 && minutter >= START && minutter < SLUT;
+
+    /* Alarmen skal gå for dem der havde siden åben da den startede — ikke for
+       dem der åbner siden klokken 10:24. Derfor kigger vi på skiftet, og
+       første gennemløb sætter kun udgangspunktet. */
+    if (varKage !== null && !varKage && kage && alarmTil()) alarm();
+    varKage = kage;
 
     document.body.classList.toggle("kagepause", kage);
     id("verdict").textContent = kage ? "JA" : "NEJ";
@@ -174,6 +361,7 @@
     id("erik-ur").textContent = tilErik(nu);
   }
 
+  alarmKnapper();
   tik();
   setInterval(tik, 1000);
 
