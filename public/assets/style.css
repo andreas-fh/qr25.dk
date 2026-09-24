@@ -62,6 +62,18 @@ a:hover { color: #c22a1c; }
 
 #cookie-svar { font-size: 11px; color: #55503f; margin-left: 6px; }
 
+/* det med småt er det der er sandt. boksen ovenfor er en joke der blev bedt
+   om, og en side der påstår noget om hvor din data ryger hen, skylder at
+   skrive hvad der faktisk sker */
+#cookie-smat {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dotted #b8b3a0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #55503f;
+}
+
 /* ---- toppen ---- */
 
 h1 {

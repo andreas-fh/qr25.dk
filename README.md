@@ -314,11 +314,17 @@ Tristan bad om en cookie-boks hvor nej-knappen ikke virker. Det er præcis hvad
 den er: man kommer ikke videre uden at trykke accepter, og "nej tak" skriver
 bare "nej-knappen virker ikke".
 
-Den lyver ikke om noget. Siden har ingen sporing, ingen analytics og ingen
-tredjepart, og der står i boksen at der ikke er nogen cookies. Den ene cookie
-den sætter — `qr25-cookies=ja`, et år, `SameSite=Lax` — er den der husker at du
-trykkede, så boksen ikke kommer igen. Det er den eneste cookie siden nogensinde
-sætter, og det står der også.
+Teksten i boksen er en joke — den påstår at al din data bliver sendt til Kina
+og Israel. Det er ikke rigtigt, og det står der med småt nederst i boksen:
+siden har ingen sporing, ingen analytics og ingen tredjepart, og der bliver
+ikke sendt noget nogen steder hen. En side der påstår noget om hvor din data
+ryger hen, skylder at skrive hvad der faktisk sker.
+
+Den ene cookie den sætter — `qr25-cookies`, et år, `SameSite=Lax` — er den der
+husker at du trykkede. Værdien er `UDGAVE` i `app.js`, ikke bare et ja. Bliver
+teksten lavet om, skal `UDGAVE` tælles op: så holder de gamle svar op med at
+gælde, og alle bliver spurgt igen. Man har jo sagt ja til noget andet end det
+der står nu.
 
 ### Dagens citat læst højt
 

@@ -188,13 +188,18 @@
 
      Den cookie den sætter, er den eneste på hele siden: den husker at du har
      trykket, så du ikke skal se boksen hver gang. Et år, SameSite=Lax, ikke
-     andet end et ja. */
+     andet end et tal.
+
+     Tallet er UDGAVE. Ændrer teksten i boksen sig, tæller de gamle ja'er ikke
+     længere, og så bliver alle spurgt igen — man har jo sagt ja til noget
+     andet end det der står nu. Tæl den op når teksten bliver lavet om. */
 
   var COOKIE = "qr25-cookies";
+  var UDGAVE = "2";   // 1: "siden bruger ingen cookies". 2: kina og israel
 
   function harAccepteret() {
     return document.cookie.split(";").some(function (c) {
-      return c.trim().indexOf(COOKIE + "=ja") === 0;
+      return c.trim() === COOKIE + "=" + UDGAVE;
     });
   }
 
@@ -208,7 +213,9 @@
 
     id("cookie-ja").addEventListener("click", function () {
       var et_aar = new Date(Date.now() + 365 * 24 * 3600 * 1000).toUTCString();
-      document.cookie = COOKIE + "=ja; expires=" + et_aar + "; path=/; SameSite=Lax";
+      // samme navn og sti, så et gammelt ja bliver skrevet over i stedet for
+      // at blive liggende ved siden af
+      document.cookie = COOKIE + "=" + UDGAVE + "; expires=" + et_aar + "; path=/; SameSite=Lax";
       boks.hidden = true;
     });
 
