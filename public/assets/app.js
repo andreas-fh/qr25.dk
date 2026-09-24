@@ -127,6 +127,35 @@
   var LYD = null;
   var ALARM_HUSK = "qr25-alarm";
   var STOEJ = null;
+
+  /* Sirenen er en rigtig optagelse af en civilforsvarssirene. Den ligger i
+     public domain — se afsnittet i README for hvor den kommer fra.
+
+     Filen bliver hentet og afkodet når lydkortet vækkes, altså længe før
+     klokken bliver 10:20. Kommer den ikke — filen mangler, netværket driller,
+     browseren kan ikke aac — tager den syntetiske sirene nedenfor over. Det
+     er bedre end en alarm der ikke går. */
+  var SIRENE_FIL = "/assets/sirene.m4a";
+  var SIRENE_LYD = null;
+
+  function hentSirene(ctx) {
+    if (SIRENE_LYD) return;
+    fetch(SIRENE_FIL)
+      .then(function (svar) {
+        if (!svar.ok) throw new Error(svar.status);
+        return svar.arrayBuffer();
+      })
+      .then(function (raa) {
+        return new Promise(function (ja, nej) {
+          // det gamle kald med to funktioner, for safari kan ikke det nye
+          ctx.decodeAudioData(raa, ja, nej);
+        });
+      })
+      .then(function (buffer) { SIRENE_LYD = buffer; })
+      .catch(function () {
+        // så bliver den syntetiske brugt. ingen grund til at larme om det
+      });
+  }
   var GRUND = 112;          // hz. dybt og fladt, som en maskine
   var alarmKoerer = false;
 
@@ -141,6 +170,7 @@
       try { LYD = new C(); } catch (e) { return null; }
     }
     if (LYD.state === "suspended") LYD.resume();
+    hentSirene(LYD);
     return LYD;
   }
 
@@ -154,92 +184,191 @@
     return STOEJ;
   }
 
-  function omslag(ctx, node, t, laengde, styrke) {
-    var g = ctx.createGain();
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(styrke, t + 0.012);
-    g.gain.setValueAtTime(styrke, t + laengde - 0.02);
-    g.gain.linearRampToValueAtTime(0, t + laengde);
-    node.connect(g);
-    return g;
-  }
+  /* --- stemmen ---
 
-  /* En vokal: summetonen gennem to båndpas der står på formanterne. F1 og F2
-     er det øret bruger til at høre forskel på a og u, og når de står fast i
-     stedet for at glide, lyder det som en maskine. */
-  function vokal(ctx, ud, t, laengde, f1, f2, styrke) {
+     "kagepause", sagt af en maskine. Én savtakket tone hele vejen igennem,
+     kørt gennem tre båndpasfiltre der står på vokalernes formanter.
+
+     Det vigtige er at formanterne GLIDER mellem lydene i stedet for at hoppe.
+     Står de stille, hører man løsrevne toner; glider de, hører man et ord. Det
+     er også derfor rammerne nedenfor har mellempunkter: de er ikke lyde, de er
+     vejen fra én lyd til den næste.
+
+     [tid, F1, F2, F3, styrke] — tid i sekunder fra ordets begyndelse. */
+  var RAMMER = [
+    [0.00,  660, 1750, 2500, 0.00],   // k'et lukker munden
+    [0.055, 660, 1750, 2500, 0.00],
+    [0.075, 660, 1750, 2500, 1.00],   // a
+    [0.230, 680, 1720, 2480, 1.00],
+    [0.300, 320, 2250, 2900, 0.85],   // g, som er et j på dansk
+    [0.370, 500, 1450, 2450, 0.80],   // e
+    [0.420, 480, 1400, 2400, 0.35],
+    [0.455, 480, 1400, 2400, 0.00],   // lukket mund foran p
+    [0.505, 480, 1400, 2400, 0.00],
+    [0.530, 730, 1200, 2450, 1.00],   // a
+    [0.690, 700, 1150, 2400, 1.00],
+    [0.780, 380,  900, 2300, 0.85],   // u
+    [0.830, 380,  900, 2300, 0.00],   // s'et er ustemt
+    [0.950, 500, 1450, 2450, 0.00],
+    [0.975, 500, 1450, 2450, 0.70],   // e
+    [1.080, 490, 1430, 2430, 0.55],
+    [1.140, 490, 1430, 2430, 0.00],
+  ];
+
+  // [start, længde, knæk, styrke] — k, p og s er støj og ikke tone
+  var PUSTENE = [
+    [0.000, 0.050, 2600, 0.34],
+    [0.455, 0.050, 1000, 0.30],
+    [0.835, 0.115, 4500, 0.26],
+  ];
+
+  function sigKagepause(ctx, ud, t0) {
+    var laengde = RAMMER[RAMMER.length - 1][0];
+
     var o = ctx.createOscillator();
     o.type = "sawtooth";
-    o.frequency.setValueAtTime(GRUND, t);
+    /* Lidt fald hen over ordet. Helt fladt lyder dødt, og et menneskes
+       tonefald ville ødelægge robotten — det her er midt imellem. */
+    o.frequency.setValueAtTime(106, t0);
+    o.frequency.linearRampToValueAtTime(98, t0 + laengde);
 
-    [f1, f2].forEach(function (f, nr) {
+    var samlet = ctx.createGain();
+    samlet.gain.setValueAtTime(0, t0);
+    RAMMER.forEach(function (r) {
+      samlet.gain.linearRampToValueAtTime(r[4] * 0.42, t0 + r[0]);
+    });
+    samlet.connect(ud);
+
+    [0, 1, 2].forEach(function (nr) {
       var b = ctx.createBiquadFilter();
       b.type = "bandpass";
-      b.frequency.setValueAtTime(f, t);
-      b.Q.setValueAtTime(nr === 0 ? 9 : 12, t);
+      b.Q.value = [5, 7, 9][nr];
+      b.frequency.setValueAtTime(RAMMER[0][nr + 1], t0);
+      RAMMER.forEach(function (r) {
+        b.frequency.linearRampToValueAtTime(r[nr + 1], t0 + r[0]);
+      });
+      var v = ctx.createGain();
+      v.gain.value = [1, 0.65, 0.35][nr];
       o.connect(b);
-      omslag(ctx, b, t, laengde, styrke * (nr === 0 ? 1 : 0.7)).connect(ud);
+      b.connect(v);
+      v.connect(samlet);
     });
 
-    o.start(t);
-    o.stop(t + laengde + 0.05);
+    // lidt af den rå tone med under. ellers bliver den tynd og fløjtende
+    var krop = ctx.createBiquadFilter();
+    krop.type = "lowpass";
+    krop.frequency.value = 420;
+    var kg = ctx.createGain();
+    kg.gain.value = 0.5;
+    o.connect(krop);
+    krop.connect(kg);
+    kg.connect(samlet);
+
+    o.start(t0);
+    o.stop(t0 + laengde + 0.05);
+
+    PUSTENE.forEach(function (pu) {
+      var k = ctx.createBufferSource();
+      k.buffer = stoej(ctx);
+      k.loop = true;
+      var f = ctx.createBiquadFilter();
+      f.type = "highpass";
+      f.frequency.value = pu[2];
+      var g = ctx.createGain();
+      var t = t0 + pu[0];
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(pu[3], t + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.001, t + pu[1]);
+      k.connect(f);
+      f.connect(g);
+      g.connect(ud);
+      k.start(t);
+      k.stop(t + pu[1] + 0.02);
+    });
+
+    return laengde;
   }
 
-  // En konsonant: et pust støj over et knæk. k og p er korte, s er lang
-  function pust(ctx, ud, t, laengde, knaek, styrke) {
-    var k = ctx.createBufferSource();
-    k.buffer = stoej(ctx);
-    k.loop = true;
-    var b = ctx.createBiquadFilter();
-    b.type = "highpass";
-    b.frequency.setValueAtTime(knaek, t);
-    k.connect(b);
-    omslag(ctx, b, t, laengde, styrke).connect(ud);
-    k.start(t);
-    k.stop(t + laengde + 0.05);
-  }
+  /* --- luftalarmen ---
 
-  /* "kagepause", stykke for stykke. Tallene er formanterne for de danske
-     vokaler, rundet af til det der lyder rigtigt gennem en firkantet tone.
-     Returnerer hvor lang tid det hele tog. */
-  function sigKagepause(ctx, ud, t0) {
-    var t = t0;
-    function v(laengde, f1, f2) { vokal(ctx, ud, t, laengde, f1, f2, 0.5); t += laengde; }
-    function p(laengde, knaek, styrke) { pust(ctx, ud, t, laengde, knaek, styrke); t += laengde; }
+     Ikke et bip. En rigtig civilforsvarssirene er en tung, savtakket tone der
+     glider langsomt op og langsomt ned igen, og som brummer fordi den kommer
+     fra en skive der hakker luft i stykker.
 
-    p(0.045, 2400, 0.35);    // k
-    v(0.20, 700, 1600);      // a
-    v(0.07, 320, 2300);      // g, der er et j i dansk
-    v(0.07, 480, 1500);      // e
-    t += 0.03;               // lukket mund inden p'et
-    p(0.04, 1100, 0.32);     // p
-    v(0.17, 700, 1600);      // a
-    v(0.09, 360, 820);       // u
-    p(0.13, 4200, 0.22);     // s
-    v(0.13, 480, 1500);      // e
-    return t - t0;
-  }
+     Tre oscillatorer en anelse ude af trit giver den svævende klang — én alene
+     lyder som en synthesizer. Brummen er en langsom svingning oven på
+     lydstyrken. Tonehøjden glider eksponentielt, for det er sådan øret hører
+     en glidende tone som jævn. */
+  var SIRENE_BUND = 190, SIRENE_TOP = 580;
 
-  /* Sirenen. To toner der skifter, ikke en glidende: den skærer bedre igennem,
-     og det er en alarm og ikke en ambulance i en film. */
-  function sirene(ctx, ud, t0, gange) {
-    var o = ctx.createOscillator();
-    o.type = "square";
+  function sirene(ctx, ud, t0, cyklusser, opTid, nedTid) {
+    var op = opTid || 2.1;
+    var ned = nedTid || 2.4;
+    var laengde = cyklusser * (op + ned);
+
     var g = ctx.createGain();
     g.gain.setValueAtTime(0, t0);
-    var t = t0;
-    for (var i = 0; i < gange; i++) {
-      o.frequency.setValueAtTime(i % 2 ? 700 : 990, t);
-      g.gain.setValueAtTime(0.18, t + 0.005);
-      g.gain.setValueAtTime(0.18, t + 0.16);
-      g.gain.linearRampToValueAtTime(0, t + 0.18);
-      t += 0.19;
-    }
-    o.connect(g);
+    g.gain.linearRampToValueAtTime(0.55, t0 + 0.25);
+    g.gain.setValueAtTime(0.55, t0 + laengde - 0.35);
+    g.gain.linearRampToValueAtTime(0, t0 + laengde);
+
+    // brummen. den sidder på lydstyrken, ikke på tonen
+    var lfo = ctx.createOscillator();
+    lfo.type = "sine";
+    lfo.frequency.value = 6.5;
+    var lfoDybde = ctx.createGain();
+    lfoDybde.gain.value = 0.16;
+    lfo.connect(lfoDybde);
+    lfoDybde.connect(g.gain);
+    lfo.start(t0);
+    lfo.stop(t0 + laengde + 0.05);
+
+    // tag det skarpeste af toppen, så det brøler i stedet for at hvæse
+    var top = ctx.createBiquadFilter();
+    top.type = "lowpass";
+    top.frequency.value = 2400;
+    top.Q.value = 0.7;
+
+    // og giv den noget mave
+    var mave = ctx.createBiquadFilter();
+    mave.type = "peaking";
+    mave.frequency.value = 520;
+    mave.Q.value = 0.9;
+    mave.gain.value = 7;
+
+    [0, 8, -11].forEach(function (afstemt) {
+      var o = ctx.createOscillator();
+      o.type = "sawtooth";
+      o.detune.value = afstemt;
+      o.frequency.setValueAtTime(SIRENE_BUND, t0);
+      var t = t0;
+      for (var i = 0; i < cyklusser; i++) {
+        o.frequency.exponentialRampToValueAtTime(SIRENE_TOP, t + op);
+        o.frequency.exponentialRampToValueAtTime(SIRENE_BUND, t + op + ned);
+        t += op + ned;
+      }
+      var d = ctx.createGain();
+      d.gain.value = 1 / 3;
+      o.connect(d);
+      d.connect(mave);
+      o.start(t0);
+      o.stop(t0 + laengde + 0.05);
+    });
+
+    mave.connect(top);
+    top.connect(g);
     g.connect(ud);
-    o.start(t0);
-    o.stop(t + 0.05);
-    return t - t0;
+    return laengde;
+  }
+
+  // optagelsen hvis den er der, ellers den syntetiske. returnerer længden
+  function spilSirene(ctx, ud, t0) {
+    if (!SIRENE_LYD) return sirene(ctx, ud, t0, 1);
+    var k = ctx.createBufferSource();
+    k.buffer = SIRENE_LYD;
+    k.connect(ud);
+    k.start(t0);
+    return SIRENE_LYD.duration;
   }
 
   function alarm() {
@@ -250,10 +379,10 @@
     ud.gain.value = 0.9;
     ud.connect(ctx.destination);
 
+    // sirene, så beskeden. omvendt rækkefølge og folk når ikke at kigge op
     var t = ctx.currentTime + 0.05;
-    t += sirene(ctx, ud, t, 6) + 0.12;
-    t += sigKagepause(ctx, ud, t) + 0.18;
-    t += sirene(ctx, ud, t, 4);
+    t += spilSirene(ctx, ud, t) + 0.2;
+    t += sigKagepause(ctx, ud, t);
 
     alarmKoerer = true;
     document.body.classList.add("alarmerer");

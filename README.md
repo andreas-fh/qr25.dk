@@ -22,6 +22,7 @@ i `public/`. Cloudflare Workers hoster mappen som statiske filer.
 public/index.html          siden
 public/assets/style.css    hele stilen
 public/assets/app.js       uret, dagens citat og resten af kasserne
+public/assets/sirene.m4a   luftalarmen. public domain, se afsnittet om alarmen
 public/data/quotes.json    de citater der er godkendt til at ligge offentligt
 tools/fetch_quotes.py      henter #quotes ned fra Discord
 tools/parse_quotes.py      laver rådataene om til quotes.json
@@ -272,13 +273,31 @@ sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 Der blev bedt om at alle der har siden åben når kagepausen starter, får en høj
 alarm der også siger "KAGEPAUSE" med SAM.
 
-**Det er ikke den rigtige SAM.** SAM er en formantsynthesizer fra 1982, og at
-hente en port af den ind ville være det første bibliotek på siden. Stemmen er i
-stedet skrevet i hånden med den samme teknik: en savtakket summetone på 112 Hz
-kørt gennem to båndpasfiltre der står på vokalens formanter, plus støj gennem
-et højpas til k, p og s. Ét ord er til at skrive i hånden, og det skurrer
-ligesom originalen. Vil I have den ægte vare, er det `sigKagepause()` der skal
-skiftes ud.
+**Sirenen** er en rigtig optagelse, ikke syntese:
+
+| | |
+| --- | --- |
+| fil | `public/assets/sirene.m4a` |
+| kilde | [Civil-defense-siren-waver.ogg](https://commons.wikimedia.org/wiki/File:Civil-defense-siren-waver.ogg) på Wikimedia Commons |
+| optaget af | Techtonic, St. Paul, Minnesota, 5. november 2008 |
+| licens | public domain (`PD-self` — ophavsmanden har frigivet den) |
+| behandling | 5 sekunder klippet ud fra 18 s inde, ind- og udtoning, `loudnorm` til -14 LUFS, mono 32 kHz AAC |
+
+Den bliver hentet og afkodet når lydkortet vækkes, altså længe før klokken
+bliver 10:20. Kan den ikke hentes eller afkodes, tager en syntetisk sirene over
+— tre savtakkede oscillatorer let ude af trit, tonen glidende 190→580 Hz og
+tilbage. En alarm der ikke går er værre end en der lyder forkert.
+
+**Stemmen er ikke den rigtige SAM.** SAM er en formantsynthesizer fra 1982, og
+at hente en port af den ind ville være det første bibliotek på siden. Den er i
+stedet skrevet i hånden med den samme teknik: en savtakket summetone omkring
+100 Hz kørt gennem tre båndpasfiltre der står på vokalens formanter, plus støj
+gennem et højpas til k, p og s.
+
+Det vigtige er at formanterne **glider** mellem lydene i stedet for at hoppe.
+Står de stille, hører man løsrevne toner; glider de, hører man et ord. Derfor
+har `RAMMER` mellempunkter der ikke er lyde, men vejen fra én lyd til den
+næste. Vil I have den ægte SAM, er det `sigKagepause()` der skal skiftes ud.
 
 Alarmen går på skiftet fra ikke-kagepause til kagepause, ikke på at klokken
 *er* 10:20. Så går den for dem der sad med siden åben, og ikke for dem der
