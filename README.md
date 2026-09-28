@@ -7,7 +7,7 @@ Klassesiden for QR25, Aalborg Tekniske Gymnasium. Den svarer på to spørgsmål:
 3. Hvad står der i vedtægterne?
 4. Hvad bliver der stemt om lige nu?
 
-Og så det folk har bedt om i #hjemmeside-changelog-og-ideer: Tristans nyeste
+Og så det folk har bedt om i #hjemmeside-changelog-og-ideer: serverens nyeste
 gif, Dangus' profilbillede, et kinesisk flag der flager, en sang, og en
 cookie-boks hvor nej-knappen ikke virker, en nedtælling på 69 år, en alarm når
 kagepausen starter, og en genvej til [erdetfredag.dk](https://erdetfredag.dk),
@@ -214,11 +214,24 @@ formular og der er ikke en linje javascript der sender noget. Der er et link
 til #afstemninger, og det er det. Botten skal blive ved med at være det eneste
 sted en stemme kan afgives, ellers holder §6 ikke.
 
-### Tristans nyeste gif
+### Serverens nyeste gif
 
-Han bad om at få sin nyeste besked på forsiden, og Dangus bad om den før ham.
-Bagefter bad han om kun at få gif'erne — ikke det han skriver — så det er
-gif'er kassen viser nu. Alle kanaler tæller med.
+Forsiden viser den nyeste gif der er sendt på serveren. Alle kanaler tæller
+med, og kun gif'er — en besked uden billede lader den forrige blive stående.
+
+Det var én persons gif'er til at starte med. Nu er det alles, og det er en
+større ting end det lyder: fyrre mennesker kan lægge et billede direkte på en
+offentlig forside uden at nogen ser det først. Værnene er:
+
+- kun billeder og video, kun fra Discords egne værter, højst 8 MB
+- beskedens tekst går gennem den samme blocklist som citaterne — står der noget
+  grimt over gif'en, kommer gif'en heller ikke ud
+- botter tæller ikke med
+- står man i `skjul.json`, kommer ens gif'er ikke på siden
+
+**Blocklisten kan kun læse tekst. Den kan ikke se hvad der er på billedet.**
+Skal det snævres ind igen, er det `SENEST_BRUGER`: sættes den til et
+discord-id, er det kun den person der kommer på, som før.
 
 Det er ikke `build.py` der laver den. DemokratiClanker sidder allerede på
 discords gateway, så den ved det i samme sekund han trykker enter, og skriver
@@ -242,10 +255,9 @@ den kommer ind. Discord henter linket bagefter og sender en opdatering med et
 embed i, så `messageUpdate` kigger også på beskeder botten ikke har liggende i
 forvejen — ellers ville et gif-link aldrig nå frem.
 
-Hvem det er, står i `SENEST_BRUGER` i `senest.js`. Det er med vilje ikke noget
-man kan skifte udefra: der skal ikke være en generel "skriv hvad som helst
-direkte på en offentlig forside"-knap til 40 mand. Skal han ud af det igen, så
-sæt hans id i `skjul.json` og slet filen.
+Hvem der har sendt den, står som et id i `senest.json` og bliver slået op i
+`navne.json` i browseren — præcis som pingene i citaterne, så et navneskift
+følger med. Skal nogen ud af det, så sæt deres id i `skjul.json`.
 
 Sender han en gif, henter botten selve filen ned og lægger den i
 `live/medie/`, og siden viser den. Det er med vilje ikke et link videre til
@@ -268,6 +280,19 @@ fleste af dem er tekst, så den bliver ved nedad indtil ringen er fuld:
 set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
+
+### Kagevejret
+
+I de ti minutter kagepausen varer, regner det med kager ned over siden. Resten
+af dagen er laget tomt.
+
+Der bliver lavet 24 kager én gang, ikke nye hele tiden: hver falder i ring med
+sin egen fart og sin egen negative forsinkelse, så de allerede er undervejs når
+pausen begynder i stedet for at starte på én linje i toppen. Laget tager ikke
+imod klik, så kasserne nedenunder kan bruges som altid, og det ligger under
+cookie-boksen. Står der `prefers-reduced-motion`, regner det ikke.
+
+Kagen er den samme tegning som favicon'et.
 
 ### Hvem har sagt hvad
 

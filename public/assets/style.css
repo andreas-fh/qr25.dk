@@ -74,6 +74,36 @@ a:hover { color: #c22a1c; }
   color: #55503f;
 }
 
+/* ---- kagevejret ---- */
+
+/* ti minutter om dagen regner det med kager. laget ligger over det hele, men
+   man kan klikke tværs igennem det, og det ligger under cookie-boksen så den
+   stadig kan bruges. */
+#kagevejr {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#kagevejr img {
+  position: absolute;
+  top: -14vh;
+  animation: falder linear infinite;
+}
+
+/* de falder hele vejen forbi bunden, så der ikke ligger en bunke og venter */
+@keyframes falder {
+  from { transform: translateY(0) rotate(0deg); }
+  to   { transform: translateY(130vh) rotate(var(--drej, 360deg)); }
+}
+
+/* nogle folk bliver dårlige af ting der bevæger sig. så lader vi være */
+@media (prefers-reduced-motion: reduce) {
+  #kagevejr { display: none; }
+}
+
 /* ---- toppen ---- */
 
 h1 {

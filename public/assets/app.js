@@ -416,6 +416,44 @@
     });
   }
 
+  // ---------------- kagevejret ----------------
+
+  /* Under kagepausen regner det med kager. Ti minutter om dagen, og så er det
+     væk igen.
+
+     Der bliver lavet et fast antal, ikke nye hele tiden: hver kage falder i
+     ring med sin egen fart og sin egen forsinkelse, så det ser tilfældigt ud
+     uden at der kommer flere og flere elementer ind i siden imens.
+
+     Kagen er den samme tegning som favicon'et. */
+
+  var KAGER = 24;
+  var kagerFalder = false;
+
+  function kagevejr(taend) {
+    var lag = id("kagevejr");
+    if (!lag) return;
+    lag.innerHTML = "";
+    if (!taend) return;
+
+    for (var i = 0; i < KAGER; i++) {
+      var k = document.createElement("img");
+      k.src = "/assets/kage.svg";
+      k.alt = "";
+      var stoer = 20 + Math.round(Math.random() * 28);
+      k.width = stoer;
+      k.height = stoer;
+      k.style.left = (Math.random() * 98).toFixed(2) + "%";
+      k.style.animationDuration = (4.5 + Math.random() * 5).toFixed(2) + "s";
+      // negativ forsinkelse: så er de allerede undervejs når pausen begynder,
+      // i stedet for at de alle sammen starter på én linje i toppen
+      k.style.animationDelay = (-Math.random() * 9).toFixed(2) + "s";
+      k.style.setProperty("--drej", (Math.random() < 0.5 ? -1 : 1) *
+        (180 + Math.round(Math.random() * 540)) + "deg");
+      lag.appendChild(k);
+    }
+  }
+
   // ---------------- nedtællingen til erik ----------------
 
   /* Tristan bad om "en countdown på 69 år" der hedder "tid til erik dør".
@@ -476,6 +514,11 @@
 
     document.body.classList.toggle("kagepause", kage);
     id("verdict").textContent = kage ? "JA" : "NEJ";
+
+    // laget skal kun bygges om når det skifter, ikke hvert sekund. åbner man
+    // siden midt i pausen, regner det med det samme — modsat alarmen, som er
+    // en begivenhed og ikke en tilstand
+    if (kage !== kagerFalder) { kagevejr(kage); kagerFalder = kage; }
 
     if (kage) {
       var rest = laenge(tidspunkt(p.year, p.month, p.day, 10, 30) - nu);
@@ -1141,8 +1184,6 @@
      gif'er tilbage. Skriver han noget uden billede, bliver den forrige gif
      stående — botten udgiver slet ikke beskeder uden medie. */
 
-  var SENEST_ID = "692001336740413452";
-
   function siden(ms) {
     var s = Math.max(0, Math.round(ms / 1000));
     if (s < 90) return "lige nu";
@@ -1154,20 +1195,24 @@
     return "for " + d + (d === 1 ? " dag siden" : " dage siden");
   }
 
-  // navnet står i html'en som det hed da filen blev skrevet. hedder han noget
-  // andet i dag, ved navne.json det, og så er det den der gælder. det sker
-  // også selvom selve beskeden ikke kan hentes.
-  function senestNavn() {
-    if (NAVNE.navne[SENEST_ID]) id("senest-hvem").textContent = NAVNE.navne[SENEST_ID];
+  /* Gif'en kan komme fra hvem som helst på serveren, så navnet står ikke
+     fast. Det kommer med i senest.json som et id og bliver slået op i
+     navne.json, præcis som pingene i citaterne — så følger et navneskift med
+     uden at nogen skal gøre noget.
+
+     Kender vi ikke id'et, står der "nogen". Det er også hvad der står om dem
+     der har bedt om ikke at blive nævnt ved navn. */
+  function senestNavn(uid) {
+    id("senest-hvem").textContent = (uid && NAVNE.navne[uid]) || "nogen";
   }
 
   function tegnSenest(data) {
     var kasse = id("senest");
     kasse.innerHTML = "";
-    senestNavn();
+    senestNavn(data && data.bruger);
 
     if (!data || !data.medie || !data.medie.url) {
-      kasse.appendChild(lav("p", "tom", "han har ikke sendt en gif endnu"));
+      kasse.appendChild(lav("p", "tom", "der er ikke sendt nogen gif endnu"));
       return;
     }
 
@@ -1188,7 +1233,7 @@
       node.setAttribute("playsinline", "");
     } else {
       node = document.createElement("img");
-      node.alt = "det han sendte";
+      node.alt = "gif'en der blev sendt";
       node.loading = "lazy";
     }
     node.className = "senest-medie";
@@ -1219,7 +1264,6 @@
     })
     .then(function () { return hent("/senest.json").then(tegnSenest); })
     .catch(function (fejl) {
-      senestNavn();
       id("senest").textContent = "kunne ikke hente den (" + fejl.message + ")";
     })
     .then(function () { spred(); });
