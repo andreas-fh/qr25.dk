@@ -425,9 +425,14 @@
      ring med sin egen fart og sin egen forsinkelse, så det ser tilfældigt ud
      uden at der kommer flere og flere elementer ind i siden imens.
 
-     Kagen er den samme tegning som favicon'et. */
+     Kagerne er tegnet i hånden. Favicon'et bliver ikke rørt: det skal kunne
+     læses i 16 px inde i en fane, og en lagkage med lys på kan det ikke. */
 
   var KAGER = 24;
+  /* Fem forskellige, så det ikke er den samme firkant fireogtyve gange.
+     Tegnet i hånden i samme stil som resten af siden — flade farver, ingen
+     overgange, ingen skygger. */
+  var KAGESLAGS = ["lagkage", "lagkagestykke", "muffin", "snegl", "donut"];
   var kagerFalder = false;
 
   function kagevejr(taend) {
@@ -438,7 +443,8 @@
 
     for (var i = 0; i < KAGER; i++) {
       var k = document.createElement("img");
-      k.src = "/assets/kage.svg";
+      k.src = "/assets/kager/" +
+        KAGESLAGS[Math.floor(Math.random() * KAGESLAGS.length)] + ".svg";
       k.alt = "";
       var stoer = 20 + Math.round(Math.random() * 28);
       k.width = stoer;

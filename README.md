@@ -24,6 +24,7 @@ public/index.html          siden
 public/assets/style.css    hele stilen
 public/assets/app.js       uret, dagens citat og resten af kasserne
 public/assets/sirene.m4a   luftalarmen. public domain, se afsnittet om alarmen
+public/assets/kager/       de fem kager der falder i kagepausen
 public/data/quotes.json    de citater der er godkendt til at ligge offentligt
 tools/fetch_quotes.py      henter #quotes ned fra Discord
 tools/parse_quotes.py      laver rådataene om til quotes.json
@@ -292,7 +293,13 @@ pausen begynder i stedet for at starte på én linje i toppen. Laget tager ikke
 imod klik, så kasserne nedenunder kan bruges som altid, og det ligger under
 cookie-boksen. Står der `prefers-reduced-motion`, regner det ikke.
 
-Kagen er den samme tegning som favicon'et.
+Der er fem slags i `public/assets/kager/` — lagkage, lagkagestykke, muffin,
+kanelsnegl og donut — og hver kage trækker en tilfældig. De er tegnet i hånden
+som svg i samme stil som resten af siden: flade farver, ingen overgange, ingen
+skygger. Tilsammen 24 kB.
+
+Favicon'et (`kage.svg`) er ikke rørt. Det skal kunne læses i 16 px inde i en
+fane, og det kan en lagkage med lys på ikke.
 
 ### Hvem har sagt hvad
 
