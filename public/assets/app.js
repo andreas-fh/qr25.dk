@@ -416,6 +416,374 @@
     });
   }
 
+  // ---------------- de små kasser omkring citaterne ----------------
+
+  /* Alt herunder lever af quotes.json, som browseren alligevel har hentet.
+     Der bliver ikke spurgt nogen steder hen for at regne det ud.
+
+     De får citaterne og vis() med ind, så de kan hente et citat op i den
+     store kasse når man trykker på det. */
+
+  // ord der ikke siger noget om hvad der bliver talt om
+  var FYLDORD = ("og i jeg det at en den til er som på de med han af for ikke " +
+    "der var mig sig men et har om vi min havde ham hun nu over da fra du ud " +
+    "sin man så når være dem skal hvis din nogle hos blive mange ad bliver " +
+    "hvad end eller lige bare helt meget mere kan vil ved her hvor jo altså " +
+    "godt ja nej okay hvorfor hvordan hvem noget alle selv"
+  ).split(" ");
+
+  function ordtaelling(citater, hvormange) {
+    var tal = {};
+    citater.forEach(function (c) {
+      c.lines.forEach(function (l) {
+        fladt(udskriv(l.text || "")).split(/[^a-zæøå0-9]+/).forEach(function (o) {
+          if (o.length < 3 || FYLDORD.indexOf(o) !== -1) return;
+          tal[o] = (tal[o] || 0) + 1;
+        });
+      });
+    });
+    return Object.keys(tal)
+      .map(function (o) { return { ord: o, antal: tal[o] }; })
+      .sort(function (a, b) { return b.antal - a.antal || a.ord.localeCompare(b.ord, "da"); })
+      .slice(0, hvormange);
+  }
+
+  /* De sidste tolv måneder, nyeste til højre. Datoerne i quotes.json er
+     ÅÅÅÅ-MM-DD som tekst, så der skal ikke laves Date-objekter for at tælle. */
+  function maanedstal(citater, nu) {
+    var noegler = [], tal = {}, navne = [];
+    var MDR = ["jan", "feb", "mar", "apr", "maj", "jun",
+               "jul", "aug", "sep", "okt", "nov", "dec"];
+    for (var i = 11; i >= 0; i--) {
+      var d = new Date(Date.UTC(nu.year, nu.month - 1 - i, 1));
+      var n = d.getUTCFullYear() + "-" + ("0" + (d.getUTCMonth() + 1)).slice(-2);
+      noegler.push(n);
+      tal[n] = 0;
+      navne.push(MDR[d.getUTCMonth()]);
+    }
+    citater.forEach(function (c) {
+      var n = (c.date || "").slice(0, 7);
+      if (n in tal) tal[n] += 1;
+    });
+    return { navne: navne, tal: noegler.map(function (n) { return tal[n]; }) };
+  }
+
+  function ekstraKasser(citater, vis) {
+    var iDag = dele(new Date());
+
+    // --- 1: link direkte til det citat man kigger på ---
+    var kopier = id("kopier");
+    kopier.addEventListener("click", function () {
+      var url = location.origin + location.pathname + "#citat=" + kopier.dataset.id;
+      function sagt(t) {
+        var gammel = kopier.textContent;
+        kopier.textContent = t;
+        setTimeout(function () { kopier.textContent = gammel; }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () { sagt("kopieret"); },
+                                                function () { sagt(url); });
+      } else {
+        // ingen clipboard (gammel browser, eller ikke https). så vis den bare
+        sagt(url);
+      }
+    });
+
+    // --- 2: søg ---
+    var soeg = id("soeg");
+    var soegSvar = id("soeg-svar");
+
+    function citatKnap(c, efterfølger) {
+      var li = document.createElement("li");
+      var knap = lav("button", "hvem-citat", foerste(c));
+      knap.type = "button";
+      knap.addEventListener("click", function () { vis(c); });
+      li.appendChild(knap);
+      li.appendChild(lav("span", "hvem-mrk", " " + (efterfølger || c.date)));
+      return li;
+    }
+
+    function soegEfter() {
+      var q = fladt(soeg.value).trim();
+      soegSvar.innerHTML = "";
+      if (q.length < 2) {
+        soegSvar.appendChild(lav("p", "tom", "skriv mindst to tegn"));
+        return;
+      }
+      var fundet = citater.filter(function (c) {
+        return fladt(citatTekst(c) + " " + c.date).indexOf(q) !== -1;
+      });
+      if (!fundet.length) {
+        soegSvar.appendChild(lav("p", "tom", "ingenting"));
+        return;
+      }
+      soegSvar.appendChild(lav("p", "hvem-top-linje",
+        fundet.length + (fundet.length === 1 ? " træffer" : " træffere")));
+      var ol = lav("ol", "hvem-citater");
+      // nyeste først, og der er en grænse: ingen grund til at tegne 300 knapper
+      fundet.slice(-40).reverse().forEach(function (c) { ol.appendChild(citatKnap(c)); });
+      soegSvar.appendChild(ol);
+    }
+
+    soeg.addEventListener("input", soegEfter);
+    soegEfter();
+
+    // --- 3: denne dag ---
+    var iDagMD = ("0" + iDag.month).slice(-2) + "-" + ("0" + iDag.day).slice(-2);
+    var denneDag = citater.filter(function (c) { return (c.date || "").slice(5) === iDagMD; });
+    var dd = id("denne-dag");
+    dd.innerHTML = "";
+    if (!denneDag.length) {
+      dd.appendChild(lav("p", "tom", "der er ikke sagt noget den " +
+        iDag.day + "." + iDag.month + " før"));
+    } else {
+      var aar = {};
+      denneDag.forEach(function (c) {
+        var a = (c.date || "").slice(0, 4);
+        (aar[a] = aar[a] || []).push(c);
+      });
+      Object.keys(aar).sort().reverse().forEach(function (a) {
+        var blok = lav("div", "aargang");
+        blok.appendChild(lav("p", "aar", a === String(iDag.year) ? a + " (i år)" : a));
+        var ol = lav("ol", "hvem-citater");
+        aar[a].forEach(function (c) { ol.appendChild(citatKnap(c, hvem(c) || "")); });
+        blok.appendChild(ol);
+        dd.appendChild(blok);
+      });
+    }
+
+    // --- 4: klassen i tal ---
+    var ti = id("tal-indhold");
+    ti.innerHTML = "";
+    ti.appendChild(lav("p", "hvem-top-linje", citater.length + " citater i alt"));
+
+    var ord = ordtaelling(citater, 5);
+    if (ord.length) {
+      ti.appendChild(lav("p", "aar", "mest brugte ord"));
+      var ol2 = lav("ol", "ord-liste");
+      ord.forEach(function (o) {
+        var li = document.createElement("li");
+        li.appendChild(lav("b", null, o.ord));
+        li.appendChild(document.createTextNode(" " + o.antal));
+        ol2.appendChild(li);
+      });
+      ti.appendChild(ol2);
+    }
+
+    var md = maanedstal(citater, iDag);
+    var top = Math.max.apply(null, md.tal.concat([1]));
+    ti.appendChild(lav("p", "aar", "citater per måned"));
+    var graf = lav("div", "maaned");
+    md.tal.forEach(function (n, i) {
+      var b = document.createElement("span");
+      b.style.height = Math.max(2, Math.round((n / top) * 54)) + "px";
+      b.title = md.navne[i] + ": " + n;
+      graf.appendChild(b);
+    });
+    ti.appendChild(graf);
+    var navnerad = lav("div", "maaned-navne");
+    md.navne.forEach(function (n) { navnerad.appendChild(lav("span", null, n)); });
+    ti.appendChild(navnerad);
+
+    // --- 6: vrøvlemaskinen ---
+    var vr = id("vroevl");
+
+    function halvdele(tekst) {
+      var ord = tekst.split(/\s+/).filter(Boolean);
+      if (ord.length < 4) return null;
+      var midt = Math.max(2, Math.round(ord.length / 2));
+      return [ord.slice(0, midt).join(" "), ord.slice(midt).join(" ")];
+    }
+
+    function vroevl() {
+      vr.innerHTML = "";
+      // prøv et par gange: ikke alle citater er lange nok til at deles
+      for (var forsøg = 0; forsøg < 20; forsøg++) {
+        var a = citater[Math.floor(Math.random() * citater.length)];
+        var b = citater[Math.floor(Math.random() * citater.length)];
+        if (a === b) continue;
+        var ha = halvdele(udskriv(a.lines[0].text));
+        var hb = halvdele(udskriv(b.lines[0].text));
+        if (!ha || !hb) continue;
+        vr.appendChild(lav("p", "quote-text", "»" + ha[0] + " " + hb[1] + "«"));
+        var hvemA = afsender(a.lines[0]), hvemB = afsender(b.lines[0]);
+        vr.appendChild(lav("p", "quote-attr",
+          "- " + (hvemA || "nogen") + " og " + (hvemB || "nogen")));
+        return;
+      }
+      vr.appendChild(lav("p", "tom", "citaterne er for korte til at blande"));
+    }
+
+    id("vroevl-igen").addEventListener("click", vroevl);
+    vroevl();
+
+    // --- 1 igen: kom nogen med #citat=<id> i adressen, så er det det citat ---
+    var fraAdressen = null;
+    var m = /(?:^|[#&])citat=(\d+)/.exec(location.hash || "");
+    if (m) {
+      citater.forEach(function (c) { if (c.id === m[1]) fraAdressen = c; });
+    }
+    return { fraAdressen: fraAdressen, soegFelt: soeg };
+  }
+
+  // ---------------- hvem henter kage ----------------
+
+  /* Trækker en tilfældig fra serveren. Folk der har bedt om ikke at blive
+     nævnt ved navn står som "nogen" i navne.json og bliver ikke trukket —
+     man skal kunne være med i klassen uden at stå på en offentlig forside. */
+
+  function hvemHenter() {
+    var svar = id("hent-svar");
+    var knap = id("hent-traek");
+    if (!svar || !knap) return;
+
+    function folk() {
+      return Object.keys(NAVNE.navne)
+        .filter(function (uid) { return NAVNE.botter.indexOf(uid) === -1; })
+        .map(function (uid) { return NAVNE.navne[uid]; })
+        .filter(function (n) { return n && n !== "nogen"; });
+    }
+
+    knap.addEventListener("click", function () {
+      var liste = folk();
+      if (!liste.length) { svar.textContent = "ingen navne endnu"; return; }
+      /* Rul lidt inden den lander. Uden det ser det ud som om svaret stod
+         fast i forvejen, og så tror ingen på det. */
+      var tilbage = 12;
+      knap.disabled = true;
+      (function rul() {
+        svar.textContent = liste[Math.floor(Math.random() * liste.length)];
+        tilbage -= 1;
+        if (tilbage > 0) setTimeout(rul, 60 + (12 - tilbage) * 18);
+        else knap.disabled = false;
+      })();
+    });
+  }
+
+  // ---------------- en tilfældig paragraf ----------------
+
+  /* Ingen læser vedtægter frivilligt, men én ad gangen kan man overkomme.
+     Knappen ruller ned til en tilfældig og blinker den. Paragrafferne findes
+     først når vedtaegter.json er hentet, så de bliver slået op ved klikket og
+     ikke på forhånd. */
+
+  function tilfaeldigParagraf() {
+    var knap = id("tilfaeldig-paragraf");
+    if (!knap) return;
+    knap.addEventListener("click", function () {
+      var kasse = id("vedtaegter");
+      var alle = [].slice.call(kasse.querySelectorAll(".paragraf"));
+      if (!alle.length) return;
+      alle.forEach(function (p) { p.classList.remove("blinker"); });
+      var p = alle[Math.floor(Math.random() * alle.length)];
+      // kassen ruller indeni, så det er den der skal flytte sig, ikke siden
+      kasse.scrollTop = p.offsetTop - kasse.offsetTop - 8;
+      // tving animationen til at starte forfra selvom klassen lige er fjernet
+      void p.offsetWidth;
+      p.classList.add("blinker");
+    });
+  }
+
+  // ---------------- tastaturet ----------------
+
+  /* Genveje. De må ikke gå af mens nogen skriver til Mikkel eller søger, så
+     alt der kommer fra et felt bliver sluppet igennem. */
+
+  function skriverNogen(mål) {
+    if (!mål) return false;
+    var t = (mål.tagName || "").toLowerCase();
+    return t === "input" || t === "textarea" || t === "select" || mål.isContentEditable;
+  }
+
+  function genveje(nytCitat, soegFelt) {
+    var linje = id("genveje");
+    linje.innerHTML = "<kbd>c</kbd> nyt citat &nbsp; <kbd>b</kbd> bland kasserne" +
+      " &nbsp; <kbd>s</kbd> søg &nbsp; <kbd>k</kbd> kagealarm &nbsp; <kbd>?</kbd> den her linje";
+
+    id("vis-genveje").addEventListener("click", function () {
+      linje.hidden = !linje.hidden;
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey || skriverNogen(e.target)) return;
+      var t = e.key.toLowerCase();
+      if (t === "c") { nytCitat(); }
+      else if (t === "b") { spred(); }
+      else if (t === "k") { alarm(); }
+      else if (t === "s") {
+        var boks = id("soeg-boks");
+        boks.open = true;
+        soegFelt.focus();
+        e.preventDefault();   // ellers ryger s'et ned i feltet bagefter
+      } else if (e.key === "?") { linje.hidden = !linje.hidden; }
+      else return;
+      if (t !== "s") e.preventDefault();
+    });
+  }
+
+  // ---------------- konami ----------------
+
+  /* Den gamle kode. Hele siden skifter farve i et kvarters minut. Filteret
+     rammer alt, også kasserne, og det er pointen. */
+
+  var KONAMI = ["arrowup", "arrowup", "arrowdown", "arrowdown",
+                "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
+
+  function konami() {
+    var naaet = 0;
+    document.addEventListener("keydown", function (e) {
+      if (skriverNogen(e.target)) return;
+      var t = (e.key || "").toLowerCase();
+      naaet = (t === KONAMI[naaet]) ? naaet + 1 : (t === KONAMI[0] ? 1 : 0);
+      if (naaet < KONAMI.length) return;
+      naaet = 0;
+      document.body.classList.add("disco");
+      setTimeout(function () { document.body.classList.remove("disco"); }, 15000);
+    });
+  }
+
+  // ---------------- skoleåret ----------------
+
+  /* Hvor langt vi er. Et dansk gymnasieår går fra august til slutningen af
+     juni; i juli er der ingen bjælke, for så er der ikke noget at gøre ved
+     det. Datoerne er sat i hånden — ret dem her hvis skolen siger noget
+     andet. */
+
+  var AAR_START = [8, 1];    // 1. august
+  var AAR_SLUT = [6, 30];    // 30. juni
+
+  var sidsteSkoledag = null;
+
+  function skoleaar(p) {
+    var dag = dagnr(p);
+    if (dag === sidsteSkoledag) return;
+    sidsteSkoledag = dag;
+
+    var tekst = id("skoleaar-tekst");
+    var fyld = id("skoleaar-fyld");
+    if (!tekst || !fyld) return;
+
+    // hvilket skoleår er vi i? efter 1. august er det et nyt
+    var startAar = (p.month > AAR_START[0] ||
+      (p.month === AAR_START[0] && p.day >= AAR_START[1])) ? p.year : p.year - 1;
+    var start = Date.UTC(startAar, AAR_START[0] - 1, AAR_START[1]);
+    var slut = Date.UTC(startAar + 1, AAR_SLUT[0] - 1, AAR_SLUT[1]);
+    var nu = Date.UTC(p.year, p.month - 1, p.day);
+
+    if (nu > slut) {
+      tekst.textContent = "sommerferie";
+      fyld.style.width = "100%";
+      return;
+    }
+
+    var andel = Math.max(0, Math.min(1, (nu - start) / (slut - start)));
+    var dageIgen = Math.round((slut - nu) / 86400000);
+    tekst.textContent = "skoleåret " + startAar + "/" + String(startAar + 1).slice(2) +
+      ": " + Math.round(andel * 100) + "%, " + dageIgen +
+      (dageIgen === 1 ? " dag igen" : " dage igen");
+    fyld.style.width = (andel * 100).toFixed(1) + "%";
+  }
+
   // ---------------- kagevejret ----------------
 
   /* Under kagepausen regner det med kager. Ti minutter om dagen, og så er det
@@ -537,6 +905,7 @@
     }
 
     id("erik-ur").textContent = tilErik(nu);
+    skoleaar(p);
   }
 
   alarmKnapper();
@@ -610,7 +979,7 @@
 
   var PING = /<@!?(\d+)>/g;
   var ROLLEPING = /<@&(\d+)>/g;
-  var NAVNE = { navne: {}, roller: {}, avatarer: {} };
+  var NAVNE = { navne: {}, roller: {}, avatarer: {}, botter: [] };
 
   function huskNavne(opslag) {
     if (!opslag || !opslag.navne) return false;
@@ -619,6 +988,9 @@
       roller: opslag.roller || {},
       // kun dem der selv har bedt om det står her. se AVATARER i build.py
       avatarer: opslag.avatarer || {},
+      // botternes navne skal med — en ping på botten skal kunne skrives ud —
+      // men siden skal kunne lade være med at behandle dem som mennesker
+      botter: opslag.botter || [],
     };
     return true;
   }
@@ -842,6 +1214,7 @@
     .then(function (svar) {
       var data = svar[0];
       tegnAvatar();
+      hvemHenter();
       var citater = data.quotes || [];
       VIDEN.citater = citater;
       var idag = dagnr(dele(new Date()));
@@ -862,6 +1235,7 @@
         nu = citat;
         tegn(citat, kasse);
         kilde.href = citat.url;
+        id("kopier").dataset.id = citat.id;
         // et nyt citat midt i en oplæsning: så skal den gamle tie stille
         if (taler) stopTale();
         /* et citat med billede er en hel del højere end et uden. kasserne blev
@@ -1042,6 +1416,13 @@
         else visTopliste();
       });
       visTopliste();
+
+      var ekstra = ekstraKasser(citater, vis);
+      if (ekstra.fraAdressen) {
+        vis(ekstra.fraAdressen);
+        tilbage.hidden = false;
+      }
+
 
       // citatet er kommet ind og kassen er blevet højere, så mål op igen
       spred();
@@ -1558,6 +1939,11 @@
   tegnFlag();
   tegnSang();
   mikkel();
+  tilfaeldigParagraf();
+  konami();
+  // bindes her og ikke inde i citatblokken: genvejene skal virke selvom
+  // quotes.json ikke kom ind
+  genveje(function () { id("rul").click(); }, id("soeg"));
 
   // ---------------- smid kasserne ud på siden ----------------
 

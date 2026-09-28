@@ -282,6 +282,37 @@ set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
 
+### De ti små
+
+Ti ting der ikke er ønsket af nogen. De lever alle sammen af `quotes.json`,
+`vedtaegter.json` og `navne.json`, som browseren alligevel har hentet — der
+bliver ikke spurgt nogen steder hen for at regne dem ud.
+
+| hvad | hvor | hvordan |
+| --- | --- | --- |
+| **Link til ét citat** | citatkassen | `kopiér link` lægger `#citat=<id>` bag adressen. Åbner man den, står siden på det citat. Uden `navigator.clipboard` bliver adressen bare vist. |
+| **Søg** | citatkassen | Fritekst over citat, navn, note og dato. Højst 40 træffere tegnes, nyeste først. |
+| **Denne dag** | egen kasse | Citater fra samme dato tidligere år, grupperet efter årstal. |
+| **Klassen i tal** | egen kasse | De fem mest brugte ord (fyldord sorteret fra) og en søjle per måned de sidste tolv. Summen er afprøvet mod antallet af citater i perioden. |
+| **Hvem henter kage** | egen kasse | Trækker en tilfældig fra `navne.json`. Botter og folk der står som `nogen` kommer ikke med. Den ruller lidt inden den lander, ellers tror ingen på den. |
+| **Vrøvlemaskinen** | egen kasse | Første halvdel af ét citat, anden halvdel af et andet. |
+| **Tilfældig §** | vedtægtskassen | Ruller ned til en tilfældig paragraf og blinker den. |
+| **Tastaturgenveje** | usynlig | `c` nyt citat, `b` bland kasserne, `s` søg, `k` kagealarm, `?` vis linjen. Slår fra mens nogen skriver i et felt. |
+| **Konami** | usynlig | Den gamle kode. Hele siden skifter farve i et kvarters minut via `hue-rotate`. |
+| **Skoleårsbjælke** | om-kassen | Hvor langt vi er, og hvor mange dage der er igen. |
+
+Skoleårets datoer står i hånden i `app.js` som `AAR_START` og `AAR_SLUT` —
+1. august til 30. juni. I juli står der `sommerferie`. Ret dem der hvis skolen
+siger noget andet.
+
+`navne.json` har fået en `botter`-liste. Botnavne skal stadig med, så en ping
+på botten kan skrives ud, men siden skal kunne lade være med at behandle dem
+som mennesker.
+
+Kasser med indhold der skifter — søgesvar, denne dag, tallene, vrøvlet, navnet
+der bliver trukket — har alle fast højde og ruller indeni. `spred()` måler
+kasserne én gang, så en kasse der vokser bagefter lægger sig oven i naboen.
+
 ### Kagevejret
 
 I de ti minutter kagepausen varer, regner det med kager ned over siden. Resten

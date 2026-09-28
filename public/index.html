@@ -85,8 +85,19 @@
              starter af sig selv hvis browseren vil være med, og ellers står
              knappen der. trykker man stop, holder den også op næste gang. -->
         <button type="button" id="laesop" hidden>læs op</button>
+        <!-- et link direkte til det citat man kigger på. adressen får
+             #citat=<id> bagpå, og siden åbner på det citat næste gang -->
+        <button type="button" id="kopier">kopiér link</button>
         <a id="kilde" href="#" rel="noreferrer">discord</a>
       </p>
+
+      <details id="soeg-boks">
+        <summary>søg</summary>
+        <p>
+          <input type="text" id="soeg" placeholder="ord, navn, årstal" autocomplete="off" maxlength="60">
+        </p>
+        <div id="soeg-svar"></div>
+      </details>
       <details id="arkiv">
         <summary>arkiv</summary>
         <ol id="archive-list"></ol>
@@ -110,6 +121,9 @@
     <div class="indhold">
       <p class="kassetop">vedtægter <span id="vedt-version"></span></p>
       <div id="vedtaegter"><p class="tom">henter</p></div>
+      <!-- ruller ned til en tilfældig paragraf og blinker den. ingen læser
+           vedtægter frivilligt, men én ad gangen kan man overkomme -->
+      <p class="kassebund"><button type="button" id="tilfaeldig-paragraf">tilfældig §</button></p>
     </div>
   </div>
 
@@ -203,9 +217,47 @@
     </div>
   </div>
 
+  <!-- citater fra samme dato tidligere år -->
+  <div class="kasse" id="kasse-denne-dag">
+    <div class="indhold">
+      <p class="kassetop">denne dag</p>
+      <div id="denne-dag"><p class="tom">henter</p></div>
+    </div>
+  </div>
+
+  <!-- hvad klassen faktisk siger, talt op -->
+  <div class="kasse" id="kasse-tal">
+    <div class="indhold">
+      <p class="kassetop">klassen i tal</p>
+      <div id="tal-indhold"><p class="tom">henter</p></div>
+    </div>
+  </div>
+
+  <!-- en tilfældig fra serveren. nogen skal jo hente -->
+  <div class="kasse" id="kasse-hent">
+    <div class="indhold">
+      <p class="spg">hvem henter kage?</p>
+      <p id="hent-svar">?</p>
+      <p class="kassebund"><button type="button" id="hent-traek">træk en</button></p>
+    </div>
+  </div>
+
+  <!-- første halvdel af ét citat, anden halvdel af et andet -->
+  <div class="kasse" id="kasse-vroevl">
+    <div class="indhold">
+      <p class="kassetop">vrøvlemaskinen</p>
+      <div id="vroevl"><p class="tom">henter</p></div>
+      <p class="kassebund"><button type="button" id="vroevl-igen">bland to</button></p>
+    </div>
+  </div>
+
   <div class="kasse" id="kasse-om">
     <div class="indhold">
       <p id="taeller">besøg <span id="tal">000000</span></p>
+      <p id="skoleaar-tekst"></p>
+      <div id="skoleaar"><span id="skoleaar-fyld"></span></div>
+      <p class="kassebund"><button type="button" id="vis-genveje">tastatur</button></p>
+      <p id="genveje" hidden></p>
     </div>
   </div>
 
