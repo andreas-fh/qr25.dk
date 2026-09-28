@@ -9,8 +9,9 @@ Klassesiden for QR25, Aalborg Tekniske Gymnasium. Den svarer på to spørgsmål:
 
 Og så det folk har bedt om i #hjemmeside-changelog-og-ideer: Tristans nyeste
 gif, Dangus' profilbillede, et kinesisk flag der flager, en sang, og en
-cookie-boks hvor nej-knappen ikke virker, og en nedtælling på 69 år. Resten
-står der ikke, og det er med vilje.
+cookie-boks hvor nej-knappen ikke virker, en nedtælling på 69 år, en alarm når
+kagepausen starter, og en genvej til [erdetfredag.dk](https://erdetfredag.dk),
+som stiller samme slags spørgsmål. Resten står der ikke, og det er med vilje.
 
 Ren HTML, CSS og JavaScript. Intet byggetrin, ingen framework, ingen
 `node_modules`, ingen skrifttyper hentet ude fra. Alt der bliver serveret ligger

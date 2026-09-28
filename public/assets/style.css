@@ -425,6 +425,11 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
   border: 3px inset #777;
 }
 
+/* genvejen til erdetfredag.dk. den stiller det samme slags spørgsmål som
+   forsiden, så den får det samme udseende - bare uden et svar, for svaret
+   ligger ovre hos dem */
+#kasse-fredag .kassebund { margin-top: 6px; }
+
 #taeller { margin: 0; font-size: 13px; }
 
 #tal {
