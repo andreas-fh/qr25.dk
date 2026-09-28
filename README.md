@@ -282,6 +282,36 @@ set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
 
+### Ned ad bakke
+
+Der blev bedt om spillet Slope. **Det her er ikke Slope.** Det er vores eget
+spil i samme genre: en kugle der triller ned ad en vej der bliver ved, indtil
+man rammer en klods eller kører ud over kanten. Koden, banen og tegningerne er
+skrevet her — der er ikke hentet en fil, en sprite eller en linje andre steder
+fra, og der er ingen iframe til en andens side.
+
+Vejen er tegnet med den gamle falske 3D: hvert stykke ligger i en afstand `z`,
+og alt bliver delt med `z` inden det tegnes. Stykkerne tegnes bagfra og frem,
+så de nære dækker de fjerne.
+
+Banen ligger ikke i en liste. Hvert stykke får sin sving og sin klods ud af sit
+eget nummer (`bSving`, `bKlods`), så den er den samme hver gang man kommer
+forbi og kan blive ved i det uendelige uden at bruge mere hukommelse.
+
+Tallene er regnet efter, ikke gættet:
+
+- vejen glider **0,56 vejbredder i sekundet** ved topfart, og kuglen styrer
+  **1,45** — altså 2,6 gange så hurtigt. Svingede vejen hurtigere end kuglen
+  kan styre, var spillet umuligt
+- der er en klods hvert 7,7. stykke, ingen af dem ligger uden for vejen, og
+  ingen af dem spærrer den helt
+- den første klods står ved stykke 50, så der er en optakt inden det begynder
+
+Piletaster eller `a`/`d`; på en telefon holder man på den halvdel man vil dreje
+mod. Piletasterne bliver kun spist mens der spilles — ellers skal de kunne
+rulle siden. Skifter man faneblad, stopper spillet i stedet for at køre videre
+i baggrunden. Bedste resultat ligger i `localStorage`.
+
 ### De ti små
 
 Ti ting der ikke er ønsket af nogen. De lever alle sammen af `quotes.json`,

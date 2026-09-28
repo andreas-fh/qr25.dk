@@ -626,6 +626,248 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- ned ad bakke ----------------
+
+  /* Der blev bedt om et bakkespil. Det her er vores eget, skrevet herinde:
+     en kugle der triller ned ad en vej der bliver ved, indtil man rammer en
+     klods eller kører ud over kanten.
+
+     Vejen er tegnet med den gamle falske 3D: hvert stykke vej ligger i en
+     afstand z, og alt bliver delt med z inden det tegnes. Så bliver stykker
+     langt væk små og tæt på store, og det ligner dybde uden at der er nogen.
+     Stykkerne tegnes bagfra og frem, så de nære dækker de fjerne.
+
+     Banen ligger ikke i en liste. Hvert stykke får sin sving og sin klods ud
+     af sit eget nummer, så den er den samme hver gang man kommer forbi, og
+     den kan blive ved i det uendelige uden at bruge mere hukommelse. */
+
+  var B_BREDDE = 320, B_HOEJDE = 210;
+  var B_HORISONT = 80;
+  var B_DYBDE = 60;       // hvor mange stykker vej der tegnes
+  var B_Y = 130;          // højde/z. sat så det nærmeste stykke rammer bunden
+  var B_X = 150;          // vejens halve bredde ved z = 1
+  var B_START = 7.5;      // stykker i sekundet til at begynde med
+  var B_TOP = 19;         // og det hurtigste den bliver
+  var B_STYR = 1.45;      // hvor hurtigt kuglen flytter sig på tværs
+  var B_HUSK = "qr25-bakke";
+
+  // samme tal hver gang for det samme stykke. det er hele banen
+  function bStoej(i) {
+    var x = Math.sin(i * 12.9898 + 4.1) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  // hvor vejen ligger på tværs ved stykke i. to bølger oven i hinanden, så
+  // svingene ikke kommer i takt
+  function bSving(i) {
+    return Math.sin(i / 27) * 1.15 + Math.sin(i / 68) * 0.75;
+  }
+
+  // en klods hvert syvende-ottende stykke, aldrig på de første
+  function bKlods(i) {
+    if (i < 45 || bStoej(i) > 0.13) return null;
+    return bStoej(i + 1000) * 1.5 - 0.75;   // hvor på vejen den står
+  }
+
+  function bakken() {
+    var lae = id("bakke");
+    if (!lae || !lae.getContext) return;
+    var c = lae.getContext("2d");
+    var knap = id("bakke-start");
+    var tal = id("bakke-tal");
+
+    var koerer = false, pos = 0, x = 0, fart = B_START, doed = false;
+    var taster = {};
+    var styr = 0;        // -1, 0 eller 1. sat af tastatur eller finger
+    var sidst = 0;
+    var rekord = 0;
+    try { rekord = parseInt(localStorage.getItem(B_HUSK), 10) || 0; } catch (e) {}
+
+    function meter() { return Math.floor(pos * 10); }
+
+    function skriv() {
+      tal.textContent = meter() + " m" + (rekord ? "  ·  bedste " + rekord + " m" : "");
+    }
+
+    /* Hvor et punkt på vejen havner på skærmen. verdenX er i vejbredder:
+       -1 og 1 er kanterne. z er afstanden, og alt bliver delt med den. */
+    function projekt(verdenX, z) {
+      return {
+        x: B_BREDDE / 2 + (verdenX * B_X) / z,
+        y: B_HORISONT + B_Y / z,
+        b: B_X / z,
+      };
+    }
+
+    /* Vejens midte ved stykket i, set fra kuglen. x er kuglens plads i
+       verden, så når vejen svinger og x bliver stående, glider kuglen ud mod
+       kanten — og så skal der styres. Det er hele spillet. */
+    var B_SVINGKRAFT = 0.55;
+
+    function midte(i) {
+      return bSving(i) * B_SVINGKRAFT - x;
+    }
+
+    // hvor langt kuglen er fra vejens midte. 0 er lige på, 1 er kanten
+    function afvig() {
+      return x - bSving(pos) * B_SVINGKRAFT;
+    }
+
+    function tegn() {
+      c.fillStyle = "#6ec7ff";
+      c.fillRect(0, 0, B_BREDDE, B_HOEJDE);
+      c.fillStyle = "#3f8f3a";
+      c.fillRect(0, B_HORISONT, B_BREDDE, B_HOEJDE - B_HORISONT);
+
+      var foerste = Math.floor(pos);
+      var brok = pos - foerste;
+
+      // bagfra og frem, så det nære dækker det fjerne
+      for (var i = B_DYBDE; i >= 1; i--) {
+        var zBag = i - brok + 1;
+        var zFor = i - brok;
+        if (zFor <= 0.35) continue;
+
+        var nr = foerste + i;
+        var bag = projekt(midte(nr), zBag);
+        var forr = projekt(midte(nr - 1), zFor);
+
+        // hver andet stykke lysere, så man kan se farten
+        c.fillStyle = (nr % 2) ? "#e6e2d2" : "#d6d2c0";
+        c.beginPath();
+        c.moveTo(bag.x - bag.b, bag.y);
+        c.lineTo(bag.x + bag.b, bag.y);
+        c.lineTo(forr.x + forr.b, forr.y);
+        c.lineTo(forr.x - forr.b, forr.y);
+        c.closePath();
+        c.fill();
+
+        var k = bKlods(nr);
+        if (k !== null) {
+          var p = projekt(midte(nr) + k, zBag);
+          var bred = p.b * 0.3;
+          var hoej = (B_Y / zBag) * 0.42;
+          c.fillStyle = "#c22a1c";
+          c.fillRect(p.x - bred, p.y - hoej, bred * 2, hoej);
+          c.fillStyle = "#8a1d13";
+          c.fillRect(p.x - bred, p.y - hoej, bred * 2, hoej * 0.3);
+        }
+      }
+
+      // kuglen. den ligger fast lige over bunden; det er vejen der flytter sig
+      var ky = B_HOEJDE - 34;
+      c.fillStyle = "#111";
+      c.beginPath();
+      c.ellipse(B_BREDDE / 2, ky + 13, 15, 5, 0, 0, Math.PI * 2);
+      c.fill();
+      c.fillStyle = doed ? "#8a8a8a" : "#ffe22e";
+      c.beginPath();
+      c.arc(B_BREDDE / 2, ky, 13, 0, Math.PI * 2);
+      c.fill();
+      c.strokeStyle = "#111";
+      c.lineWidth = 2.5;
+      c.stroke();
+
+      if (doed) {
+        c.fillStyle = "rgba(17,17,17,0.72)";
+        c.fillRect(0, 70, B_BREDDE, 66);
+        c.fillStyle = "#fff";
+        c.font = "bold 26px Impact, sans-serif";
+        c.textAlign = "center";
+        c.fillText("DU VÆLTEDE", B_BREDDE / 2, 100);
+        c.font = "13px Verdana, sans-serif";
+        c.fillText(meter() + " meter", B_BREDDE / 2, 122);
+      }
+    }
+
+    function slut() {
+      koerer = false;
+      doed = true;
+      if (meter() > rekord) {
+        rekord = meter();
+        try { localStorage.setItem(B_HUSK, String(rekord)); } catch (e) {}
+      }
+      knap.textContent = "igen";
+      skriv();
+      tegn();
+    }
+
+    function skridt(naa) {
+      if (!koerer) return;
+      var dt = Math.min(0.05, (naa - sidst) / 1000 || 0);
+      sidst = naa;
+
+      var vil = styr;
+      if (taster.venstre) vil -= 1;
+      if (taster.hoejre) vil += 1;
+      x += Math.max(-1, Math.min(1, vil)) * B_STYR * dt;
+
+      fart = Math.min(B_TOP, fart + dt * 0.55);
+      pos += fart * dt;
+
+      // ude over kanten?
+      var af = afvig();
+      if (Math.abs(af) > 1.02) return slut();
+
+      // ramt en klods? kun den der står på det stykke kuglen er på
+      var k = bKlods(Math.floor(pos));
+      if (k !== null && Math.abs(af - k) < 0.3) return slut();
+
+      skriv();
+      tegn();
+      requestAnimationFrame(skridt);
+    }
+
+    function start() {
+      pos = 0; x = 0; fart = B_START; doed = false; koerer = true;
+      knap.textContent = "stop";
+      sidst = performance.now();
+      requestAnimationFrame(skridt);
+    }
+
+    knap.addEventListener("click", function () {
+      if (koerer) { koerer = false; knap.textContent = "start"; return; }
+      start();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (skriverNogen(e.target)) return;
+      var t = e.key.toLowerCase();
+      if (t === "arrowleft" || t === "a") taster.venstre = true;
+      else if (t === "arrowright" || t === "d") taster.hoejre = true;
+      else return;
+      // kun når der bliver spillet. ellers skal piletasterne rulle siden
+      if (koerer) e.preventDefault();
+    });
+
+    document.addEventListener("keyup", function (e) {
+      var t = e.key.toLowerCase();
+      if (t === "arrowleft" || t === "a") taster.venstre = false;
+      if (t === "arrowright" || t === "d") taster.hoejre = false;
+    });
+
+    // på en telefon: hold på den halvdel du vil dreje mod
+    function finger(e) {
+      if (!koerer) return;
+      var r = lae.getBoundingClientRect();
+      var px = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+      styr = px < r.width / 2 ? -1 : 1;
+      e.preventDefault();
+    }
+    lae.addEventListener("pointerdown", finger);
+    lae.addEventListener("pointermove", finger);
+    lae.addEventListener("pointerup", function () { styr = 0; });
+    lae.addEventListener("pointercancel", function () { styr = 0; });
+
+    // skifter man faneblad, skal den ikke køre videre i baggrunden
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden && koerer) { koerer = false; knap.textContent = "start"; }
+    });
+
+    skriv();
+    tegn();
+  }
+
   // ---------------- hvem henter kage ----------------
 
   /* Trækker en tilfældig fra serveren. Folk der har bedt om ikke at blive
@@ -1941,6 +2183,7 @@
   mikkel();
   tilfaeldigParagraf();
   konami();
+  bakken();
   // bindes her og ikke inde i citatblokken: genvejene skal virke selvom
   // quotes.json ikke kom ind
   genveje(function () { id("rul").click(); }, id("soeg"));

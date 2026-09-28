@@ -239,6 +239,21 @@ button:active { border-style: inset; }
 #arkiv { margin-top: 12px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
 summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
+/* ---- bakken ---- */
+
+#bakke {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 3px inset #cfcab6;
+  background: #6ec7ff;
+  /* kanten på klodserne skal være hård. ingen udglatning */
+  image-rendering: pixelated;
+  touch-action: none;
+}
+
+#bakke-tal { font-size: 11px; color: #55503f; margin-left: 6px; }
+
 /* ---- søgning i citaterne ---- */
 
 #soeg-boks { margin-top: 10px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
