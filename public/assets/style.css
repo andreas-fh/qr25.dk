@@ -209,6 +209,59 @@ button:active { border-style: inset; }
 #arkiv { margin-top: 12px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
 summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
+/* ---- hvem har sagt hvad ---- */
+
+#hvem-boks { margin-top: 10px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
+
+#hvem-boks p { margin: 8px 0; }
+
+#hvem {
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 2px 4px;
+  border: 3px inset #cfcab6;
+  background: #fff;
+  color: #111;
+  max-width: 100%;
+}
+
+/* fast højde: så er kassen lige høj uanset om man kigger på toplisten eller
+   på en der har sagt fyrre ting */
+#hvem-liste {
+  height: 170px;
+  overflow-y: auto;
+  border-top: 1px dotted #b8b3a0;
+  padding-top: 8px;
+}
+
+.hvem-top, .hvem-citater { margin: 0; padding-left: 26px; font-size: 12px; }
+.hvem-top li, .hvem-citater li { margin-bottom: 5px; }
+.hvem-tal { color: #55503f; }
+
+.hvem-top-linje {
+  margin: 0 0 8px !important;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* citatet er en knap, men skal se ud som tekst man kan trykke på - ikke som
+   en af de grå knapper ovenfor */
+.hvem-citat {
+  font: italic 13px/1.35 Georgia, "Times New Roman", serif;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  color: #1a1aa8;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.hvem-citat:hover { color: #c22a1c; }
+.hvem-citat:active { border: 0; }
+
+.hvem-mrk { font-size: 11px; color: #55503f; }
+
 #archive-list { margin: 8px 0 0; padding-left: 24px; }
 #archive-list li { margin-bottom: 8px; }
 #archive-list .what { font: italic 15px Georgia, "Times New Roman", serif; }

@@ -872,6 +872,128 @@
         liste.appendChild(li);
       }
 
+      /* --- hvem har sagt hvad ---
+
+         Der blev bedt om at kunne se alt hvad én person har sagt, og alt hvor
+         de bliver nævnt, med folk rangeret efter hvor meget de fylder.
+
+         Et citat tæller én gang per person, også selvom de siger noget to
+         gange i den samme dialog. Er man både taler og nævnt i det samme
+         citat, tæller det i begge kolonner, men kun én gang i alt — ellers
+         ville man kunne rykke op ved at tagge sig selv.
+
+         Folk der har bedt om ikke at blive nævnt ved navn, står som "nogen" i
+         navne.json, og dem kommer der ikke en liste over. */
+
+      function samlFolk(alle) {
+        var folk = {};
+
+        function faa(noegle, navn) {
+          if (!folk[noegle]) {
+            folk[noegle] = { navn: navn, sagt: 0, naevnt: 0, ialt: 0, deres: [] };
+          }
+          return folk[noegle];
+        }
+
+        alle.forEach(function (c) {
+          var talere = {}, naevnte = {};
+          c.lines.forEach(function (l) {
+            if (l.speakerId) talere[l.speakerId] = true;
+            else if (l.speaker) talere["n:" + l.speaker] = true;
+            // eget regexp: PING er global og deles med udskriv()
+            var ping = /<@!?(\d+)>/g, m;
+            var tekst = (l.text || "") + " " + (l.note || "");
+            while ((m = ping.exec(tekst))) naevnte[m[1]] = true;
+          });
+
+          Object.keys(talere).forEach(function (n) {
+            var p = faa(n, n.indexOf("n:") === 0 ? n.slice(2) : navn(n));
+            p.sagt += 1;
+          });
+          Object.keys(naevnte).forEach(function (uid) {
+            faa(uid, navn(uid)).naevnt += 1;
+          });
+
+          // én gang i alt, uanset hvor mange roller man har i citatet
+          var iAlt = {};
+          Object.keys(talere).forEach(function (n) { iAlt[n] = true; });
+          Object.keys(naevnte).forEach(function (n) { iAlt[n] = true; });
+          Object.keys(iAlt).forEach(function (n) {
+            folk[n].ialt += 1;
+            folk[n].deres.push({ citat: c, sagde: !!talere[n], naevnt: !!naevnte[n] });
+          });
+        });
+
+        return Object.keys(folk)
+          .map(function (n) { folk[n].noegle = n; return folk[n]; })
+          .filter(function (p) { return p.navn && p.navn !== "nogen"; })
+          .sort(function (a, b) {
+            return b.ialt - a.ialt || a.navn.localeCompare(b.navn, "da");
+          });
+      }
+
+      var folk = samlFolk(citater);
+      var vaelger = id("hvem");
+      var hvemListe = id("hvem-liste");
+
+      folk.forEach(function (p) {
+        var o = document.createElement("option");
+        o.value = p.noegle;
+        o.textContent = p.navn + " — " + p.ialt;
+        vaelger.appendChild(o);
+      });
+
+      function raekke(tekst, klasse) { return lav("li", klasse, tekst); }
+
+      function visTopliste() {
+        hvemListe.innerHTML = "";
+        if (!folk.length) {
+          hvemListe.appendChild(lav("p", "tom", "ingen navne at tælle på endnu"));
+          return;
+        }
+        var ol = lav("ol", "hvem-top");
+        folk.forEach(function (p) {
+          var li = document.createElement("li");
+          li.appendChild(lav("span", "who", p.navn));
+          li.appendChild(lav("span", "hvem-tal",
+            " " + p.ialt + " (" + p.sagt + " sagt, " + p.naevnt + " nævnt)"));
+          ol.appendChild(li);
+        });
+        hvemListe.appendChild(ol);
+      }
+
+      function visPerson(noegle) {
+        var p = null;
+        folk.forEach(function (q) { if (q.noegle === noegle) p = q; });
+        if (!p) return visTopliste();
+
+        hvemListe.innerHTML = "";
+        hvemListe.appendChild(lav("p", "hvem-top-linje",
+          p.navn + ": " + p.sagt + " sagt, " + p.naevnt + " nævnt, " +
+          p.ialt + " i alt"));
+
+        var ol = lav("ol", "hvem-citater");
+        // nyeste først. det er dem folk kan huske
+        p.deres.slice().reverse().forEach(function (d) {
+          var li = document.createElement("li");
+          var knap = lav("button", "hvem-citat", foerste(d.citat));
+          knap.type = "button";
+          // vis det i selve kassen, så man kan læse det hele og høre det højt
+          knap.addEventListener("click", function () { vis(d.citat); });
+          li.appendChild(knap);
+          li.appendChild(lav("span", "hvem-mrk",
+            " " + d.citat.date + (d.sagde ? "" : ", nævnt")));
+          ol.appendChild(li);
+        });
+        hvemListe.appendChild(ol);
+      }
+
+      vaelger.addEventListener("change", function () {
+        if (vaelger.value) visPerson(vaelger.value);
+        else visTopliste();
+      });
+      visTopliste();
+
       // citatet er kommet ind og kassen er blevet højere, så mål op igen
       spred();
     })
@@ -1402,7 +1524,7 @@
 
   var scene = id("scene");
   var kasser = [].slice.call(scene.querySelectorAll(".kasse"));
-  var arkiv = id("arkiv");
+  var foldbare = [].slice.call(scene.querySelectorAll("details"));
 
   function overlapper(a, b) {
     return !(a.x + a.w + LUFT <= b.x || b.x + b.w + LUFT <= a.x ||
@@ -1431,15 +1553,15 @@
     scene.classList.add("spredt");
     kasser.forEach(function (k) { k.style.width = kassebredde + "px"; });
 
-    /* arkivet kan foldes ud bagefter og gør kassen højere. mål med det åbent,
-       så der er plads til det, og luk det igen. ellers lægger den sig oven i
-       naboen første gang nogen trykker. */
-    var varÅbent = arkiv ? arkiv.open : false;
-    if (arkiv) arkiv.open = true;
+    /* de foldbare kan åbnes bagefter og gør kassen højere. mål med dem åbne,
+       så der er plads til det, og luk dem igen. ellers lægger kassen sig oven
+       i naboen første gang nogen trykker. */
+    var varÅbne = foldbare.map(function (d) { return d.open; });
+    foldbare.forEach(function (d) { d.open = true; });
     var mål = kasser.map(function (k) {
       return { w: k.offsetWidth, h: k.offsetHeight };
     });
-    if (arkiv) arkiv.open = varÅbent;
+    foldbare.forEach(function (d, nr) { d.open = varÅbne[nr]; });
 
     // et skævt rektangel fylder lidt mere end et lige et
     var skævt = Math.sin(HÆLD * Math.PI / 180);

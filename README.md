@@ -269,6 +269,34 @@ set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
 
+### Hvem har sagt hvad
+
+Der blev bedt om at kunne se alt hvad én person har sagt, og alt hvor de bliver
+nævnt, med folk rangeret efter hvor meget de fylder. Det ligger foldet sammen
+under citatkassen.
+
+Tællingen sker i browseren ud fra `quotes.json`. En taler er `speakerId` på en
+linje, og et navn der står skrevet i hånden — det er lærerne — tæller også med,
+bare uden et id. "Nævnt" er et `<@id>` i teksten eller i noten.
+
+Reglerne er:
+
+- Et citat tæller **én gang per person**, også når de siger noget to gange i
+  den samme dialog.
+- Er man både taler og nævnt i det samme citat, tæller det i **begge** kolonner
+  men kun **én gang i alt**. Ellers kunne man rykke op ad listen ved at tagge
+  sig selv.
+- Folk der har bedt om ikke at blive nævnt ved navn, står som `nogen` i
+  `navne.json`, og der kommer ingen liste over dem.
+
+Vælger man en person, kommer deres citater frem med det nyeste først, og hvert
+af dem er en knap der henter citatet op i kassen — så kan det læses helt og
+høres højt. Listen ruller indeni og har fast højde, så kassen fylder det samme
+uanset om man kigger på toplisten eller på en der har sagt tres ting.
+
+`spred()` måler alle foldbare felter med dem åbne, så en kasse ikke lægger sig
+oven i naboen første gang nogen folder noget ud.
+
 ### Kagepause-alarmen
 
 Der blev bedt om at alle der har siden åben når kagepausen starter, får en høj
