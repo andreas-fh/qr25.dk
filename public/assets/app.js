@@ -749,12 +749,8 @@
       pil.style.transform = "rotate(" + ((v.vindretning + 180) % 360) + "deg)";
     }
 
-    var fod = id("vejr-fod");
-    if (fod) {
-      var r = v.raa || {};
-      fod.textContent = "rigtige tal: " + r.celsius + " °C, " +
-        r.kmt + " km/t, " + r.hpa + " hPa, " + r.fugt_pct + " %";
-    }
+    // der stod rigtige tal her nedenunder engang. de skulle væk — kun de
+    // enheder der blev bedt om, ikke en oversættelse tilbage til noget brugbart
   }
 
   function hentVejr() {

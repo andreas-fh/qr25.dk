@@ -290,8 +290,11 @@ knob, lufttryk i mmHg og en luftfugtighed i syvogtresdele (67/67 er 100%).
 Tallene er **danske** — målt i Aalborg — og bliver ved med at være danske. De
 hentes af `build.py` fra open-meteo (gratis, ingen nøgle) her på VPS'en og
 lægges som `vejr.json`. Siden selv taler kun med `data.qr25.dk`, så der kommer
-ingen tredjepart ind i nogens browser. Omregningerne sker på serveren, og
-råtallene (°C, km/t, hPa, %) kommer med i filen så man kan regne efter.
+ingen tredjepart ind i nogens browser. Omregningerne sker på serveren.
+
+Der blev udtrykkeligt bedt om **ikke** at vise de rigtige tal — kun de enheder
+der blev spurgt om. Så råtallene bliver hverken vist eller lagt i filen; der er
+ikke en oversættelse tilbage til noget brugbart nogen steder.
 
 Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 ønsket, og det er ren udsmykning: der bliver ikke hentet vejrdata fra Tyrkiet —
