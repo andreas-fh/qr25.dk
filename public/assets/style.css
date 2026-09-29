@@ -239,6 +239,36 @@ button:active { border-style: inset; }
 #arkiv { margin-top: 12px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
 summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
+/* ---- gæt landet ---- */
+
+#lande-kort {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px inset #cfcab6;
+  background: #dfe8f0;
+  margin: 0 0 8px;
+}
+#lande-kort svg { display: block; height: 140px; width: auto; max-width: 100%; }
+#lande-kort path { fill: #3a7d3a; stroke: #1c4a1c; stroke-width: 0.8; }
+
+#lande-valg { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+#lande-valg button {
+  font: 12px Verdana, Geneva, sans-serif;
+  border: 3px outset #ddd8c6;
+  background: #efece0;
+  color: #111;
+  cursor: pointer;
+  padding: 6px 4px;
+}
+#lande-valg button:disabled { cursor: default; }
+#lande-valg button.rigtig { background: #35c93a; border-color: #2a9a2e; color: #06260a; }
+#lande-valg button.forkert { background: #e0503f; border-color: #b23222; color: #fff; }
+
+#lande-status b { font-size: 14px; }
+#lande-ny[hidden] { display: none; }
+
 /* ---- kryds og bolle ---- */
 
 #kryds-braet {

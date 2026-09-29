@@ -228,6 +228,21 @@
   </div>
 
   <!-- citater fra samme dato tidligere år -->
+  <!-- gæt landet ud fra omridset. dangus bad om spillet, tristan om at man
+       også ser temperaturen i landet lige nu. omridsene er rigtige (natural
+       earth, public domain) og ligger i lande.json; temperaturen er live. -->
+  <div class="kasse" id="kasse-lande">
+    <div class="indhold">
+      <p class="kassetop">gæt landet</p>
+      <div id="lande-kort"><p class="tom">henter</p></div>
+      <div id="lande-valg"></div>
+      <p class="kassebund">
+        <span id="lande-status">rigtige: <b id="lande-score">0</b></span>
+        <button type="button" id="lande-ny" hidden>næste</button>
+      </p>
+    </div>
+  </div>
+
   <!-- kryds og bolle mod en cpu der snyder. den rykker dine brikker, og den
        vil ikke tabe. der blev udtrykkeligt bedt om at den snyder. -->
   <div class="kasse" id="kasse-kryds">

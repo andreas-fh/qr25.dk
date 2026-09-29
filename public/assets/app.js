@@ -715,6 +715,120 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- gæt landet ----------------
+
+  /* Dangus bad om et spil hvor man gætter et land ud fra omridset, og Tristan
+     om at man også ser temperaturen i landet lige nu.
+
+     Omridsene er rigtige — Natural Earth, public domain — og ligger færdige
+     som svg-stier i public/data/lande.json. Temperaturen er det eneste
+     levende: den hentes fra lande-vejr.json, som VPS'en bygger. Kan den ikke
+     hentes, spiller vi bare uden temperatur. */
+
+  function landeSpil() {
+    var kort = id("lande-kort");
+    var valgboks = id("lande-valg");
+    var status = id("lande-status");
+    var scoreTal = id("lande-score");
+    var nyKnap = id("lande-ny");
+    if (!kort) return;
+
+    var alle = [];
+    var grader = {};
+    var score = 0, facit = null, svaret = false;
+
+    function bland(a) {
+      a = a.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    function visKort(land) {
+      kort.innerHTML = "";
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 100 100");
+      svg.setAttribute("role", "img");
+      svg.setAttribute("aria-label", "omrids af et land");
+      var sti = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      sti.setAttribute("d", land.sti);
+      svg.appendChild(sti);
+      kort.appendChild(svg);
+    }
+
+    function runde() {
+      svaret = false;
+      facit = alle[Math.floor(Math.random() * alle.length)];
+      visKort(facit);
+
+      // tre forkerte plus det rigtige, blandet
+      var andre = bland(alle.filter(function (l) { return l.iso !== facit.iso; })).slice(0, 3);
+      var muligheder = bland(andre.concat([facit]));
+
+      valgboks.innerHTML = "";
+      muligheder.forEach(function (land) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = land.navn;
+        b.addEventListener("click", function () { svar(land, b, muligheder); });
+        valgboks.appendChild(b);
+      });
+
+      nyKnap.hidden = true;
+      status.innerHTML = "rigtige: <b id=\"lande-score\">" + score + "</b>";
+      scoreTal = id("lande-score");
+    }
+
+    function svar(valgt, knap, muligheder) {
+      if (svaret) return;
+      svaret = true;
+      var knapper = valgboks.querySelectorAll("button");
+      for (var i = 0; i < knapper.length; i++) {
+        knapper[i].disabled = true;
+        if (muligheder[i].iso === facit.iso) knapper[i].className = "rigtig";
+      }
+      if (valgt.iso === facit.iso) {
+        score += 1;
+        knap.className = "rigtig";
+      } else {
+        knap.className = "forkert";
+        score = 0;   // en forkert nulstiller stimen
+      }
+      scoreTal.textContent = score;
+
+      var t = grader[facit.iso];
+      var haledel = (typeof t === "number") ? ", " + t + "° lige nu" : "";
+      status.innerHTML = (valgt.iso === facit.iso ? "ja! " : "nej — ") +
+        "det var <b>" + facit.navn + "</b>" + haledel;
+      nyKnap.hidden = false;
+    }
+
+    nyKnap.addEventListener("click", runde);
+
+    // hent kortene og temperaturerne; temperaturen må gerne mangle
+    hent("/lande-vejr.json").then(function (d) { grader = (d && d.grader) || {}; })
+      .catch(function () {})
+      .then(function () {
+        // lande.json ligger i repoet, hentes fra siden selv (samme origin)
+        return fetch("/data/lande.json").then(function (r) { return r.json(); });
+      })
+      .then(function (d) {
+        alle = (d && d.lande) || [];
+        if (alle.length < 4) {
+          kort.innerHTML = "";
+          kort.appendChild(lav("p", "tom", "kunne ikke hente landene"));
+          return;
+        }
+        runde();
+      })
+      .catch(function () {
+        kort.innerHTML = "";
+        kort.appendChild(lav("p", "tom", "kunne ikke hente landene"));
+      });
+  }
+
   // ---------------- kryds og bolle mod en cpu der snyder ----------------
 
   /* Der blev bedt om kryds og bolle mod en cpu der snyder og rykker dine
@@ -2811,6 +2925,7 @@
   hentVejr();
   setInterval(hentVejr, 120000);
   krydsSpil();
+  landeSpil();
 
   tegnFlag();
   tegnSang();

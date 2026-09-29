@@ -29,6 +29,8 @@ public/data/quotes.json    de citater der er godkendt til at ligge offentligt
 tools/fetch_quotes.py      henter #quotes ned fra Discord
 tools/parse_quotes.py      laver rådataene om til quotes.json
 tools/fetch_quote_medie.py henter billederne fra citat-beskederne ned på VPS'en
+tools/udtraek_lande.py     laver public/data/lande.json fra Natural Earth
+public/data/lande.json     landeomrids til gæt-landet-spillet
 tools/fetch_members.py     henter kaldenavnene ned, så parseren kan genkende dem
 tools/members.json         kaldenavnene på det tidspunkt filen blev hentet
 tools/names.json           hvem der ikke skal nævnes ved navn
@@ -300,6 +302,26 @@ Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 ønsket, og det er ren udsmykning: der bliver ikke hentet vejrdata fra Tyrkiet —
 kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
 blæser hen.
+
+### Gæt landet
+
+Dangus bad om et spil hvor man gætter et land ud fra omridset, og Tristan om at
+man også ser temperaturen i landet lige nu.
+
+Omridsene er **rigtige**, ikke tegnet i hånden: de kommer fra Natural Earth
+(public domain, 110m), trukket ud og projiceret til svg-stier af
+`tools/udtraek_lande.py`. Resultatet ligger færdigt i `public/data/lande.json`
+— 32 lande, hver som en sti i en 100×100-kasse plus et midtpunkt. Vil man lave
+sættet om, henter man geojson'en (linket står i toppen af scriptet), kører det,
+og kigger på kontaktarket det spytter ud, inden man committer.
+
+Temperaturen er det eneste levende. `build.py` henter den for alle 32 landes
+midtpunkter i ét kald til open-meteo hver halve time og lægger den som
+`lande-vejr.json`. Siden selv taler kun med `data.qr25.dk`. Kan temperaturen
+ikke hentes, spiller man bare uden.
+
+Spillet viser et omrids og fire navne; en forkert nulstiller stimen, og ved
+svaret står landets navn og temperaturen lige nu.
 
 ### Kryds og bolle (cpu snyder)
 
