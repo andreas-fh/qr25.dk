@@ -301,12 +301,20 @@
     </div>
   </div>
 
-  <!-- første halvdel af ét citat, anden halvdel af et andet -->
+  <!-- første halvdel af ét citat, anden halvdel af et andet. de bedste kan
+       gemmes, likes og rangeres, og listen nulstilles hver uge -->
   <div class="kasse" id="kasse-vroevl">
     <div class="indhold">
       <p class="kassetop">vrøvlemaskinen</p>
       <div id="vroevl"><p class="tom">henter</p></div>
-      <p class="kassebund"><button type="button" id="vroevl-igen">bland to</button></p>
+      <p class="kassebund">
+        <button type="button" id="vroevl-igen">bland to</button>
+        <button type="button" id="vroevl-gem">gem den</button>
+      </p>
+      <details id="vroevl-board-boks">
+        <summary>de gemte <span id="vroevl-uge"></span></summary>
+        <div id="vroevl-liste"><p class="tom">henter</p></div>
+      </details>
     </div>
   </div>
 

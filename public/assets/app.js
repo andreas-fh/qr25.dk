@@ -585,8 +585,9 @@
     md.navne.forEach(function (n) { navnerad.appendChild(lav("span", null, n)); });
     ti.appendChild(navnerad);
 
-    // --- 6: vrøvlemaskinen ---
+    // --- 6: vrøvlemaskinen, med et board over de gemte ---
     var vr = id("vroevl");
+    var nuvaerende = null;   // det der står på skærmen lige nu, klar til at gemme
 
     function halvdele(tekst) {
       var ord = tekst.split(/\s+/).filter(Boolean);
@@ -597,6 +598,7 @@
 
     function vroevl() {
       vr.innerHTML = "";
+      nuvaerende = null;
       // prøv et par gange: ikke alle citater er lange nok til at deles
       for (var forsøg = 0; forsøg < 20; forsøg++) {
         var a = citater[Math.floor(Math.random() * citater.length)];
@@ -605,17 +607,104 @@
         var ha = halvdele(udskriv(a.lines[0].text));
         var hb = halvdele(udskriv(b.lines[0].text));
         if (!ha || !hb) continue;
-        vr.appendChild(lav("p", "quote-text", "»" + ha[0] + " " + hb[1] + "«"));
         var hvemA = afsender(a.lines[0]), hvemB = afsender(b.lines[0]);
-        vr.appendChild(lav("p", "quote-attr",
-          "- " + (hvemA || "nogen") + " og " + (hvemB || "nogen")));
+        nuvaerende = {
+          tekst: ha[0] + " " + hb[1],
+          hvem: (hvemA || "nogen") + " og " + (hvemB || "nogen"),
+        };
+        vr.appendChild(lav("p", "quote-text", "»" + nuvaerende.tekst + "«"));
+        vr.appendChild(lav("p", "quote-attr", "- " + nuvaerende.hvem));
+        gemKnap.disabled = false;
         return;
       }
       vr.appendChild(lav("p", "tom", "citaterne er for korte til at blande"));
+      gemKnap.disabled = true;
     }
+
+    /* --- boardet ---
+
+       De gemte ligger på VPS'en, likes og det hele. Alle kan gemme en
+       sammenblanding og like andres; den mest likede står øverst, og listen
+       nulstilles hver uge. Teksten sættes med lav()/textContent, så der ikke
+       kan komme html med fra en andens gem. */
+
+    var gemKnap = id("vroevl-gem");
+    var listeBoks = id("vroevl-liste");
+    var ugeMaerke = id("vroevl-uge");
+
+    // et tilfældigt vælger-id, kun til at et like ikke tælles ti gange
+    function vaelgerId() {
+      try {
+        var v = localStorage.getItem("qr25-vaelger");
+        if (v) return v;
+        v = (Date.now().toString(36) + Math.random().toString(36).slice(2))
+          .replace(/[^a-z0-9]/g, "").slice(0, 24);
+        localStorage.setItem("qr25-vaelger", v);
+        return v;
+      } catch (e) { return "flygtig" + Math.random().toString(36).slice(2, 12); }
+    }
+
+    function tegnBoard(svar) {
+      if (ugeMaerke) ugeMaerke.textContent = svar && svar.uge ? svar.uge : "";
+      listeBoks.innerHTML = "";
+      if (!svar || !svar.liste || !svar.liste.length) {
+        listeBoks.appendChild(lav("p", "tom", "ingen har gemt noget i denne uge"));
+        return;
+      }
+      var ol = lav("ol", "vroevl-top");
+      svar.liste.forEach(function (r) {
+        var li = document.createElement("li");
+        li.appendChild(lav("p", "vroevl-tekst", "»" + r.tekst + "«"));
+        var rad = lav("p", "vroevl-rad");
+        var hjerte = lav("button", "vroevl-like" + (r.likede ? " likede" : ""),
+          (r.likede ? "♥ " : "♡ ") + r.likes);
+        hjerte.type = "button";
+        hjerte.addEventListener("click", function () { likeSend(r.id); });
+        rad.appendChild(hjerte);
+        rad.appendChild(lav("span", "vroevl-hvem", r.hvem));
+        li.appendChild(rad);
+        ol.appendChild(li);
+      });
+      listeBoks.appendChild(ol);
+    }
+
+    function hentBoard() {
+      fetch(DATA + "/vroevl", { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(tegnBoard)
+        .catch(function () {});
+    }
+
+    function likeSend(hvad) {
+      fetch(DATA + "/vroevl/like", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: hvad, vaelger: vaelgerId() }),
+      })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (svar) { if (svar) tegnBoard(svar); })
+        .catch(function () {});
+    }
+
+    gemKnap.addEventListener("click", function () {
+      if (!nuvaerende) return;
+      gemKnap.disabled = true;
+      fetch(DATA + "/vroevl/gem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuvaerende),
+      })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (svar) {
+          if (svar) tegnBoard(svar);
+          id("vroevl-board-boks").open = true;
+        })
+        .catch(function () { gemKnap.disabled = false; });
+    });
 
     id("vroevl-igen").addEventListener("click", vroevl);
     vroevl();
+    hentBoard();
 
     // --- 1 igen: kom nogen med #citat=<id> i adressen, så er det det citat ---
     var fraAdressen = null;

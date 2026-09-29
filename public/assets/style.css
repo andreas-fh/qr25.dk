@@ -345,6 +345,38 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
   padding-top: 8px;
 }
 
+/* ---- de gemte vrøvl-citater ---- */
+
+#vroevl-board-boks { margin-top: 8px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
+#vroevl-uge { font-weight: normal; font-size: 11px; color: #55503f; }
+
+#vroevl-liste {
+  height: 150px;
+  overflow-y: auto;
+  border-top: 1px dotted #b8b3a0;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.vroevl-top { margin: 0; padding-left: 22px; }
+.vroevl-top li { margin-bottom: 10px; }
+.vroevl-tekst { margin: 0; font: italic 13px/1.35 Georgia, "Times New Roman", serif; }
+.vroevl-rad { margin: 2px 0 0; display: flex; align-items: center; gap: 8px; }
+.vroevl-hvem { font-size: 11px; color: #55503f; }
+
+/* hjertet. massiv rød når man har liket, ellers bare en kant */
+.vroevl-like {
+  font: bold 12px Verdana, Geneva, sans-serif;
+  border: 2px outset #ddd8c6;
+  background: #efece0;
+  color: #55503f;
+  cursor: pointer;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.vroevl-like.likede { color: #c22a1c; border-style: inset; }
+.vroevl-like:active { border-style: inset; }
+
 /* ---- denne dag, tallene, vrøvlet ---- */
 
 #denne-dag, #tal-indhold, #vroevl {

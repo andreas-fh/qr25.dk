@@ -351,6 +351,25 @@ Serveren sier fra på:
 De 50 bedste bliver gemt, de 10 bedste vist. Filen er låst mens der skrives,
 præcis som besøgstælleren.
 
+### De gemte vrøvl-citater
+
+Vrøvlemaskinen kan nu gemme. Man trykker "gem den" på en sammenblanding man
+synes er perfekt, den lander på et board hvor alle kan like den, den mest
+likede står øverst, og **listen nulstilles hver uge** (iso-uge, så det sker
+søndag/mandag). Det ligger på VPS'en (`/opt/qr25-data/vroevl.py`, bag
+`data.qr25.dk/vroevl`).
+
+Teksten kommer fra brugere, så den behandles derefter: længden klippes, den går
+gennem den samme blocklist som citaterne, og et blokeret gem får samme svar som
+et gyldigt, så listen ikke kan bruges til at regne blocklisten ud. Siden viser
+teksten med `textContent` — der bliver aldrig sat html ind fra et andet menneskes
+gem, så selv en gemt `<script>` er bare tekst.
+
+Et like tælles per "vælger", et tilfældigt id fra `localStorage`. Det er til at
+man ikke liker det samme ti gange, ikke en konto og ikke en person — det kan
+snydes, og det gør ikke noget på en klasse-jokeside. Et tryk mere fjerner sit
+eget like igen.
+
 ### De ti små
 
 Ti ting der ikke er ønsket af nogen. De lever alle sammen af `quotes.json`,
