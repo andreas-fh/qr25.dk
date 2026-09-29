@@ -282,6 +282,22 @@ set -a; . /etc/demokraticlanker/env; set +a
 sudo -u demokrati -E node /opt/demokraticlanker/scripts/senest-backfill.js
 ```
 
+### Vejret
+
+Der blev bedt om et vejrvindue i mærkelige enheder: temperatur i kelvin, vind i
+knob, lufttryk i mmHg og en luftfugtighed i syvogtresdele (67/67 er 100%).
+
+Tallene er **danske** — målt i Aalborg — og bliver ved med at være danske. De
+hentes af `build.py` fra open-meteo (gratis, ingen nøgle) her på VPS'en og
+lægges som `vejr.json`. Siden selv taler kun med `data.qr25.dk`, så der kommer
+ingen tredjepart ind i nogens browser. Omregningerne sker på serveren, og
+råtallene (°C, km/t, hPa, %) kommer med i filen så man kan regne efter.
+
+Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
+ønsket, og det er ren udsmykning: der bliver ikke hentet vejrdata fra Tyrkiet —
+kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
+blæser hen.
+
 ### Ned ad bakke
 
 Der blev bedt om spillet Slope. **Det her er ikke Slope.** Det er vores eget

@@ -626,6 +626,55 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- vejret ----------------
+
+  /* De enheder der blev bedt om: kelvin, knob, mmHg og en luftfugtighed i
+     syvogtresdele. Tallene regnes færdige på VPS'en; her bliver de bare stillet
+     op. Vindpilen peger den vej vinden kommer fra, hen over et kort der ikke
+     forestiller Danmark — det er med vilje, og der er ikke hentet vejrdata fra
+     det land kortet viser. */
+
+  function tegnVejr(v) {
+    if (!v) return;
+    id("vejr-sted").textContent = v.sted || "?";
+
+    var raekker = [
+      ["temperatur", v.kelvin + " K"],
+      ["vind", v.knob + " knob"],
+      ["lufttryk", v.mmhg + " mmHg"],
+      ["luftfugtighed", v.fugt_67 + "/67"],
+    ];
+    var ul = id("vejr-tal");
+    ul.innerHTML = "";
+    raekker.forEach(function (r) {
+      var li = document.createElement("li");
+      li.appendChild(lav("span", "vejr-navn", r[0]));
+      li.appendChild(lav("span", "vejr-vaerdi", r[1]));
+      ul.appendChild(li);
+    });
+
+    // pilen peger den vej vinden blæser hen, altså modsat hvor den kommer fra
+    var pil = id("vejr-pil");
+    if (pil && typeof v.vindretning === "number") {
+      pil.textContent = "↑";
+      pil.style.transform = "rotate(" + ((v.vindretning + 180) % 360) + "deg)";
+    }
+
+    var fod = id("vejr-fod");
+    if (fod) {
+      var r = v.raa || {};
+      fod.textContent = "rigtige tal: " + r.celsius + " °C, " +
+        r.kmt + " km/t, " + r.hpa + " hPa, " + r.fugt_pct + " %";
+    }
+  }
+
+  function hentVejr() {
+    hent("/vejr.json").then(tegnVejr).catch(function () {
+      var ul = id("vejr-tal");
+      if (ul) { ul.innerHTML = ""; ul.appendChild(lav("li", "tom", "kunne ikke hente vejret")); }
+    });
+  }
+
   // ---------------- ned ad bakke ----------------
 
   /* Der blev bedt om et bakkespil. Det her er vores eget, skrevet herinde:
@@ -2476,6 +2525,9 @@
 
   var minSession = modtager();
   panel(minSession);
+
+  hentVejr();
+  setInterval(hentVejr, 120000);
 
   tegnFlag();
   tegnSang();
