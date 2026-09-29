@@ -229,6 +229,16 @@
         <button type="button" id="bakke-start">start</button>
         <span id="bakke-tal">piletaster eller a/d</span>
       </p>
+      <!-- gem-feltet står kun frem når man lige har kørt. der er ingen
+           konto og ingen cookie: navnet skrives når der er noget at gemme -->
+      <p id="bakke-gem" hidden>
+        <input type="text" id="bakke-navn" placeholder="dit navn" maxlength="18" autocomplete="off">
+        <button type="button" id="bakke-send">gem</button>
+      </p>
+      <details id="bakke-liste-boks">
+        <summary>resultatliste</summary>
+        <div id="bakke-liste"><p class="tom">henter</p></div>
+      </details>
     </div>
   </div>
 

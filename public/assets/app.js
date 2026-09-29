@@ -790,6 +790,12 @@
       knap.textContent = "igen";
       skriv();
       tegn();
+      // kørte man overhovedet, må man gerne skrive sig på listen
+      if (meter() > 0) {
+        gemRad.hidden = false;
+        gemKnap.disabled = false;
+        gemKnap.textContent = "gem " + meter() + " m";
+      }
     }
 
     function skridt(naa) {
@@ -864,6 +870,78 @@
       if (document.hidden && koerer) { koerer = false; knap.textContent = "start"; }
     });
 
+    /* --- resultatlisten ---
+
+       Ligger på VPS'en, for en liste kun du kan se er ikke en liste. Der er
+       ingen konto og ingen cookie: man skriver et navn når man har noget at
+       gemme, og det er alt der bliver sendt. Navnet går gennem den samme
+       blocklist som citaterne, ovre på serveren. */
+
+    var gemRad = id("bakke-gem");
+    var gemKnap = id("bakke-send");
+    var navneFelt = id("bakke-navn");
+    var listeKasse = id("bakke-liste");
+
+    // navnet huskes lokalt, så man ikke skal skrive det hver gang
+    try {
+      var husket = localStorage.getItem("qr25-bakke-navn");
+      if (husket) navneFelt.value = husket;
+    } catch (e) {}
+
+    function tegnListe(liste) {
+      listeKasse.innerHTML = "";
+      if (!liste || !liste.length) {
+        listeKasse.appendChild(lav("p", "tom", "ingen har kørt endnu"));
+        return;
+      }
+      var ol = lav("ol", "bakke-top");
+      liste.forEach(function (r) {
+        var li = document.createElement("li");
+        li.appendChild(lav("span", "who", r.navn));
+        li.appendChild(lav("span", "hvem-tal", " " + r.meter + " m"));
+        ol.appendChild(li);
+      });
+      listeKasse.appendChild(ol);
+    }
+
+    function hentListe() {
+      fetch(DATA + "/bakke", { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (svar) { if (svar) tegnListe(svar.liste); })
+        .catch(function () {
+          listeKasse.innerHTML = "";
+          listeKasse.appendChild(lav("p", "tom", "kunne ikke hente listen"));
+        });
+    }
+
+    gemKnap.addEventListener("click", function () {
+      var navn = navneFelt.value.trim();
+      if (!navn) { navneFelt.focus(); return; }
+      try { localStorage.setItem("qr25-bakke-navn", navn); } catch (e) {}
+      gemKnap.disabled = true;
+      gemKnap.textContent = "gemmer";
+      fetch(DATA + "/bakke", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ navn: navn, meter: meter() }),
+      })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (svar) {
+          if (svar) tegnListe(svar.liste);
+          gemRad.hidden = true;
+          id("bakke-liste-boks").open = true;
+        })
+        .catch(function () {
+          gemKnap.disabled = false;
+          gemKnap.textContent = "prøv igen";
+        });
+    });
+
+    navneFelt.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); gemKnap.click(); }
+    });
+
+    hentListe();
     skriv();
     tegn();
   }

@@ -312,6 +312,29 @@ mod. Piletasterne bliver kun spist mens der spilles — ellers skal de kunne
 rulle siden. Skifter man faneblad, stopper spillet i stedet for at køre videre
 i baggrunden. Bedste resultat ligger i `localStorage`.
 
+### Resultatlisten til bakken
+
+Der blev spurgt om et leaderboard. Det ligger på VPS'en
+(`/opt/qr25-data/bakke.py`, bag `data.qr25.dk/bakke`), for en liste kun du selv
+kan se er ikke en liste.
+
+**Det kræver ikke cookies.** Der er ingen konto og intet login: man skriver et
+navn når man har kørt, og det eneste der bliver gemt er navn, meter og datoen.
+Ingen ip, ingen id'er, ingenting der kan følges tilbage til en person. Navnet
+bliver husket i `localStorage` så man slipper for at skrive det hver gang —
+det er en bekvemmelighed, ikke en forudsætning, og cookie-boksen er ikke rørt.
+
+Serveren sier fra på:
+
+- tomt navn, eller navn med andet end bogstaver, tal, mellemrum og `.-!?'`
+- meter der er nul, negative eller over 200000
+- navne der rammer den samme blocklist som citaterne — og svaret ser ud som et
+  gyldigt gem, så listen ikke kan bruges til at regne ud hvad der står i
+  blocklisten
+
+De 50 bedste bliver gemt, de 10 bedste vist. Filen er låst mens der skrives,
+præcis som besøgstælleren.
+
 ### De ti små
 
 Ti ting der ikke er ønsket af nogen. De lever alle sammen af `quotes.json`,

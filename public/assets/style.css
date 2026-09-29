@@ -254,6 +254,34 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
 #bakke-tal { font-size: 11px; color: #55503f; margin-left: 6px; }
 
+/* ---- resultatlisten til bakken ---- */
+
+#bakke-gem { margin: 6px 0 0; }
+#bakke-gem[hidden] { display: none; }
+
+#bakke-navn {
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 3px 6px;
+  border: 3px inset #cfcab6;
+  background: #fff;
+  color: #111;
+  width: 44%;
+}
+
+#bakke-liste-boks { margin-top: 8px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
+
+/* fast højde: kassen skal fylde det samme uanset hvor mange der har kørt */
+#bakke-liste {
+  height: 108px;
+  overflow-y: auto;
+  border-top: 1px dotted #b8b3a0;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.bakke-top { margin: 0; padding-left: 26px; font-size: 12px; }
+.bakke-top li { margin-bottom: 4px; }
+
 /* ---- søgning i citaterne ---- */
 
 #soeg-boks { margin-top: 10px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
