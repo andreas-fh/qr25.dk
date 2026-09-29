@@ -2178,6 +2178,212 @@
     });
   }
 
+  // ---------------- live-styring ----------------
+
+  /* En kanal til at få harmløse ting til at ske på de sider der er åbne lige
+     nu: vend siden, rist, regn med kager. Hver side melder sig hvert par
+     sekunder til en lille service på VPS'en og henter det der ligger til den.
+
+     To halvdele:
+
+       - MODTAGEREN kører alle steder. Den henter kommandoer og udfører dem.
+         Den læser aldrig noget fra siden og sender aldrig andet end "jeg er
+         her". Effekterne er en fast liste, forsvinder ved en genindlæsning,
+         og teksten i en besked sættes med textContent — der bliver aldrig
+         kørt kode fra serveren.
+
+       - PANELET kan sende kommandoer. Det kræver en nøgle, som kun findes i
+         den browser der har fået den, og som serveren tjekker på hvert kald.
+         Der er ingen knap til det: har man ikke nøglen, er panelet der ikke.
+         Man får nøglen ved at åbne siden med #noegle=... én gang; så gemmes
+         den lokalt og forsvinder ud af adressen igen. */
+
+  var KONTROL = DATA + "/kontrol";
+
+  // et id per faneblad, væk når fanen lukkes. intet navn, ingenting om hvem
+  function sessionsId() {
+    try {
+      var s = sessionStorage.getItem("qr25-session");
+      if (s) return s;
+      s = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10))
+        .replace(/[^a-z0-9]/g, "").slice(0, 32);
+      sessionStorage.setItem("qr25-session", s);
+      return s;
+    } catch (e) {
+      return "flygtig" + Math.random().toString(36).slice(2, 10);
+    }
+  }
+
+  // ryd alt hvad en effekt kan have sat, så en genindlæsning ikke er nødvendig
+  function trollNulstil() {
+    document.body.className = document.body.className
+      .replace(/\btroll-\S+/g, "").replace(/\bdisco\b/g, "").trim();
+    var o = id("troll-besked");
+    if (o) o.parentNode.removeChild(o);
+    kagevejr(false);
+  }
+
+  function trollKlasse(navn, ms) {
+    document.body.classList.add(navn);
+    setTimeout(function () { document.body.classList.remove(navn); }, ms);
+  }
+
+  function trollBesked(tekst) {
+    var o = id("troll-besked");
+    if (o) o.parentNode.removeChild(o);
+    o = document.createElement("div");
+    o.id = "troll-besked";
+    // textContent, aldrig innerHTML: serveren skal ikke kunne skrive html ind
+    o.textContent = String(tekst || "").slice(0, 120);
+    document.body.appendChild(o);
+    setTimeout(function () {
+      if (o.parentNode) o.parentNode.removeChild(o);
+    }, 6500);
+  }
+
+  function udfoerEffekt(k) {
+    switch (k && k.effekt) {
+      case "kage":
+        kagevejr(true);
+        setTimeout(function () { kagevejr(false); }, 12000);
+        break;
+      case "sirene": alarm(); break;
+      case "flip": trollKlasse("troll-flip", 6000); break;
+      case "spejl": trollKlasse("troll-spejl", 6000); break;
+      case "rist": trollKlasse("troll-rist", 2500); break;
+      case "zoom": trollKlasse("troll-zoom", 5000); break;
+      case "lille": trollKlasse("troll-lille", 5000); break;
+      case "disco": trollKlasse("disco", 15000); break;
+      case "besked": trollBesked(k.tekst); break;
+      case "nulstil": trollNulstil(); break;
+      // ukendt: gør ingenting. der bliver aldrig kørt kode herfra
+    }
+  }
+
+  function modtager() {
+    var mig = sessionsId();
+    var side = (location.pathname === "/" || location.pathname === "/index.html")
+      ? "forsiden" : location.pathname.slice(1, 40);
+
+    function bank() {
+      fetch(KONTROL + "/hej", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: mig, side: side }),
+      })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (svar) {
+          if (svar && svar.kommandoer) svar.kommandoer.forEach(udfoerEffekt);
+        })
+        .catch(function () { /* servicen er nede. siden kører videre uden */ });
+    }
+
+    bank();
+    setInterval(bank, 5000);
+    return mig;
+  }
+
+  /* Panelet. Det tegnes kun hvis der ligger en nøgle. Serveren tjekker nøglen
+     på hvert kald, så koden her er ikke det der beskytter noget — nøglen er.
+     Alle kan læse den her funktion; ingen kan bruge den uden nøglen. */
+  function panel(migSelv) {
+    var noegle = null;
+    try { noegle = localStorage.getItem("qr25-kontrol-noegle"); } catch (e) {}
+
+    // kom man med #noegle=... i adressen, så gem den og tør adressen af
+    var m = /(?:^|[#&])noegle=([a-f0-9]{16,80})/.exec(location.hash || "");
+    if (m) {
+      noegle = m[1];
+      try { localStorage.setItem("qr25-kontrol-noegle", noegle); } catch (e) {}
+      if (history.replaceState) {
+        history.replaceState(null, "", location.pathname + location.search);
+      } else { location.hash = ""; }
+    }
+    if (!noegle) return;
+
+    var EFFEKTER = [
+      ["kage", "kager"], ["sirene", "sirene"], ["flip", "på hovedet"],
+      ["spejl", "spejl"], ["rist", "ryst"], ["disco", "disco"],
+      ["zoom", "zoom ind"], ["lille", "zoom ud"], ["besked", "besked"],
+      ["nulstil", "nulstil"],
+    ];
+
+    var boks = document.createElement("div");
+    boks.id = "troll-panel";
+    boks.innerHTML =
+      '<p class="tp-top">styring <button type="button" id="tp-luk">×</button></p>' +
+      '<p class="tp-linje"><label>mål: <select id="tp-maal"></select></label>' +
+      ' <button type="button" id="tp-oppdater">↻</button></p>' +
+      '<p class="tp-linje"><input type="text" id="tp-tekst" placeholder="tekst til besked" maxlength="120"></p>' +
+      '<div id="tp-knapper"></div>' +
+      '<p class="tp-fod" id="tp-status"></p>';
+    document.body.appendChild(boks);
+
+    var maal = id("tp-maal");
+    var status = id("tp-status");
+
+    function kald(sti, krop) {
+      return fetch(KONTROL + sti, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.assign({ noegle: noegle }, krop)),
+      }).then(function (r) {
+        if (r.status === 403) throw new Error("nøgle afvist");
+        if (!r.ok) throw new Error("fejl " + r.status);
+        return r.json();
+      });
+    }
+
+    function opdaterListe() {
+      kald("/liste", {}).then(function (svar) {
+        var valgt = maal.value;
+        maal.innerHTML = '<option value="alle">alle (' + svar.antal + ")</option>";
+        svar.sessioner.forEach(function (s) {
+          var o = document.createElement("option");
+          o.value = s.id;
+          var mig = s.id === migSelv ? " (dig)" : "";
+          o.textContent = s.id.slice(0, 6) + " · " + s.side + " · " + s.alder + "s" + mig;
+          maal.appendChild(o);
+        });
+        if (valgt) maal.value = valgt;
+        status.textContent = svar.antal + " åbne";
+      }).catch(function (e) {
+        status.textContent = e.message;
+      });
+    }
+
+    function send(effekt) {
+      var krop = { maal: maal.value || "alle", effekt: effekt };
+      if (effekt === "besked") krop.tekst = id("tp-tekst").value;
+      kald("/styr", krop).then(function (svar) {
+        status.textContent = effekt + " → " + svar.sendt;
+      }).catch(function (e) {
+        status.textContent = e.message;
+      });
+    }
+
+    var knapper = id("tp-knapper");
+    EFFEKTER.forEach(function (e) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = e[1];
+      b.addEventListener("click", function () { send(e[0]); });
+      knapper.appendChild(b);
+    });
+
+    id("tp-oppdater").addEventListener("click", opdaterListe);
+    id("tp-luk").addEventListener("click", function () {
+      // luk for i dag. nøglen bliver liggende, så panelet er der næste gang
+      boks.parentNode.removeChild(boks);
+    });
+
+    opdaterListe();
+    setInterval(opdaterListe, 4000);
+  }
+
+  var minSession = modtager();
+  panel(minSession);
+
   tegnFlag();
   tegnSang();
   mikkel();

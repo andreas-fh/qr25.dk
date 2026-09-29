@@ -353,6 +353,108 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
   50%, 100% { background: transparent; }
 }
 
+/* ---- live-styring: effekterne ---- */
+
+/* alle er midlertidige og forsvinder af sig selv. de sætter en transform på
+   body, så hele siden bliver ramt — det er meningen */
+body.troll-flip { transform: rotate(180deg); }
+body.troll-spejl { transform: scaleX(-1); }
+body.troll-zoom { transform: scale(1.4); }
+body.troll-lille { transform: scale(0.55); }
+body.troll-flip, body.troll-spejl, body.troll-zoom, body.troll-lille {
+  transition: transform 0.5s ease;
+}
+
+body.troll-rist { animation: troll-rist 0.28s steps(2) infinite; }
+@keyframes troll-rist {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-6px, 3px) rotate(-1deg); }
+  50%  { transform: translate(5px, -4px); }
+  75%  { transform: translate(-3px, -3px) rotate(1deg); }
+  100% { transform: translate(4px, 4px); }
+}
+
+/* en besked midt på skærmen. teksten kommer fra styringen, men bliver sat med
+   textContent, så der kan ikke smugles html ind */
+#troll-besked {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  pointer-events: none;
+  font: 400 44px/1.1 Impact, Haettenschweiler, "Arial Narrow Bold", "DejaVu Sans Condensed", sans-serif;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 4px 4px 0 #111, -2px -2px 0 #111;
+  word-break: break-word;
+  animation: troll-besked-ind 0.3s ease;
+}
+
+@keyframes troll-besked-ind {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* de bevægelige holder vi væk fra dem der bliver dårlige af det. flip og
+   spejl er stillestående, dem beholder vi */
+@media (prefers-reduced-motion: reduce) {
+  body.troll-rist { animation: none; }
+  #troll-besked { animation: none; }
+}
+
+/* ---- live-styring: panelet ---- */
+
+/* kun i den browser der har nøglen. ligger fast i hjørnet, oven på det hele */
+#troll-panel {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: 9600;
+  width: 210px;
+  border: 4px outset #ddd8c6;
+  background: #fff;
+  padding: 8px 10px 10px;
+  font: 12px Verdana, Geneva, sans-serif;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.tp-top { margin: 0 0 6px; font-weight: bold; }
+#tp-luk {
+  float: right;
+  font: bold 12px Verdana, sans-serif;
+  border: 2px outset #ddd8c6;
+  background: #efece0;
+  cursor: pointer;
+  padding: 0 5px;
+}
+.tp-linje { margin: 0 0 6px; }
+#troll-panel select, #troll-panel input {
+  font: 11px Verdana, sans-serif;
+  border: 2px inset #cfcab6;
+  background: #fff;
+  color: #111;
+  padding: 2px 3px;
+  max-width: 128px;
+}
+#tp-oppdater {
+  border: 2px outset #ddd8c6; background: #efece0; cursor: pointer; padding: 1px 5px;
+}
+#tp-knapper { display: flex; flex-wrap: wrap; gap: 4px; }
+#tp-knapper button {
+  font: 11px Verdana, sans-serif;
+  border: 2px outset #ddd8c6;
+  background: #efece0;
+  color: #111;
+  cursor: pointer;
+  padding: 3px 6px;
+}
+#tp-knapper button:active { border-style: inset; }
+.tp-fod { margin: 8px 0 0; font-size: 11px; color: #55503f; min-height: 14px; }
+
 /* ---- konami ---- */
 
 /* hele siden skifter farve. filteret rammer alt, også kasserne, og det er

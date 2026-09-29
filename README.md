@@ -343,6 +343,30 @@ Kasser med indhold der skifter — søgesvar, denne dag, tallene, vrøvlet, navn
 der bliver trukket — har alle fast højde og ruller indeni. `spred()` måler
 kasserne én gang, så en kasse der vokser bagefter lægger sig oven i naboen.
 
+### Live-styring (funny admin stuff)
+
+En prank-kanal til de sider der er åbne lige nu. En lille service på VPS'en
+(`/opt/qr25-data/kontrol.py`, bag `data.qr25.dk/kontrol/`) holder rede på hvem
+der er åben. Hver side melder sig hvert par sekunder med et tilfældigt,
+flygtigt id og henter de kommandoer der ligger til den.
+
+En kommando er et effekt-navn fra en **fast liste** — `kage`, `sirene`, `flip`,
+`spejl`, `rist`, `disco`, `zoom`, `lille`, `besked`, `nulstil` — og intet
+andet. Alt er midlertidigt og forsvinder ved en genindlæsning. Der bliver
+**aldrig læst noget fra siderne** (ingen taster, data eller navne), og teksten
+i en `besked` sættes med `textContent`, så der ikke kan køres kode fra
+serveren.
+
+At sende kommandoer kræver en nøgle, som ligger i `/etc/qr25-kontrol/env` og
+aldrig i repoet. Serveren tjekker den på hvert kald. Panelet i browseren dukker
+kun op hvis nøglen er gemt lokalt — der er ingen knap. Man får nøglen ind ved
+at åbne siden med `#noegle=…` én gang; så gemmes den og forsvinder ud af
+adressen. Nøglen kan skiftes ved at rette env-filen og genstarte
+`qr25-kontrol`.
+
+Modtager-koden i `app.js` er offentlig som resten af siden — alle kan læse
+mekanismen, men ingen kan bruge den uden nøglen.
+
 ### Kagevejret
 
 I de ti minutter kagepausen varer, regner det med kager ned over siden. Resten
