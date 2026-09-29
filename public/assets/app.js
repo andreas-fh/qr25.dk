@@ -1909,14 +1909,21 @@
 
      Kender vi ikke id'et, står der "nogen". Det er også hvad der står om dem
      der har bedt om ikke at blive nævnt ved navn. */
-  function senestNavn(uid) {
-    id("senest-hvem").textContent = (uid && NAVNE.navne[uid]) || "nogen";
+  /* To kasser, samme tegning. Den ene viser hvad som helst der er sendt på
+     serveren; den anden kun fra én person. Der blev bedt om begge dele, så
+     funktionen får at vide hvilke elementer den skriver i. */
+  var SENEST_ALLE = { kasse: "senest", hvem: "senest-hvem", kilde: "senest-kilde" };
+  var SENEST_SOLO = { kasse: "solo", hvem: "solo-hvem", kilde: "solo-kilde" };
+
+  function senestNavn(hvor, uid) {
+    id(hvor).textContent = (uid && NAVNE.navne[uid]) || "nogen";
   }
 
-  function tegnSenest(data) {
-    var kasse = id("senest");
+  function tegnSenest(data, hvor) {
+    hvor = hvor || SENEST_ALLE;
+    var kasse = id(hvor.kasse);
     kasse.innerHTML = "";
-    senestNavn(data && data.bruger);
+    senestNavn(hvor.hvem, data && data.bruger);
 
     if (!data || !data.medie || !data.medie.url) {
       kasse.appendChild(lav("p", "tom", "der er ikke sendt nogen gif endnu"));
@@ -1955,9 +1962,17 @@
     if (data.kanal) dele.push("#" + data.kanal);
     if (naar && !isNaN(naar.getTime())) dele.push(siden(Date.now() - naar.getTime()));
 
-    var kilde = id("senest-kilde");
+    var kilde = id(hvor.kilde);
     kilde.textContent = dele.length ? dele.join(", ") : "discord";
     if (data.url) kilde.href = data.url;
+  }
+
+  // begge filer, hver til sin kasse. den ene må gerne fejle uden at tage den anden med
+  function hentSenest() {
+    hent("/senest.json").then(function (d) { tegnSenest(d, SENEST_ALLE); })
+      .catch(function () {});
+    hent("/senest-solo.json").then(function (d) { tegnSenest(d, SENEST_SOLO); })
+      .catch(function () {});
   }
 
   hent("/vedtaegter.json")
@@ -1969,7 +1984,7 @@
     .catch(function (fejl) {
       id("polls").textContent = "kunne ikke hente afstemningerne (" + fejl.message + ")";
     })
-    .then(function () { return hent("/senest.json").then(tegnSenest); })
+    .then(function () { hentSenest(); })
     .catch(function (fejl) {
       id("senest").textContent = "kunne ikke hente den (" + fejl.message + ")";
     })
@@ -1980,7 +1995,7 @@
   // enter, så en side der står åben skal ikke vise noget en time gammelt.
   setInterval(function () {
     opdaterPolls(false).catch(function () {});
-    hent("/senest.json").then(tegnSenest).catch(function () {});
+    hentSenest();
   }, 30000);
 
   // --- dangus' profilbillede ---

@@ -701,7 +701,7 @@ body.disco { animation: disco 2.4s linear infinite; }
 /* kassen henter sig selv igen mens man kigger, og en gif kan være bred og lav
    eller høj og smal. så den har fast højde og ruller indeni, ellers ville
    siden lægge alle kasserne om hver gang han sender noget */
-#senest {
+#senest, #solo {
   height: 188px;
   overflow-y: auto;
   border-top: 1px dotted #b8b3a0;

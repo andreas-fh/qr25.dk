@@ -550,6 +550,23 @@ Det er `SpeechSynthesis`, som ligger i browseren i forvejen. Der bliver ikke
 hentet et bibliotek og ikke sendt en stavelse nogen steder hen. Er der en dansk
 stemme på maskinen, bliver det den.
 
+### Tristans gif for sig
+
+Der blev bedt om at kunne se serverens nyeste gif **og** hans egen hver for
+sig. Botten fører derfor to lister ved siden af hinanden: den brede, og en der
+kun tager imod fra ét id (`SENEST_SOLO` i `senest.js`). Samme beskeder går
+gennem begge, samme filer på disken — det er kun hvad der står øverst der er
+forskelligt.
+
+`senest-solo.json` ligger ved siden af `senest.json` og serveres samme vej.
+`ryd()` beholder et billede så længe bare ét af sporene peger på det, så den
+brede liste ikke kan slette et billede den anden stadig viser.
+
+Backfill'en graver videre indtil **begge** spor er fulde i stedet for at stoppe
+efter fem fund — den brede bliver fuld med det samme, men solo-sporet skal tit
+langt tilbage. `GRAV` er et loft, så den ikke henter hele serverens billeder
+ned hvis personen ikke har sendt nogen.
+
 ### Dangus' profilbillede
 
 Han bad om at få sit nuværende profilbillede op at stå. Det kommer med i
