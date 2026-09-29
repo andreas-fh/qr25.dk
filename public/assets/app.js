@@ -715,6 +715,203 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- kryds og bolle mod en cpu der snyder ----------------
+
+  /* Der blev bedt om kryds og bolle mod en cpu der snyder og rykker dine
+     brikker. Så det gør den: den vil ikke tabe, og hvis du er ved at vinde,
+     flytter den bare din brik et andet sted hen.
+
+     Det er med vilje ikke til at vinde. Pointen er snyderiet, ikke en fair
+     kamp — så den er heller ikke bygget som en. */
+
+  var K_LINJER = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6],
+  ];
+
+  function krydsSpil() {
+    var braet = id("kryds-braet");
+    var status = id("kryds-status");
+    if (!braet) return;
+
+    var felt, spil, felter;
+
+    function vinder(f) {
+      for (var i = 0; i < K_LINJER.length; i++) {
+        var l = K_LINJER[i];
+        if (f[l[0]] && f[l[0]] === f[l[1]] && f[l[1]] === f[l[2]]) return f[l[0]];
+      }
+      return null;
+    }
+
+    // felter med et bestemt tegn, og de tomme
+    function hvor(tegn) {
+      var ud = [];
+      for (var i = 0; i < 9; i++) if (felt[i] === tegn) ud.push(i);
+      return ud;
+    }
+
+    // en linje hvor 'tegn' har to og den tredje er tom — altså lige ved at vinde
+    function trussel(tegn) {
+      for (var i = 0; i < K_LINJER.length; i++) {
+        var l = K_LINJER[i];
+        var mine = 0, tom = -1;
+        for (var j = 0; j < 3; j++) {
+          if (felt[l[j]] === tegn) mine++;
+          else if (!felt[l[j]]) tom = l[j];
+        }
+        if (mine === 2 && tom >= 0) return tom;
+      }
+      return -1;
+    }
+
+    function tegn() {
+      for (var i = 0; i < 9; i++) {
+        var b = felter[i];
+        b.textContent = felt[i] === "X" ? "✕" : felt[i] === "O" ? "◯" : "";
+        b.className = felt[i] === "X" ? "kryds" : felt[i] === "O" ? "bolle" : "";
+        b.disabled = !spil || !!felt[i];
+      }
+    }
+
+    function blink(i) {
+      felter[i].classList.add("flyttet");
+      setTimeout(function () { felter[i].classList.remove("flyttet"); }, 1300);
+    }
+
+    function slut(tekst) {
+      spil = false;
+      status.textContent = tekst;
+      tegn();
+    }
+
+    function tilfaeldig(liste) {
+      return liste[Math.floor(Math.random() * liste.length)];
+    }
+
+    // cpu'ens tur: snyd først, vind så
+    function cpu() {
+      // 1) er DU ved at vinde? så flytter den bare din brik væk. "hvilken brik"
+      var din = trussel("X");
+      if (din >= 0) {
+        var mine = hvor("X");
+        var flyt = tilfaeldig(mine);
+        var tomme = hvor("");
+        var hen = tilfaeldig(tomme);
+        felt[flyt] = "";
+        felt[hen] = "X";
+        tegn();
+        blink(hen);
+        status.textContent = "den brik stod dårligt. jeg flyttede den for dig.";
+      } else if (Math.random() < 0.4 && hvor("X").length) {
+        // 2) ellers snyder den en gang imellem bare for sjov
+        var x = hvor("X");
+        var tom2 = hvor("");
+        if (tom2.length) {
+          var fra = tilfaeldig(x), til = tilfaeldig(tom2);
+          felt[fra] = "";
+          felt[til] = "X";
+          tegn();
+          blink(til);
+          status.textContent = "hovsa, din brik gik en tur.";
+        }
+      }
+
+      if (vinder("X")) {
+        // den lod alligevel et kryds stå på tre. det retter den lynhurtigt
+        var raek = hvor("X");
+        felt[tilfaeldig(raek)] = "";
+      }
+
+      // 3) den vil vinde. hvis den kan lige nu, gør den det
+      var tomme3 = hvor("");
+      if (!tomme3.length) return slut("uafgjort. denne gang.");
+      var vind = trussel("O");
+      if (vind >= 0) {
+        felt[vind] = "O";
+        return slut("cpu vandt. selvfølgelig gjorde den det.");
+      }
+
+      /* ellers bygger den mod en sejr. hvert tomt felt får point efter hvor
+         mange linjer igennem det den kan nå at vinde på — linjer hvor der
+         allerede står et O tæller dobbelt, og en linje med et kryds i tæller
+         ikke, for den er tabt. midten og hjørnerne bryder pointlighed. */
+      function point(i) {
+        var p = 0;
+        for (var k = 0; k < K_LINJER.length; k++) {
+          var l = K_LINJER[k];
+          if (l.indexOf(i) === -1) continue;
+          var o = 0, x = 0;
+          for (var j = 0; j < 3; j++) {
+            if (felt[l[j]] === "O") o++;
+            else if (felt[l[j]] === "X") x++;
+          }
+          if (x) continue;
+          p += o ? 2 : 1;
+        }
+        if (i === 4) p += 1;
+        else if (i === 0 || i === 2 || i === 6 || i === 8) p += 0.5;
+        return p;
+      }
+
+      // en gang imellem stjæler den bare et af dine kryds i stedet. tyveknægt
+      if (Math.random() < 0.25 && hvor("X").length && trussel("O") < 0) {
+        var tyv = tilfaeldig(hvor("X"));
+        felt[tyv] = "O";
+        tegn();
+        blink(tyv);
+        if (vinder("O")) return slut("cpu vandt (med din brik). frækt.");
+        status.textContent = "den brik er min nu.";
+        if (!hvor("").length) return slut("uafgjort. denne gang.");
+        return;
+      }
+
+      var bedst = tomme3[0], bedstP = -1;
+      tomme3.forEach(function (i) {
+        var p = point(i);
+        if (p > bedstP) { bedstP = p; bedst = i; }
+      });
+      felt[bedst] = "O";
+
+      if (vinder("O")) return slut("cpu vandt. selvfølgelig gjorde den det.");
+      tegn();
+      if (!hvor("").length) return slut("uafgjort. denne gang.");
+      status.textContent = "din tur.";
+    }
+
+    function klik(i) {
+      if (!spil || felt[i]) return;
+      felt[i] = "X";
+      tegn();
+      if (vinder("X")) return slut("du... vandt? det må være en fejl.");
+      if (!hvor("").length) return slut("uafgjort. denne gang.");
+      status.textContent = "cpu tænker (på at snyde).";
+      setTimeout(cpu, 480);
+    }
+
+    function nyt() {
+      felt = ["", "", "", "", "", "", "", "", ""];
+      spil = true;
+      status.textContent = "du er kryds. held og lykke (du får brug for det).";
+      tegn();
+    }
+
+    // brættet bygges én gang
+    felter = [];
+    braet.innerHTML = "";
+    for (var i = 0; i < 9; i++) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("role", "gridcell");
+      (function (nr) { b.addEventListener("click", function () { klik(nr); }); })(i);
+      braet.appendChild(b);
+      felter.push(b);
+    }
+    id("kryds-ny").addEventListener("click", nyt);
+    nyt();
+  }
+
   // ---------------- vejret ----------------
 
   /* De enheder der blev bedt om: kelvin, knob, mmHg og en luftfugtighed i
@@ -2613,6 +2810,7 @@
 
   hentVejr();
   setInterval(hentVejr, 120000);
+  krydsSpil();
 
   tegnFlag();
   tegnSang();

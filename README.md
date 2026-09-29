@@ -301,6 +301,18 @@ Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
 blæser hen.
 
+### Kryds og bolle (cpu snyder)
+
+Der blev bedt om kryds og bolle mod en cpu der snyder og rykker dine brikker.
+Så det gør den. Er du ved at vinde, flytter den bare din brik et andet sted
+hen; en gang imellem sender den en af dine brikker på tur uden grund; og med
+lidt held stjæler den et kryds og gør det til sit eget.
+
+Det er med vilje **ikke til at vinde** — pointen er snyderiet, ikke en fair
+kamp. Afprøvet med 4000 spil mod en tilfældig spiller: cpu vandt 3888, resten
+uafgjort, spilleren nul. En rigtig modstander taber også, for enhver trussel
+bliver fjernet inden man kan fuldføre den.
+
 ### Ned ad bakke
 
 Der blev bedt om spillet Slope. **Det her er ikke Slope.** Det er vores eget

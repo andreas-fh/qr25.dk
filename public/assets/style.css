@@ -239,6 +239,43 @@ button:active { border-style: inset; }
 #arkiv { margin-top: 12px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
 summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
+/* ---- kryds og bolle ---- */
+
+#kryds-braet {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: 180px;
+  margin: 0 auto 4px;
+}
+
+#kryds-braet button {
+  aspect-ratio: 1 / 1;
+  border: 3px outset #ddd8c6;
+  background: #efece0;
+  cursor: pointer;
+  font: 400 40px/1 Impact, Haettenschweiler, "Arial Narrow Bold", "DejaVu Sans Condensed", sans-serif;
+  color: #111;
+  padding: 0;
+}
+#kryds-braet button:disabled { cursor: default; }
+#kryds-braet button.kryds { color: #1a1aa8; }
+#kryds-braet button.bolle { color: #c22a1c; }
+
+/* en brik cpu lige har flyttet, så man kan nå at se snyderiet */
+#kryds-braet button.flyttet { animation: kryds-blink 0.3s steps(1) 4; }
+@keyframes kryds-blink {
+  0%, 49% { background: #ffe22e; }
+  50%, 100% { background: #efece0; }
+}
+
+#kryds-status { font-size: 12px; }
+#kryds-ny { margin-left: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  #kryds-braet button.flyttet { animation: none; }
+}
+
 /* ---- vejret ---- */
 
 #vejr-kort {
