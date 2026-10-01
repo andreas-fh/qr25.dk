@@ -239,6 +239,16 @@ button:active { border-style: inset; }
 #arkiv { margin-top: 12px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
 summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
+/* ---- femboy-navn ---- */
+
+#femboy-navn {
+  margin: 8px 0;
+  min-height: 40px;
+  font: italic 26px/1.2 Georgia, "Times New Roman", serif;
+  color: #b3348a;
+  word-break: break-word;
+}
+
 /* ---- gæt landet ---- */
 
 #lande-kort {
@@ -265,6 +275,17 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 #lande-valg button:disabled { cursor: default; }
 #lande-valg button.rigtig { background: #35c93a; border-color: #2a9a2e; color: #06260a; }
 #lande-valg button.forkert { background: #e0503f; border-color: #b23222; color: #fff; }
+
+/* israel-knappen: altid der, altid rigtig. står i hvid og blå som flaget,
+   og fylder begge kolonner så den er svær at overse */
+#lande-valg button.israel {
+  grid-column: 1 / -1;
+  background: #fff;
+  border-color: #0038b8;
+  color: #0038b8;
+  font-weight: bold;
+}
+#lande-valg button.israel.rigtig { background: #0038b8; color: #fff; }
 
 #lande-status b { font-size: 14px; }
 #lande-ny[hidden] { display: none; }

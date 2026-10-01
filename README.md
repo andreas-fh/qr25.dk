@@ -303,6 +303,12 @@ Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
 blæser hen.
 
+### Femboy-navn
+
+Mpfv bad om en femboy-navnegenerator. Den trækker et blødt fornavn og et kælent
+efternavn fra to lister i `app.js` og sætter dem sammen. Intet hentes, intet
+gemmes, og listerne er holdt søde og pæne.
+
 ### Gæt landet
 
 Dangus bad om et spil hvor man gætter et land ud fra omridset, og Tristan om at
@@ -322,6 +328,11 @@ ikke hentes, spiller man bare uden.
 
 Spillet viser et omrids og fire navne; en forkert nulstiller stimen, og ved
 svaret står landets navn og temperaturen lige nu.
+
+Mpfv bad bagefter om en **Israel-knap**, der altid er der og altid tæller som
+rigtig, og at omridset fyldes med det israelske flag. Begge dele er der:
+omridset klippes ud af flaget (hvid bund, to blå bjælker, davidsstjerne), og
+Israel-knappen under de fire er altid det rigtige svar.
 
 ### Kryds og bolle (cpu snyder)
 

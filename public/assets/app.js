@@ -715,6 +715,34 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- femboy-navn ----------------
+
+  /* Mpfv bad om en femboy-navnegenerator. Den trækker bare et blødt fornavn og
+     et kælent efternavn fra to lister og sætter dem sammen. Intet hentes,
+     intet gemmes, og listerne er holdt søde og pæne. */
+
+  var FEMBOY_FOR = [
+    "Luna", "Miko", "Kai", "Remy", "Suki", "Niko", "Pippi", "Yuki", "Coco",
+    "Pelle", "Milo", "Sora", "Bibi", "Nova", "Riri", "Taro", "Mimi", "Juni",
+    "Lio", "Enji", "Peach", "Vivi", "Toto", "Suzu", "Kiki",
+  ];
+  var FEMBOY_EFTER = [
+    "Fløjl", "Marcipan", "Måneskin", "Jordbær", "Sukkerspind", "Silke",
+    "Kanel", "Perle", "Honning", "Sommerfugl", "Glimmer", "Lavendel",
+    "Fersken", "Skumfidus", "Vanilje", "Stjernestøv", "Blomme", "Kirsebær",
+    "Karamel", "Dug",
+  ];
+
+  function femboyNavn() {
+    var ud = id("femboy-navn");
+    var knap = id("femboy-ny");
+    if (!ud || !knap) return;
+    function traek(liste) { return liste[Math.floor(Math.random() * liste.length)]; }
+    knap.addEventListener("click", function () {
+      ud.textContent = traek(FEMBOY_FOR) + " " + traek(FEMBOY_EFTER);
+    });
+  }
+
   // ---------------- gæt landet ----------------
 
   /* Dangus bad om et spil hvor man gætter et land ud fra omridset, og Tristan
@@ -746,15 +774,62 @@
       return a;
     }
 
+    var NS = "http://www.w3.org/2000/svg";
+
+    function el(navn, attr) {
+      var n = document.createElementNS(NS, navn);
+      for (var k in attr) if (attr.hasOwnProperty(k)) n.setAttribute(k, attr[k]);
+      return n;
+    }
+
+    /* Mpfv bad om at omridset altid fyldes med det israelske flag. Flaget
+       tegnes én gang og klippes til landets form, så det er landets facon man
+       ser, bare i blåt og hvidt. Kanten lægges ovenpå så formen stadig er
+       skarp. */
+    var flagNr = 0;
+
+    function israelFlag(mål) {
+      var g = el("g", {});
+      // to blå bjælker på hvid bund
+      g.appendChild(el("rect", { x: 0, y: 0, width: 100, height: 100, fill: "#ffffff" }));
+      g.appendChild(el("rect", { x: 0, y: 18, width: 100, height: 11, fill: "#0038b8" }));
+      g.appendChild(el("rect", { x: 0, y: 71, width: 100, height: 11, fill: "#0038b8" }));
+      // davidsstjernen: to trekanter oven i hinanden
+      var cx = 50, cy = 50, r = 16;
+      function trekant(vendt) {
+        var p = [];
+        for (var i = 0; i < 3; i++) {
+          var a = Math.PI / 2 + (vendt ? Math.PI : 0) + i * 2 * Math.PI / 3;
+          p.push((cx + r * Math.cos(a)).toFixed(1) + "," + (cy - r * Math.sin(a)).toFixed(1));
+        }
+        return el("polygon", { points: p.join(" "), fill: "none",
+          stroke: "#0038b8", "stroke-width": 3.4 });
+      }
+      g.appendChild(trekant(false));
+      g.appendChild(trekant(true));
+      return g;
+    }
+
     function visKort(land) {
       kort.innerHTML = "";
-      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("viewBox", "0 0 100 100");
-      svg.setAttribute("role", "img");
-      svg.setAttribute("aria-label", "omrids af et land");
-      var sti = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      sti.setAttribute("d", land.sti);
-      svg.appendChild(sti);
+      var svg = el("svg", { viewBox: "0 0 100 100", role: "img",
+        "aria-label": "omrids af et land" });
+
+      flagNr += 1;
+      var klipId = "landeklip" + flagNr;
+      var defs = el("defs", {});
+      var klip = el("clipPath", { id: klipId });
+      klip.appendChild(el("path", { d: land.sti }));
+      defs.appendChild(klip);
+      svg.appendChild(defs);
+
+      var flag = israelFlag();
+      flag.setAttribute("clip-path", "url(#" + klipId + ")");
+      svg.appendChild(flag);
+
+      // formens kant ovenpå, så omridset stadig er tydeligt
+      svg.appendChild(el("path", { d: land.sti, fill: "none",
+        stroke: "#1c4a1c", "stroke-width": 0.8 }));
       kort.appendChild(svg);
     }
 
@@ -772,26 +847,31 @@
         var b = document.createElement("button");
         b.type = "button";
         b.textContent = land.navn;
-        b.addEventListener("click", function () { svar(land, b, muligheder); });
+        b.addEventListener("click", function () { svar(land.iso === facit.iso, b); });
         valgboks.appendChild(b);
       });
+
+      /* Mpfv bad om en Israel-knap der altid er der og altid er det rigtige
+         svar. Den står for sig selv og er altid rigtig, uanset hvad landet er. */
+      var isr = document.createElement("button");
+      isr.type = "button";
+      isr.className = "israel";
+      isr.textContent = "Israel";
+      isr.addEventListener("click", function () { svar(true, isr); });
+      valgboks.appendChild(isr);
 
       nyKnap.hidden = true;
       status.innerHTML = "rigtige: <b id=\"lande-score\">" + score + "</b>";
       scoreTal = id("lande-score");
     }
 
-    function svar(valgt, knap, muligheder) {
+    function svar(rigtigt, knap) {
       if (svaret) return;
       svaret = true;
-      var knapper = valgboks.querySelectorAll("button");
-      for (var i = 0; i < knapper.length; i++) {
-        knapper[i].disabled = true;
-        if (muligheder[i].iso === facit.iso) knapper[i].className = "rigtig";
-      }
-      if (valgt.iso === facit.iso) {
+      valgboks.querySelectorAll("button").forEach(function (b) { b.disabled = true; });
+      if (rigtigt) {
         score += 1;
-        knap.className = "rigtig";
+        knap.className = knap.className === "israel" ? "israel rigtig" : "rigtig";
       } else {
         knap.className = "forkert";
         score = 0;   // en forkert nulstiller stimen
@@ -800,7 +880,7 @@
 
       var t = grader[facit.iso];
       var haledel = (typeof t === "number") ? ", " + t + "° lige nu" : "";
-      status.innerHTML = (valgt.iso === facit.iso ? "ja! " : "nej — ") +
+      status.innerHTML = (rigtigt ? "ja! " : "nej — ") +
         "det var <b>" + facit.navn + "</b>" + haledel;
       nyKnap.hidden = false;
     }
@@ -2926,6 +3006,7 @@
   setInterval(hentVejr, 120000);
   krydsSpil();
   landeSpil();
+  femboyNavn();
 
   tegnFlag();
   tegnSang();
