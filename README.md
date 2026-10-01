@@ -17,12 +17,46 @@ Ren HTML, CSS og JavaScript. Intet byggetrin, ingen framework, ingen
 `node_modules`, ingen skrifttyper hentet ude fra. Alt der bliver serveret ligger
 i `public/`. Cloudflare Workers hoster mappen som statiske filer.
 
+## Verdenen (login + pingviner)
+
+Tristan bad om at hele siden skulle fungere som en lille Club Penguin-agtig
+verden: et kort med huse man går ind i, en konto og en pingvin man kan
+customize, og de andre online som pingviner der bevæger sig rundt. Alt det
+gamle indhold skulle blive, bare inde i husene.
+
+Sådan er det bygget:
+
+- `public/assets/verden.js` + `verden.css` lægger et lag oven på siden. Hver
+  `.kasse` bliver til et hus på kortet; går man ind, bliver **selve kassen
+  flyttet** ind i et vindue (ikke kopieret), så alle dens knapper virker præcis
+  som før. Lukker man, ryger den tilbage. Står javascript af, er der ingen
+  verden, og kasserne står under hinanden som altid.
+- Konti og pingviner ligger på VPS'en i tjenesten `konto.py` bag
+  `data.qr25.dk/konto/`. **Passwords hashes** (pbkdf2-hmac-sha256, 200.000
+  runder, tilfældigt salt per konto) og kun hashen gemmes — aldrig koden.
+  Brugernavnet står i klartekst, det er fint. Hash og salt forlader aldrig
+  serveren.
+- Man er logget ind med et token i `localStorage`. Tokens og hvem-der-er-online
+  ligger i hukommelsen på serveren: genstarter den, logger man bare ind igen.
+- Mens man går rundt, melder siden sin position til `/konto/her` et par gange i
+  sekundet og får de andres tilbage. Går man ind i et hus, forsvinder man fra
+  kortet for de andre (man er jo inde).
+
+Pingvinen er tegnet som svg i `verden.js` — farve og hat vælges i "min pingvin"
+og gemmes på kontoen. Kun kendte farver og hatte kommer igennem på serveren, så
+der ikke kan gemmes vrøvl.
+
+Tjenesten kører som `qr25-konto.service` og har sin egen `location ^~ /konto/` i
+nginx med samme rate-loft som resten.
+
 ## Sådan hænger det sammen
 
 ```
 public/index.html          siden
 public/assets/style.css    hele stilen
 public/assets/app.js       uret, dagens citat og resten af kasserne
+public/assets/verden.js    club-penguin-verdenen: kort, pingviner, login
+public/assets/verden.css   stilen til verdenen
 public/assets/sirene.m4a   luftalarmen. public domain, se afsnittet om alarmen
 public/assets/kager/       de fem kager der falder i kagepausen
 public/data/quotes.json    de citater der er godkendt til at ligge offentligt

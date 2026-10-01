@@ -9,6 +9,7 @@
      slet linjen her hvis I vil have siden med i søgeresultater -->
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/verden.css">
 <link rel="icon" href="/assets/kage.svg" type="image/svg+xml">
 </head>
 <body>
@@ -58,6 +59,72 @@
 
 <!-- kasserne bliver smidt tilfældige steder ud på #scene af app.js.
      uden javascript står de bare under hinanden, og det er også fint -->
+<!-- qr25-verdenen. et lag oven på siden; kasserne nedenfor flyttes ind i
+     husene når man går ind. uden javascript er der ingen verden. -->
+<div id="verden" hidden>
+  <div id="verden-kort"></div>
+  <div class="pingvin mig" id="verden-mig"></div>
+</div>
+<div id="verden-online"></div>
+<div id="verden-vaerktoej">
+  <button type="button" id="knap-customize">min pingvin</button>
+  <button type="button" id="knap-logud">log ud</button>
+</div>
+
+<!-- vinduet med en bygnings indhold -->
+<div id="verden-rum" hidden>
+  <div>
+    <button type="button" id="verden-luk">← ud igen</button>
+    <div id="verden-rum-indhold"></div>
+  </div>
+</div>
+
+<!-- login / opret -->
+<div class="verden-panel" id="verden-login" hidden>
+  <div class="verden-kort-boks">
+    <h2 id="login-titel">log ind</h2>
+    <div class="verden-fane">
+      <button type="button" id="fane-login" class="valgt">log ind</button>
+      <button type="button" id="fane-opret">opret</button>
+    </div>
+    <p>du skal have en pingvin for at gå ind i verdenen. brugernavnet ses af de
+       andre; koden gemmes aldrig i klartekst.</p>
+    <input type="text" id="login-bruger" placeholder="brugernavn" maxlength="20" autocomplete="username">
+    <input type="password" id="login-kode" placeholder="kode" autocomplete="current-password">
+    <p class="verden-fejl" id="login-fejl"></p>
+    <button type="button" id="login-knap">log ind</button>
+  </div>
+</div>
+
+<!-- min pingvin -->
+<div class="verden-panel" id="verden-customize" hidden>
+  <div class="verden-kort-boks">
+    <h2>min pingvin</h2>
+    <div id="customize-forhaand"></div>
+    <p>farve</p>
+    <div class="farve-raekke">
+      <button type="button" class="farve-proeve" data-farve="bla" style="background:#2d7dd2"></button>
+      <button type="button" class="farve-proeve" data-farve="roed" style="background:#e23b2e"></button>
+      <button type="button" class="farve-proeve" data-farve="groen" style="background:#36a845"></button>
+      <button type="button" class="farve-proeve" data-farve="gul" style="background:#f4c430"></button>
+      <button type="button" class="farve-proeve" data-farve="lilla" style="background:#8a4fc4"></button>
+      <button type="button" class="farve-proeve" data-farve="pink" style="background:#e86aa6"></button>
+      <button type="button" class="farve-proeve" data-farve="sort" style="background:#333"></button>
+      <button type="button" class="farve-proeve" data-farve="orange" style="background:#ef7d28"></button>
+    </div>
+    <p>hat</p>
+    <div class="hat-raekke">
+      <button type="button" class="hat-knap" data-hat="ingen">ingen</button>
+      <button type="button" class="hat-knap" data-hat="nisse">nisse</button>
+      <button type="button" class="hat-knap" data-hat="krone">krone</button>
+      <button type="button" class="hat-knap" data-hat="kasket">kasket</button>
+      <button type="button" class="hat-knap" data-hat="cylinder">cylinder</button>
+      <button type="button" class="hat-knap" data-hat="pandebaand">pandebånd</button>
+    </div>
+    <button type="button" id="customize-gem">gem</button>
+  </div>
+</div>
+
 <div id="scene">
 
   <div class="kasse" id="kasse-kage">
@@ -368,5 +435,6 @@
 </div>
 
 <script src="/assets/app.js"></script>
+<script src="/assets/verden.js"></script>
 </body>
 </html>
