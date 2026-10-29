@@ -361,15 +361,19 @@ Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
 blæser hen.
 
-### Days since 67 accident
+### Days since ... incident
 
-Tristan bad om en delt tæller: dage siden sidste "67-ulykke". Den stiger en dag
-hver dag af sig selv — serveren gemmer kun datoen den sidst blev nulstillet og
-regner dagene derfra, så den tæller op ved midnat uden at nogen rører den. Alle
-kan nulstille den til 0 (med en bekræftelse, så en delt tæller ikke bliver
-nulstillet ved et uheld). Ligger i `siden.py` bag `data.qr25.dk/siden`.
+Tristan bad om delte tællere: dage siden sidste "incident" for 67, andreas og
+lasse. Hver stiger en dag hver dag af sig selv — serveren gemmer kun datoen den
+sidst blev nulstillet og regner dagene derfra, så de tæller op ved midnat uden
+at nogen rører dem. Alle kan nulstille en tæller til 0 (med en bekræftelse, så
+en delt tæller ikke ryger i nul ved et uheld). Ligger i `siden.py` bag
+`data.qr25.dk/siden` med en fast liste af tællere — man kan ikke lave nye
+udefra, så det ikke bliver et sted hvor folk skriver tilfældige navne på en
+offentlig side.
 
-(Stavefejlen fra ønsket er rettet efter andreas' opfordring: "accident".)
+Ordet blev "incident" i stedet for "accident" efter en snak i kanalen, og
+stavefejlen fra ønsket er rettet efter andreas' opfordring.
 
 ### Dagens billede
 

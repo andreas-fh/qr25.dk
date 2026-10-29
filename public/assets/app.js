@@ -715,42 +715,53 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
-  // ---------------- days since 67 accident ----------------
+  // ---------------- days since ... incident ----------------
 
-  /* Tristan bad om en delt tæller: dage siden sidste "67-ulykke". Den stiger
-     en dag hver dag af sig selv (serveren regner ud fra datoen den sidst blev
-     nulstillet), og alle kan nulstille den til 0. Tallet er fælles for hele
-     serveren, så det ligger på data.qr25.dk. */
+  /* Tristan bad om delte "days since ... incident"-tællere for 67, andreas og
+     lasse. Hver stiger en dag hver dag af sig selv (serveren regner ud fra
+     datoen den sidst blev nulstillet), og alle kan nulstille den til 0. Tallet
+     er fælles for hele serveren, så det ligger på data.qr25.dk. */
 
-  function siden67() {
-    var tal = id("siden67-tal");
-    var under = id("siden67-under");
-    var knap = id("siden67-nul");
-    if (!tal || !knap) return;
+  function sidenTael() {
+    var kasser = [].slice.call(document.querySelectorAll(".kasse-siden"));
+    if (!kasser.length) return;
 
-    function vis(d) {
-      if (!d || typeof d.dage !== "number") return;
-      tal.textContent = d.dage;
-      if (under) under.textContent = (d.dage === 1 ? "dag" : "dage") +
-        " siden sidste ulykke";
+    function vis(liste) {
+      (liste || []).forEach(function (t) {
+        var kasse = id("kasse-siden-" + t.navn);
+        if (!kasse) return;
+        var tal = kasse.querySelector(".siden-tal");
+        var under = kasse.querySelector(".siden-under");
+        if (tal) tal.textContent = t.dage;
+        if (under) under.textContent = (t.dage === 1 ? "dag" : "dage") +
+          " siden sidste incident";
+      });
     }
 
     function hentDet() {
-      hent("/siden").then(vis).catch(function () {});
+      hent("/siden").then(function (d) { if (d) vis(d.tael); }).catch(function () {});
     }
 
-    knap.addEventListener("click", function () {
-      // delt tæller, så lige et øjeblik: er der virkelig sket en ulykke?
-      if (!window.confirm("Nulstil til 0 for alle? Kun hvis der faktisk er sket en 67-ulykke.")) return;
-      knap.disabled = true;
-      fetch(DATA + "/siden/nul", { method: "POST" })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (d) { if (d) vis(d); knap.disabled = false; })
-        .catch(function () { knap.disabled = false; });
+    kasser.forEach(function (kasse) {
+      var knap = kasse.querySelector(".siden-nul");
+      if (!knap) return;
+      knap.addEventListener("click", function () {
+        // delt tæller, så lige et øjeblik: er der virkelig sket en incident?
+        if (!window.confirm("Nulstil til 0 for alle? Kun hvis der faktisk er sket en incident.")) return;
+        knap.disabled = true;
+        fetch(DATA + "/siden/nul", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ navn: knap.dataset.navn }),
+        })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (d) { if (d) vis(d.tael); knap.disabled = false; })
+          .catch(function () { knap.disabled = false; });
+      });
     });
 
     hentDet();
-    // en der er åben hen over midnat, eller mens en anden nulstiller, skal følge med
+    // en der er åben hen over midnat, eller mens en anden nulstiller, følger med
     setInterval(hentDet, 60000);
   }
 
@@ -3116,7 +3127,7 @@
   femboyNavn();
   normalsider();
   dagensBillede();
-  siden67();
+  sidenTael();
 
   tegnFlag();
   tegnSang();

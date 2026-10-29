@@ -434,15 +434,36 @@
   <!-- dagens billede. dangus bad om et tilfældigt billede hver dag. det
        hentes fra lorem picsum (kurateret, sfw) af build.py på vps'en og
        skifter ved midnat. -->
-  <!-- tristan bad om en delt "days since 67 accident"-tæller. den stiger en
-       dag hver dag, og alle kan nulstille den når der er sket en ulykke.
-       (stavefejl rettet efter andreas' ønske: accident, ikke acident.) -->
-  <div class="kasse" id="kasse-siden67">
+  <!-- delt "days since ... incident"-tæller. stiger en dag hver dag, alle kan
+       nulstille den. navnet styrer hvilken af de fælles tællere det er. -->
+  <div class="kasse kasse-siden" id="kasse-siden-67" data-navn="67">
     <div class="indhold">
-      <p class="kassetop">days since 67 accident</p>
-      <p id="siden67-tal">–</p>
-      <p id="siden67-under">dage siden sidste ulykke</p>
-      <p class="kassebund"><button type="button" id="siden67-nul">der skete en ulykke (nulstil)</button></p>
+      <p class="kassetop">days since 67 incident</p>
+      <p class="siden-tal">–</p>
+      <p class="siden-under">dage siden sidste incident</p>
+      <p class="kassebund"><button type="button" class="siden-nul" data-navn="67">der skete en incident (nulstil)</button></p>
+    </div>
+  </div>
+
+  <!-- delt "days since ... incident"-tæller. stiger en dag hver dag, alle kan
+       nulstille den. navnet styrer hvilken af de fælles tællere det er. -->
+  <div class="kasse kasse-siden" id="kasse-siden-andreas" data-navn="andreas">
+    <div class="indhold">
+      <p class="kassetop">days since andreas incident</p>
+      <p class="siden-tal">–</p>
+      <p class="siden-under">dage siden sidste incident</p>
+      <p class="kassebund"><button type="button" class="siden-nul" data-navn="andreas">der skete en incident (nulstil)</button></p>
+    </div>
+  </div>
+
+  <!-- delt "days since ... incident"-tæller. stiger en dag hver dag, alle kan
+       nulstille den. navnet styrer hvilken af de fælles tællere det er. -->
+  <div class="kasse kasse-siden" id="kasse-siden-lasse" data-navn="lasse">
+    <div class="indhold">
+      <p class="kassetop">days since lasse incident</p>
+      <p class="siden-tal">–</p>
+      <p class="siden-under">dage siden sidste incident</p>
+      <p class="kassebund"><button type="button" class="siden-nul" data-navn="lasse">der skete en incident (nulstil)</button></p>
     </div>
   </div>
 
