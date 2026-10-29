@@ -430,6 +430,17 @@
 
   <!-- dangus bad om en normalside-beregner. 2400 tegn = 1 normalside. man kan
        enten indsætte sin tekst eller skrive antallet af tegn. -->
+  <!-- dagens billede. dangus bad om et tilfældigt billede hver dag. det
+       hentes fra lorem picsum (kurateret, sfw) af build.py på vps'en og
+       skifter ved midnat. -->
+  <div class="kasse" id="kasse-dagensbillede">
+    <div class="indhold">
+      <p class="kassetop">dagens billede <span id="db-dato"></span></p>
+      <div id="db-holder"><p class="tom">henter</p></div>
+      <p class="kassebund">nyt billede hver dag, fra lorem picsum</p>
+    </div>
+  </div>
+
   <div class="kasse" id="kasse-normalside">
     <div class="indhold">
       <p class="kassetop">normalsider</p>

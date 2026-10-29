@@ -871,6 +871,18 @@ body.disco { animation: disco 2.4s linear infinite; }
 
 #sang .tom { margin-top: 6px; }
 
+/* ---- dagens billede ---- */
+
+#db-holder { min-height: 60px; }
+#db-holder img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #b8b3a0;
+  background: #efece0;
+}
+#db-dato { font-weight: normal; font-size: 11px; color: #55503f; }
+
 /* ---- normalsider ---- */
 
 #ns-tekst {

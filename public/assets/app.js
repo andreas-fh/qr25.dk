@@ -715,6 +715,38 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- dagens billede ----------------
+
+  /* Dangus bad om et tilfældigt billede hver dag. Det hentes fra Lorem Picsum
+     (kurateret fotografi, ikke en web-søgning, så der ikke lander noget grimt)
+     af build.py på VPS'en og serveres fra data.qr25.dk. Her viser vi bare
+     filen; den skifter ved midnat. */
+
+  function dagensBillede() {
+    var holder = id("db-holder");
+    if (!holder) return;
+    hent("/dagens-billede.json").then(function (d) {
+      if (d && d.dato) {
+        var dd = id("db-dato");
+        if (dd) dd.textContent = d.dato;
+      }
+      holder.innerHTML = "";
+      var img = document.createElement("img");
+      // cache-buster på dato, så man får dagens og ikke gårsdagens
+      img.src = DATA + "/dagens-billede.jpg?d=" + (d && d.dato ? d.dato : "");
+      img.alt = "dagens tilfældige billede";
+      img.loading = "lazy";
+      img.onerror = function () {
+        holder.innerHTML = "";
+        holder.appendChild(lav("p", "tom", "intet billede endnu"));
+      };
+      holder.appendChild(img);
+    }).catch(function () {
+      holder.innerHTML = "";
+      holder.appendChild(lav("p", "tom", "kunne ikke hente billedet"));
+    });
+  }
+
   // ---------------- normalsider ----------------
 
   /* Dangus bad om at kunne regne ud hvor mange normalsider en tekst er. En
@@ -3044,6 +3076,7 @@
   landeSpil();
   femboyNavn();
   normalsider();
+  dagensBillede();
 
   tegnFlag();
   tegnSang();

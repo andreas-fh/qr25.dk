@@ -349,6 +349,14 @@ Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
 blæser hen.
 
+### Dagens billede
+
+Dangus bad om et tilfældigt billede hver dag. Det hentes fra Lorem Picsum —
+**kurateret fotografi, ikke en tilfældig web-søgning** — så der ikke pludselig
+står noget grimt på en offentlig side. `build.py` henter ét om dagen (seedet på
+datoen, så alle ser det samme og det skifter ved midnat), gemmer det på VPS'en
+og serverer det fra `data.qr25.dk/dagens-billede.jpg`. Siden hotlinker ikke.
+
 ### Normalsider
 
 Dangus bad om at kunne regne ud hvor mange normalsider en tekst er (1 normalside
