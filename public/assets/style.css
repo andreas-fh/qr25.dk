@@ -147,6 +147,20 @@ h1 {
 
 #top p { margin: 0 0 16px; }
 
+/* skift til pingvin-verdenen. ligner en knap, men er et rigtigt link til
+   subdomænet */
+#til-verden {
+  display: inline-block;
+  margin-left: 8px;
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 4px 10px;
+  border: 3px outset #ddd8c6;
+  background: #efece0;
+  color: #111;
+  text-decoration: none;
+}
+#til-verden:hover { background: #fff; }
+
 /* ---- scenen kasserne bliver smidt ud på ---- */
 
 /* uden javascript, og på små skærme, står de under hinanden i midten */

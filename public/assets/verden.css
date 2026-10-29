@@ -185,6 +185,15 @@ body.verden-paa { overflow: hidden; }
   cursor: pointer;
 }
 #verden-vaerktoej button:active { border-style: inset; }
+#til-hovedside {
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 5px 10px;
+  border: 3px outset #ddd8c6;
+  background: #efece0;
+  color: #111;
+  text-decoration: none;
+}
+#til-hovedside:hover { background: #fff; }
 
 /* antal online, oppe i hjørnet */
 #verden-online {
