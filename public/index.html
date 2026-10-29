@@ -434,6 +434,18 @@
   <!-- dagens billede. dangus bad om et tilfældigt billede hver dag. det
        hentes fra lorem picsum (kurateret, sfw) af build.py på vps'en og
        skifter ved midnat. -->
+  <!-- tristan bad om en delt "days since 67 accident"-tæller. den stiger en
+       dag hver dag, og alle kan nulstille den når der er sket en ulykke.
+       (stavefejl rettet efter andreas' ønske: accident, ikke acident.) -->
+  <div class="kasse" id="kasse-siden67">
+    <div class="indhold">
+      <p class="kassetop">days since 67 accident</p>
+      <p id="siden67-tal">–</p>
+      <p id="siden67-under">dage siden sidste ulykke</p>
+      <p class="kassebund"><button type="button" id="siden67-nul">der skete en ulykke (nulstil)</button></p>
+    </div>
+  </div>
+
   <div class="kasse" id="kasse-dagensbillede">
     <div class="indhold">
       <p class="kassetop">dagens billede <span id="db-dato"></span></p>

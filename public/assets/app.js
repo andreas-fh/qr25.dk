@@ -715,6 +715,45 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- days since 67 accident ----------------
+
+  /* Tristan bad om en delt tæller: dage siden sidste "67-ulykke". Den stiger
+     en dag hver dag af sig selv (serveren regner ud fra datoen den sidst blev
+     nulstillet), og alle kan nulstille den til 0. Tallet er fælles for hele
+     serveren, så det ligger på data.qr25.dk. */
+
+  function siden67() {
+    var tal = id("siden67-tal");
+    var under = id("siden67-under");
+    var knap = id("siden67-nul");
+    if (!tal || !knap) return;
+
+    function vis(d) {
+      if (!d || typeof d.dage !== "number") return;
+      tal.textContent = d.dage;
+      if (under) under.textContent = (d.dage === 1 ? "dag" : "dage") +
+        " siden sidste ulykke";
+    }
+
+    function hentDet() {
+      hent("/siden").then(vis).catch(function () {});
+    }
+
+    knap.addEventListener("click", function () {
+      // delt tæller, så lige et øjeblik: er der virkelig sket en ulykke?
+      if (!window.confirm("Nulstil til 0 for alle? Kun hvis der faktisk er sket en 67-ulykke.")) return;
+      knap.disabled = true;
+      fetch(DATA + "/siden/nul", { method: "POST" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { if (d) vis(d); knap.disabled = false; })
+        .catch(function () { knap.disabled = false; });
+    });
+
+    hentDet();
+    // en der er åben hen over midnat, eller mens en anden nulstiller, skal følge med
+    setInterval(hentDet, 60000);
+  }
+
   // ---------------- dagens billede ----------------
 
   /* Dangus bad om et tilfældigt billede hver dag. Det hentes fra Lorem Picsum
@@ -3077,6 +3116,7 @@
   femboyNavn();
   normalsider();
   dagensBillede();
+  siden67();
 
   tegnFlag();
   tegnSang();

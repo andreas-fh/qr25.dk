@@ -871,6 +871,25 @@ body.disco { animation: disco 2.4s linear infinite; }
 
 #sang .tom { margin-top: 6px; }
 
+/* ---- days since 67 accident ---- */
+
+#siden67-tal {
+  margin: 2px 0;
+  font: 400 72px/0.9 Impact, Haettenschweiler, "Arial Narrow Bold", "DejaVu Sans Condensed", sans-serif;
+  letter-spacing: 1px;
+  color: #c22a1c;
+}
+#siden67-under { margin: 0; font-size: 13px; color: #55503f; }
+#siden67-nul {
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 4px 10px;
+  border: 3px outset #ddd8c6;
+  background: #efece0;
+  color: #111;
+  cursor: pointer;
+}
+#siden67-nul:active { border-style: inset; }
+
 /* ---- dagens billede ---- */
 
 #db-holder { min-height: 60px; }

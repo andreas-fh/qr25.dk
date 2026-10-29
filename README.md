@@ -361,6 +361,16 @@ Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
 blæser hen.
 
+### Days since 67 accident
+
+Tristan bad om en delt tæller: dage siden sidste "67-ulykke". Den stiger en dag
+hver dag af sig selv — serveren gemmer kun datoen den sidst blev nulstillet og
+regner dagene derfra, så den tæller op ved midnat uden at nogen rører den. Alle
+kan nulstille den til 0 (med en bekræftelse, så en delt tæller ikke bliver
+nulstillet ved et uheld). Ligger i `siden.py` bag `data.qr25.dk/siden`.
+
+(Stavefejlen fra ønsket er rettet efter andreas' opfordring: "accident".)
+
 ### Dagens billede
 
 Dangus bad om et tilfældigt billede hver dag. Det hentes fra Lorem Picsum —

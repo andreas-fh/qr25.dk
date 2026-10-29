@@ -50,6 +50,7 @@
     "kasse-femboy": "Navnebutikken",
     "kasse-normalside": "Skriverstuen",
     "kasse-dagensbillede": "Fotohuset",
+    "kasse-siden67": "Ulykkestavlen",
     "kasse-om": "Infotårnet",
   };
 
@@ -101,6 +102,7 @@
     "kasse-femboy": { vaeg: "#f2d2e4", tag: "#b3348a", ikon: "navn" },
     "kasse-normalside": { vaeg: "#e8e2d2", tag: "#6a5a3a", ikon: "bog" },
     "kasse-dagensbillede": { vaeg: "#cfd6de", tag: "#445", ikon: "foto" },
+    "kasse-siden67": { vaeg: "#f2d0cc", tag: "#b02a1a", ikon: "ur" },
     "kasse-om": { vaeg: "#cdd9ea", tag: "#2b5a8a", ikon: "info" },
   };
 
