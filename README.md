@@ -370,11 +370,11 @@ man også ser temperaturen i landet lige nu.
 Omridsene er **rigtige**, ikke tegnet i hånden: de kommer fra Natural Earth
 (public domain, 110m), trukket ud og projiceret til svg-stier af
 `tools/udtraek_lande.py`. Resultatet ligger færdigt i `public/data/lande.json`
-— 32 lande, hver som en sti i en 100×100-kasse plus et midtpunkt. Vil man lave
+— 58 lande, hver som en sti i en 100×100-kasse plus et midtpunkt. Vil man lave
 sættet om, henter man geojson'en (linket står i toppen af scriptet), kører det,
 og kigger på kontaktarket det spytter ud, inden man committer.
 
-Temperaturen er det eneste levende. `build.py` henter den for alle 32 landes
+Temperaturen er det eneste levende. `build.py` henter den for alle 58 landes
 midtpunkter i ét kald til open-meteo hver halve time og lægger den som
 `lande-vejr.json`. Siden selv taler kun med `data.qr25.dk`. Kan temperaturen
 ikke hentes, spiller man bare uden.

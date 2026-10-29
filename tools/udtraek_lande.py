@@ -8,21 +8,29 @@ import math
 import sys
 
 VALGTE = [
-    "DNK", "SWE", "NOR", "ITA", "FRA", "ESP", "PRT", "DEU", "GBR", "IRL",
-    "ISL", "GRC", "TUR", "CHE", "POL", "FIN", "JPN", "AUS", "NZL",
-    "BRA", "CHL", "ARG", "USA", "CAN", "MEX", "IND", "EGY", "ZAF", "MDG",
-    "IDN", "KOR", "UKR",
+    "DNK", "SWE", "NOR", "FIN", "ISL", "GBR", "IRL", "FRA", "ESP", "PRT",
+    "DEU", "ITA", "NLD", "BEL", "CHE", "AUT", "POL", "CZE", "GRC", "HRV",
+    "HUN", "ROU", "UKR", "RUS", "TUR", "JPN", "KOR", "PRK", "CHN", "IND",
+    "PAK", "IDN", "THA", "VNM", "PHL", "SAU", "IRN", "IRQ", "ISR", "AUS",
+    "NZL", "USA", "CAN", "MEX", "CUB", "BRA", "ARG", "CHL", "PER", "COL",
+    "EGY", "MAR", "NGA", "ETH", "KEN", "ZAF", "MDG", "GRL",
 ]
 DANSK = {
-    "DNK": "Danmark", "SWE": "Sverige", "NOR": "Norge", "ITA": "Italien",
-    "FRA": "Frankrig", "ESP": "Spanien", "PRT": "Portugal", "DEU": "Tyskland",
-    "GBR": "Storbritannien", "IRL": "Irland", "ISL": "Island", "GRC": "Grækenland",
-    "TUR": "Tyrkiet", "NLD": "Holland", "CHE": "Schweiz", "POL": "Polen",
-    "FIN": "Finland", "JPN": "Japan", "AUS": "Australien", "NZL": "New Zealand",
-    "BRA": "Brasilien", "CHL": "Chile", "ARG": "Argentina", "USA": "USA",
-    "CAN": "Canada", "MEX": "Mexico", "IND": "Indien", "EGY": "Egypten",
-    "ZAF": "Sydafrika", "MDG": "Madagaskar", "IDN": "Indonesien",
-    "KOR": "Sydkorea", "UKR": "Ukraine",
+    "DNK": "Danmark", "SWE": "Sverige", "NOR": "Norge", "FIN": "Finland",
+    "ISL": "Island", "GBR": "Storbritannien", "IRL": "Irland", "FRA": "Frankrig",
+    "ESP": "Spanien", "PRT": "Portugal", "DEU": "Tyskland", "ITA": "Italien",
+    "NLD": "Holland", "BEL": "Belgien", "CHE": "Schweiz", "AUT": "Østrig",
+    "POL": "Polen", "CZE": "Tjekkiet", "GRC": "Grækenland", "HRV": "Kroatien",
+    "HUN": "Ungarn", "ROU": "Rumænien", "UKR": "Ukraine", "RUS": "Rusland",
+    "TUR": "Tyrkiet", "JPN": "Japan", "KOR": "Sydkorea", "PRK": "Nordkorea",
+    "CHN": "Kina", "IND": "Indien", "PAK": "Pakistan", "IDN": "Indonesien",
+    "THA": "Thailand", "VNM": "Vietnam", "PHL": "Filippinerne", "SAU": "Saudi-Arabien",
+    "IRN": "Iran", "IRQ": "Irak", "ISR": "Israel", "AUS": "Australien",
+    "NZL": "New Zealand", "USA": "USA", "CAN": "Canada", "MEX": "Mexico",
+    "CUB": "Cuba", "BRA": "Brasilien", "ARG": "Argentina", "CHL": "Chile",
+    "PER": "Peru", "COL": "Colombia", "EGY": "Egypten", "MAR": "Marokko",
+    "NGA": "Nigeria", "ETH": "Etiopien", "KEN": "Kenya", "ZAF": "Sydafrika",
+    "MDG": "Madagaskar", "GRL": "Grønland",
 }
 BOKS = 100.0
 KANT = 6.0
