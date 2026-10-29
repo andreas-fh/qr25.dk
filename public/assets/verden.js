@@ -483,6 +483,23 @@
     }
   }
 
+  /* Verdenen bor på sit eget subdomain, ikke på hovedsiden. Der blev bedt om
+     at qr25.dk bliver ved med at være den almindelige side, og at pingvin-
+     verdenen kun er club.qr25.dk. Begge serveres af de samme filer; det er
+     kun værtsnavnet der afgør hvad der tændes.
+
+     club.* → verden. localhost eller #verden i adressen → verden, så man kan
+     teste den lokalt. Alt andet (altså qr25.dk selv) → ingen verden, og siden
+     er præcis som før. */
+  function verdenHer() {
+    var v = location.hostname || "";
+    if (v.indexOf("club.") === 0 || v.indexOf("pingvin.") === 0) return true;
+    if (location.hash.indexOf("verden") !== -1) return true;
+    return false;
+  }
+
+  if (!verdenHer()) return;   // på hovedsiden gør verden.js ingenting
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", begynd);
   } else {

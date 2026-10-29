@@ -49,6 +49,18 @@ der ikke kan gemmes vrøvl.
 Tjenesten kører som `qr25-konto.service` og har sin egen `location ^~ /konto/` i
 nginx med samme rate-loft som resten.
 
+**Verdenen bor på sit eget subdomain, ikke på hovedsiden.** Der blev bedt om at
+qr25.dk bliver ved med at være den almindelige side, og at pingvin-verdenen kun
+er `club.qr25.dk`. Begge serveres af de *samme* filer — `verden.js` tjekker
+værtsnavnet og tænder kun verdenen når man er på `club.` (eller `pingvin.`).
+`#verden` i adressen tænder den også, så man kan teste den på localhost. På
+qr25.dk gør `verden.js` ingenting, og siden er præcis som før.
+
+For at subdomænet virker, skal `club.qr25.dk` pege på den samme Cloudflare
+Worker (`qr25-dk`): i Cloudflare under Workers & Pages → qr25-dk → Settings →
+Domains & Routes → tilføj `club.qr25.dk`. Så bygger og serverer den de samme
+filer, og koden tager sig af resten.
+
 ## Sådan hænger det sammen
 
 ```
