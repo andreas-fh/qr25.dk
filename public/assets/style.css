@@ -857,6 +857,33 @@ body.disco { animation: disco 2.4s linear infinite; }
 
 #sang .tom { margin-top: 6px; }
 
+/* ---- normalsider ---- */
+
+#ns-tekst {
+  width: 100%;
+  box-sizing: border-box;
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 5px 7px;
+  border: 3px inset #cfcab6;
+  background: #fff;
+  color: #111;
+  resize: vertical;
+  margin: 0 0 8px;
+}
+.ns-eller { margin: 0 0 8px; font-size: 12px; color: #55503f; }
+#ns-antal {
+  width: 90px;
+  font: 12px Verdana, Geneva, sans-serif;
+  padding: 2px 5px;
+  border: 3px inset #cfcab6;
+  background: #fff;
+}
+#ns-svar {
+  margin: 0;
+  font: bold 20px "Courier New", Courier, monospace;
+  color: #1a1aa8;
+}
+
 /* ---- tælleren ---- */
 
 /* kassen henter sig selv igen mens man kigger, og en gif kan være bred og lav

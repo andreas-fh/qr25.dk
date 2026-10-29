@@ -349,6 +349,13 @@ Kortet bag vindpilen forestiller **Tyrkiet**, ikke Danmark. Det var en del af
 kaldet spørger om ét sted, og det sted er Aalborg. Pilen peger den vej vinden
 blæser hen.
 
+### Normalsider
+
+Dangus bad om at kunne regne ud hvor mange normalsider en tekst er (1 normalside
+= 2400 tegn). Man kan enten indsætte teksten, så tegnene tælles, eller skrive
+antallet af tegn direkte. De to felter rydder hinanden, så de ikke modsiger
+hinanden. Alt sker i browseren.
+
 ### Femboy-navn
 
 Mpfv bad om en femboy-navnegenerator. Den trækker et blødt fornavn og et kælent

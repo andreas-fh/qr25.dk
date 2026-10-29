@@ -48,6 +48,7 @@
     "kasse-tal": "Statistikhuset",
     "kasse-hent": "Kagekøen",
     "kasse-femboy": "Navnebutikken",
+    "kasse-normalside": "Skriverstuen",
     "kasse-om": "Infotårnet",
   };
 

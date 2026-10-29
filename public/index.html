@@ -422,6 +422,18 @@
     </div>
   </div>
 
+  <!-- dangus bad om en normalside-beregner. 2400 tegn = 1 normalside. man kan
+       enten indsætte sin tekst eller skrive antallet af tegn. -->
+  <div class="kasse" id="kasse-normalside">
+    <div class="indhold">
+      <p class="kassetop">normalsider</p>
+      <textarea id="ns-tekst" placeholder="indsæt din tekst her" rows="4"></textarea>
+      <p class="ns-eller">eller skriv antal tegn: <input type="text" id="ns-antal" inputmode="numeric" maxlength="9" placeholder="0"></p>
+      <p id="ns-svar">0 normalsider</p>
+      <p class="kassebund">1 normalside = 2400 tegn</p>
+    </div>
+  </div>
+
   <div class="kasse" id="kasse-om">
     <div class="indhold">
       <p id="taeller">besøg <span id="tal">000000</span></p>

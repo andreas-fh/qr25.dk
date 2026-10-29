@@ -715,6 +715,42 @@
     return { fraAdressen: fraAdressen, soegFelt: soeg };
   }
 
+  // ---------------- normalsider ----------------
+
+  /* Dangus bad om at kunne regne ud hvor mange normalsider en tekst er. En
+     normalside er 2400 tegn. Man kan enten indsætte teksten (så tæller vi
+     tegnene) eller skrive antallet af tegn direkte. */
+
+  var TEGN_PR_SIDE = 2400;
+
+  function normalsider() {
+    var tekst = id("ns-tekst");
+    var antal = id("ns-antal");
+    var svar = id("ns-svar");
+    if (!tekst || !antal || !svar) return;
+
+    function vis(tegn) {
+      var sider = tegn / TEGN_PR_SIDE;
+      // to decimaler, men uden at skrive ,00 når det går lige op
+      var tal = (Math.round(sider * 100) / 100).toString().replace(".", ",");
+      svar.textContent = tal + (sider === 1 ? " normalside" : " normalsider") +
+        "  (" + tegn + " tegn)";
+    }
+
+    tekst.addEventListener("input", function () {
+      antal.value = "";
+      vis(tekst.value.length);
+    });
+    antal.addEventListener("input", function () {
+      // kun cifre, og teksten ryddes så de to ikke modsiger hinanden
+      antal.value = antal.value.replace(/[^0-9]/g, "").slice(0, 9);
+      tekst.value = "";
+      vis(parseInt(antal.value, 10) || 0);
+    });
+
+    vis(0);
+  }
+
   // ---------------- femboy-navn ----------------
 
   /* Mpfv bad om en femboy-navnegenerator. Den trækker bare et blødt fornavn og
@@ -3007,6 +3043,7 @@
   krydsSpil();
   landeSpil();
   femboyNavn();
+  normalsider();
 
   tegnFlag();
   tegnSang();
