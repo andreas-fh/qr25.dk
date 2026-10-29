@@ -52,9 +52,9 @@ body.verden-paa { overflow: hidden; }
 }
 .bygning .hus {
   width: 100%;
-  height: 72px;
+  height: 78px;
   border: 4px solid #5a3a20;
-  background: #d98b45;
+  background: var(--vaeg, #d98b45);
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
   position: relative;
 }
@@ -66,7 +66,7 @@ body.verden-paa { overflow: hidden; }
   height: 0;
   border-left: calc(50% + 8px) solid transparent;
   border-right: calc(50% + 8px) solid transparent;
-  border-bottom: 26px solid #a33;
+  border-bottom: 26px solid var(--tag, #a33);
 }
 /* dør */
 .bygning .hus::after {
@@ -77,6 +77,17 @@ body.verden-paa { overflow: hidden; }
   background: #5a3a20;
   border-radius: 6px 6px 0 0;
 }
+/* det lille skilt på facaden */
+.bygning .hus-skilt {
+  position: absolute;
+  top: 8px; left: 50%;
+  width: 30px; height: 30px;
+  margin-left: -15px;
+  background: #fff;
+  border: 2px solid #5a3a20;
+}
+.bygning .hus-skilt svg { display: block; width: 100%; height: 100%; }
+
 .bygning .navn {
   margin-top: 6px;
   font: bold 12px Verdana, Geneva, sans-serif;
@@ -118,6 +129,63 @@ body.verden-paa { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pingvin.mig.gaar { animation: none; }
+}
+
+/* ---- biler ---- */
+
+.bil {
+  position: absolute;
+  width: 68px;
+  height: 30px;
+  margin: -15px 0 0 -34px;     /* midten af bilen sidder på koordinatet */
+  z-index: 8;
+  pointer-events: none;
+}
+.bil svg { display: block; width: 100%; height: 100%; }
+.bil.venstre { transform: scaleX(-1); }
+
+/* blodsprøjt der hvor man blev kørt ned. forsvinder af sig selv */
+.blod {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  margin: -45px 0 0 -45px;
+  z-index: 9;
+  pointer-events: none;
+  animation: blod-ind 0.15s ease-out;
+}
+.blod svg { display: block; width: 100%; height: 100%; }
+@keyframes blod-ind { from { transform: scale(0.3); } to { transform: scale(1); } }
+
+/* rødt glimt over hele skærmen når man bliver ramt */
+#verden.doed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(190, 20, 20, 0.45);
+  z-index: 3900;
+  pointer-events: none;
+  animation: doed-glimt 0.6s ease-out forwards;
+}
+@keyframes doed-glimt { from { opacity: 1; } to { opacity: 0; } }
+
+#verden-paakoert {
+  position: fixed;
+  top: 40%;
+  left: 0; right: 0;
+  z-index: 4150;
+  text-align: center;
+  font: 400 40px/1 Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 3px 3px 0 #7a0000, -2px -2px 0 #7a0000;
+  pointer-events: none;
+}
+#verden-paakoert[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blod { animation: none; }
+  #verden.doed::after { animation: none; opacity: 0; }
 }
 
 /* ---- login og customize (paneler oven på verdenen) ---- */

@@ -42,6 +42,18 @@ Sådan er det bygget:
   sekundet og får de andres tilbage. Går man ind i et hus, forsvinder man fra
   kortet for de andre (man er jo inde).
 
+Hvert hus har sit eget udseende ud fra hvad det er — vægfarve, tagfarve og et
+lille skilt-ikon (kage, bog, flag, globus, controller …), alt tegnet som svg i
+`verden.js`. En kasse uden en post i `BYGNINGSDESIGN` får standardfarver, så nye
+kasser stadig virker.
+
+Der kører **biler** langs vejen. Kommer man ud på vejen og bliver ramt, bliver
+man kørt ned: blodsprøjt, et rødt glimt, og pingvinen genoplives oppe over vejen
+med et øjebliks usårlighed, så man ikke bliver mast. Det var der bedt om.
+
+Man styrer ved at gå med piletaster/WASD eller ved at klikke — og holder man
+knappen nede og bevæger sig, følger målet med, så man kan lede pingvinen rundt.
+
 Pingvinen er tegnet som svg i `verden.js` — farve og hat vælges i "min pingvin"
 og gemmes på kontoen. Kun kendte farver og hatte kommer igennem på serveren, så
 der ikke kan gemmes vrøvl.
