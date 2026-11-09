@@ -682,6 +682,16 @@
     return false;
   }
 
+  // knappen "pingvin-verdenen →" peger på /#verden. på forsiden ændrer det kun
+  // hash'et uden at loade om, så verden.js (der allerede er kørt forbi gaten)
+  // aldrig starter. vi lytter derfor efter hash-skift og loader siden om, så
+  // verdenen kommer op. (på club.-subdomainet er den her unødvendig men harmløs.)
+  window.addEventListener("hashchange", function () {
+    if (verdenHer() && !document.body.classList.contains("verden-paa")) {
+      location.reload();
+    }
+  });
+
   if (!verdenHer()) return;   // på hovedsiden gør verden.js ingenting
 
   if (document.readyState === "loading") {
