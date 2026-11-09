@@ -29,6 +29,69 @@ a { color: #1a1aa8; }
 a:visited { color: #6a1a9a; }
 a:hover { color: #c22a1c; }
 
+/* ---- instagram-banner ---- */
+
+/* andreas bad om et reklame-banner øverst. instagram-gradienten, men i sidens
+   egen klodsede stil med outset-kant. ligger allerøverst og kan lukkes. */
+#insta-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: -6px 0 14px;
+  padding: 7px 10px;
+  border: 4px outset #e7b1d0;
+  background: linear-gradient(95deg,
+    #feda75 0%, #fa7e1e 22%, #d62976 50%, #962fbf 78%, #4f5bd5 100%);
+  color: #fff;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+}
+
+#insta-banner[hidden] { display: none; }
+
+.insta-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+.insta-link:visited { color: #fff; }
+.insta-link:hover { color: #fff; }
+.insta-link:hover .insta-tekst { text-decoration: underline; }
+
+.insta-ikon { display: inline-flex; flex: 0 0 auto; }
+
+.insta-tekst {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.insta-pil { flex: 0 0 auto; transition: transform 0.12s; }
+.insta-link:hover .insta-pil { transform: translateX(3px); }
+
+#insta-luk {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 2px outset #e7b1d0;
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font: bold 16px/1 Verdana, sans-serif;
+  cursor: pointer;
+}
+
+#insta-luk:hover { background: rgba(255, 255, 255, 0.4); }
+
+/* ingen reklame inde i pingvin-verdenen */
+body.verden-paa #insta-banner { display: none; }
+
 /* ---- cookie-boksen ---- */
 
 /* der blev bedt om en. den ligger over det hele indtil man trykker accepter,
