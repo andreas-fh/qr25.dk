@@ -3056,8 +3056,10 @@
     var noegle = null;
     try { noegle = localStorage.getItem("qr25-kontrol-noegle"); } catch (e) {}
 
-    // kom man med #noegle=... i adressen, så gem den og tør adressen af
-    var m = /(?:^|[#&])noegle=([a-f0-9]{16,80})/.exec(location.hash || "");
+    // kom man med #noegle=... i adressen, så gem den og tør adressen af.
+    // vilkårligt password (sat med qr25password på vps'en), bare ikke mellemrum
+    // eller url-skilletegn.
+    var m = /(?:^|[#&])noegle=([^\s#&]{1,120})/.exec(location.hash || "");
     if (m) {
       noegle = m[1];
       try { localStorage.setItem("qr25-kontrol-noegle", noegle); } catch (e) {}
@@ -3087,6 +3089,13 @@
 
     var maal = id("tp-maal");
     var status = id("tp-status");
+
+    // trykker man en knap med en forkert nøgle (fx fordi passwordet er skiftet
+    // på serveren), fjerner panelet sig selv og glemmer den gemte nøgle.
+    function fjernPanel() {
+      try { localStorage.removeItem("qr25-kontrol-noegle"); } catch (e) {}
+      if (boks.parentNode) boks.parentNode.removeChild(boks);
+    }
 
     function kald(sti, krop) {
       return fetch(KONTROL + sti, {
@@ -3124,6 +3133,7 @@
       kald("/styr", krop).then(function (svar) {
         status.textContent = effekt + " → " + svar.sendt;
       }).catch(function (e) {
+        if (e.message === "nøgle afvist") { fjernPanel(); return; }
         status.textContent = e.message;
       });
     }
