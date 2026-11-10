@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>jonaspH — syre-base-titreringssimulator</title>
+<!-- Mpfv bad om en avanceret, kemisk korrekt titreringssimulator; tristan ville
+     have den pæn; andreas/tristan gav fordelingsdiagram + titreringskurve som
+     reference; WYNN sagde qr25.dk/jonasph. Alt regnes fra ladningsbalancen:
+       C(Na+) + [H+] = [OH-] + C(syre)*n̄(pH)
+     hvor n̄ er det gennemsnitlige antal afgivne protoner (fra alpha-brøkerne),
+     [OH-]=Kw/[H+], og koncentrationerne fortyndes med det samlede volumen. -->
+<style>
+  :root {
+    --bg: #0f1420;
+    --panel: #171f2e;
+    --panel-2: #1e293b;
+    --line: #2a3650;
+    --ink: #e8eef7;
+    --muted: #93a4bd;
+    --accent: #38bdf8;
+    --accent-2: #22d3ee;
+    --good: #34d399;
+    --radius: 14px;
+    --s0: #64748b; --s1: #f43f5e; --s2: #f59e0b; --s3: #22d3ee; --s4: #a78bfa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: radial-gradient(1200px 600px at 80% -10%, rgba(56,189,248,.10), transparent 60%), var(--bg);
+    color: var(--ink);
+    font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding: 20px 16px 48px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header.top { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+  header.top h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  header.top h1 .ph { color: var(--accent); }
+  header.top p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  a.hjem { margin-left: auto; color: var(--muted); font-size: 13px; text-decoration: none; }
+  a.hjem:hover { color: var(--accent); }
+
+  .layout { display: grid; grid-template-columns: 340px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 920px) { .layout { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+  .panel + .panel { margin-top: 16px; }
+  .panel h2 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+
+  label.field { display: block; margin-bottom: 14px; }
+  label.field .lab { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: var(--muted); }
+  label.field .lab b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  select, input[type=range] { width: 100%; }
+  select {
+    background: var(--panel-2); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 10px; padding: 9px 10px; font-size: 14px; appearance: none;
+  }
+  input[type=range] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 999px; background: var(--panel-2); outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid #0b1220; box-shadow: 0 0 0 1px var(--accent); }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid #0b1220; }
+
+  .titrant-ctrl { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
+  .btn { background: var(--panel-2); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; font-size: 13px; cursor: pointer; font-weight: 600; white-space: nowrap; }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #06243a; border: none; }
+
+  /* store pH-tal */
+  .readout { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .stat .k { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .stat .v { font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; margin-top: 2px; }
+  .stat.ph { grid-column: 1 / -1; }
+  .stat.ph .v { font-size: 40px; }
+  .stat .sub { font-size: 12px; color: var(--muted); }
+
+  .charts { display: grid; gap: 16px; }
+  .chartcard { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px 10px; }
+  .chartcard h3 { margin: 0 0 2px; font-size: 14.5px; font-weight: 700; }
+  .chartcard .hint { margin: 0 0 6px; font-size: 12px; color: var(--muted); }
+  svg { width: 100%; height: auto; display: block; touch-action: none; }
+  .ax { stroke: #44557a; stroke-width: 1.2; }
+  .grid-l { stroke: #233049; stroke-width: 1; }
+  .axlab { fill: var(--muted); font-size: 11px; }
+  .axtitle { fill: var(--ink); font-size: 12px; font-weight: 600; }
+  .curve { fill: none; stroke-width: 2.4; }
+  .eqline { stroke: #5b6b8c; stroke-width: 1; stroke-dasharray: 4 4; }
+  .eqlab { fill: var(--muted); font-size: 10.5px; }
+  .buffer { fill: rgba(52,211,153,.08); }
+  .nowline { stroke: var(--accent); stroke-width: 1.3; stroke-dasharray: 3 3; }
+  .nowdot { fill: var(--accent); stroke: #06243a; stroke-width: 2; }
+
+  /* arts-tabel + bars */
+  .arter { margin-top: 2px; }
+  .art-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 7px 0; border-top: 1px solid var(--line); }
+  .art-row:first-child { border-top: none; }
+  .art-name { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+  .swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .art-bar { height: 7px; border-radius: 999px; background: var(--panel-2); overflow: hidden; margin-top: 5px; }
+  .art-bar > span { display: block; height: 100%; border-radius: 999px; }
+  .art-val { font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted); text-align: right; min-width: 128px; }
+  .art-val b { color: var(--ink); }
+  .eqinfo { font-size: 12.5px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+  .eqinfo b { color: var(--ink); }
+  sub, sup { font-size: 75%; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>jonas<span class="ph">pH</span></h1>
+    <p>syre-base-titreringssimulator · regnet fra ladnings- og massebalance</p>
+    <a class="hjem" href="/">← qr25.dk</a>
+  </header>
+
+  <div class="layout">
+    <!-- venstre: kontroller + aflæsning -->
+    <div>
+      <div class="panel">
+        <h2>Opstilling</h2>
+        <label class="field">
+          <span class="lab">Syre</span>
+          <select id="syre"></select>
+        </label>
+        <div id="pka-felt" style="display:none">
+          <label class="field">
+            <span class="lab">pK<sub>s</sub>-værdier (komma)</span>
+            <input id="pka-input" type="text" value="2.1, 7.2, 12.3"
+              style="background:var(--panel-2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:14px;width:100%">
+          </label>
+        </div>
+        <label class="field">
+          <span class="lab">Syrekoncentration <b><span id="ca-v">0.100</span> M</b></span>
+          <input id="ca" type="range" min="0.01" max="1" step="0.01" value="0.10">
+        </label>
+        <label class="field">
+          <span class="lab">Syrevolumen <b><span id="va-v">10</span> mL</b></span>
+          <input id="va" type="range" min="5" max="100" step="1" value="10">
+        </label>
+        <label class="field">
+          <span class="lab">Base (NaOH) <b><span id="cb-v">0.100</span> M</b></span>
+          <input id="cb" type="range" min="0.01" max="1" step="0.01" value="0.10">
+        </label>
+      </div>
+
+      <div class="panel">
+        <h2>Titrering</h2>
+        <label class="field" style="margin-bottom:8px">
+          <span class="lab">Tilsat base <b><span id="vb-v">0.0</span> mL</b></span>
+          <input id="vb" type="range" min="0" max="100" step="0.1" value="0">
+        </label>
+        <div class="titrant-ctrl">
+          <button class="btn primary" id="play">▶ Auto-titrér</button>
+          <button class="btn" id="reset">Nulstil</button>
+        </div>
+        <div class="eqinfo" id="eqinfo"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Aflæsning</h2>
+        <div class="readout">
+          <div class="stat ph"><div class="k">pH</div><div class="v" id="ph-out">7.00</div><div class="sub" id="ph-sub">neutralt</div></div>
+          <div class="stat"><div class="k">Tilsat base</div><div class="v" id="vb-out" style="font-size:22px">0.0</div><div class="sub">mL af <span id="cb-sub">0.10</span> M</div></div>
+          <div class="stat"><div class="k">Samlet volumen</div><div class="v" id="vtot-out" style="font-size:22px">25.0</div><div class="sub">mL</div></div>
+          <div class="stat"><div class="k">[H<sup>+</sup>]</div><div class="v" id="hplus" style="font-size:18px">–</div><div class="sub">mol/L</div></div>
+          <div class="stat"><div class="k">[OH<sup>−</sup>]</div><div class="v" id="ohminus" style="font-size:18px">–</div><div class="sub">mol/L</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- højre: grafer + arter -->
+    <div class="charts">
+      <div class="chartcard">
+        <h3>Titreringskurve</h3>
+        <p class="hint">pH mod tilsat basevolumen. Stiplede linjer = ækvivalenspunkter, grønne bånd = bufferområder (pH ≈ pK<sub>s</sub>). Klik eller træk i grafen for at titrere.</p>
+        <svg id="titervg" viewBox="0 0 600 330" role="img" aria-label="titreringskurve"></svg>
+      </div>
+      <div class="chartcard">
+        <h3>Fordelingsdiagram</h3>
+        <p class="hint">Artsfraktion mod pH — hvordan syren afgiver sine hydroner. Den lodrette linje er den aktuelle pH.</p>
+        <svg id="distsvg" viewBox="0 0 600 300" role="img" aria-label="fordelingsdiagram"></svg>
+      </div>
+      <div class="chartcard">
+        <h3>Arter lige nu <span style="font-weight:400;color:var(--muted);font-size:12.5px" id="dom-txt"></span></h3>
+        <div class="arter" id="arter"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+(function () {
+  var Kw = 1e-14;
+  var FARVER = ["var(--s0)", "var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)"];
+  var FARVE_HEX = ["#64748b", "#f43f5e", "#f59e0b", "#22d3ee", "#a78bfa"];
+
+  // syrer med pKa og artsnavne (HTML med sub/sup). sidste "-1" = stærk syre.
+  var SYRER = [
+    { navn: "Saltsyre (stærk)", pKa: [-7], arter: ["HCl", "Cl<sup>−</sup>"] },
+    { navn: "Eddikesyre", pKa: [4.76], arter: ["CH<sub>3</sub>COOH", "CH<sub>3</sub>COO<sup>−</sup>"] },
+    { navn: "Myresyre", pKa: [3.75], arter: ["HCOOH", "HCOO<sup>−</sup>"] },
+    { navn: "Ammonium", pKa: [9.25], arter: ["NH<sub>4</sub><sup>+</sup>", "NH<sub>3</sub>"] },
+    { navn: "Kulsyre", pKa: [6.35, 10.33], arter: ["H<sub>2</sub>CO<sub>3</sub>", "HCO<sub>3</sub><sup>−</sup>", "CO<sub>3</sub><sup>2−</sup>"] },
+    { navn: "Oxalsyre", pKa: [1.25, 4.14], arter: ["H<sub>2</sub>C<sub>2</sub>O<sub>4</sub>", "HC<sub>2</sub>O<sub>4</sub><sup>−</sup>", "C<sub>2</sub>O<sub>4</sub><sup>2−</sup>"] },
+    { navn: "Fosforsyre", pKa: [2.15, 7.20, 12.35], arter: ["H<sub>3</sub>PO<sub>4</sub>", "H<sub>2</sub>PO<sub>4</sub><sup>−</sup>", "HPO<sub>4</sub><sup>2−</sup>", "PO<sub>4</sub><sup>3−</sup>"] },
+    { navn: "Citronsyre", pKa: [3.13, 4.76, 6.40], arter: ["C<sub>6</sub>H<sub>8</sub>O<sub>7</sub>", "C<sub>6</sub>H<sub>7</sub>O<sub>7</sub><sup>−</sup>", "C<sub>6</sub>H<sub>6</sub>O<sub>7</sub><sup>2−</sup>", "C<sub>6</sub>H<sub>5</sub>O<sub>7</sub><sup>3−</sup>"] },
+    { navn: "Egne pKs-værdier", pKa: null, arter: null }
+  ];
+
+  function id(x) { return document.getElementById(x); }
+
+  // ---- kemi ----
+  // alpha-brøker for arterne ved en given pH (numerisk robust via log10)
+  function alpha(pKa, pH) {
+    var n = pKa.length, logh = -pH;
+    var logTerms = [n * logh], cum = 0;   // j=0: h^n
+    for (var j = 1; j <= n; j++) { cum += -pKa[j - 1]; logTerms.push(cum + (n - j) * logh); }
+    var mx = Math.max.apply(null, logTerms);
+    var terms = logTerms.map(function (L) { return Math.pow(10, L - mx); });
+    var D = terms.reduce(function (a, b) { return a + b; }, 0);
+    return terms.map(function (t) { return t / D; });
+  }
+  function nbar(pKa, pH) { var a = alpha(pKa, pH), s = 0; for (var j = 0; j < a.length; j++) s += j * a[j]; return s; }
+
+  // pH ud fra ladningsbalancen: C(Na)+[H+] = Kw/[H+] + C(syre)*n̄
+  function loesPH(pKa, Csyre, CNa) {
+    function f(pH) { var h = Math.pow(10, -pH); return CNa + h - Kw / h - Csyre * nbar(pKa, pH); }
+    var lo = -1, hi = 15;
+    for (var i = 0; i < 60; i++) { var m = (lo + hi) / 2; if (f(m) > 0) lo = m; else hi = m; }
+    return (lo + hi) / 2;
+  }
+
+  // ---- state ----
+  var S = {
+    pKa: SYRER[6].pKa.slice(),  // fosforsyre som start
+    arter: SYRER[6].arter.slice(),
+    Ca: 0.10, Va: 10, Cb: 0.10, Vb: 0
+  };
+
+  function nAcid() { return S.Ca * S.Va / 1000; }            // mol
+  function eqVol(j) { return j * nAcid() / S.Cb * 1000; }    // mL for j'te ækvivalenspunkt
+  function vMax() {
+    var sidste = eqVol(S.pKa.length);
+    return Math.max(S.Va * 1.2, sidste * 1.35, 5);
+  }
+
+  // tilstand ved en given tilsat base-volumen (mL)
+  function tilstand(Vb) {
+    var Vtot = (S.Va + Vb) / 1000;             // L
+    var Csyre = nAcid() / Vtot, CNa = (S.Cb * Vb / 1000) / Vtot;
+    var pH = loesPH(S.pKa, Csyre, CNa);
+    var h = Math.pow(10, -pH);
+    return { pH: pH, h: h, oh: Kw / h, a: alpha(S.pKa, pH), Csyre: Csyre, Vtot: Vtot * 1000 };
+  }
+
+  // ---- SVG helpers ----
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, html) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (html != null) e.innerHTML = html;
+    return e;
+  }
+
+  // ---- titreringskurve ----
+  var T = { x0: 48, y0: 288, x1: 578, y1: 20, vmax: 100 };
+  function tx(v) { return T.x0 + (v / T.vmax) * (T.x1 - T.x0); }
+  function ty(pH) { return T.y0 + (pH / 14) * (T.y1 - T.y0); }
+
+  function tegnTiter() {
+    var svg = id("titervg"); svg.innerHTML = "";
+    T.vmax = vMax();
+
+    // bufferbånd (mellem start/ækvivalenspunkter, hvor pH≈pKa) + ækvivalenslinjer
+    for (var j = 1; j <= S.pKa.length; j++) {
+      var vStart = eqVol(j - 1), vEnd = eqVol(j);
+      svg.appendChild(el("rect", { x: tx(vStart), y: T.y1, width: Math.max(0, tx(vEnd) - tx(vStart)), height: T.y0 - T.y1, class: "buffer" }));
+    }
+    // gridlines + y-akse (pH 0..14)
+    for (var p = 0; p <= 14; p += 2) {
+      svg.appendChild(el("line", { x1: T.x0, y1: ty(p), x2: T.x1, y2: ty(p), class: "grid-l" }));
+      svg.appendChild(el("text", { x: T.x0 - 8, y: ty(p) + 4, "text-anchor": "end", class: "axlab" }, String(p)));
+    }
+    // x-akse ticks
+    var steps = niceStep(T.vmax);
+    for (var v = 0; v <= T.vmax + 0.001; v += steps) {
+      svg.appendChild(el("line", { x1: tx(v), y1: T.y0, x2: tx(v), y2: T.y1, class: "grid-l" }));
+      svg.appendChild(el("text", { x: tx(v), y: T.y0 + 16, "text-anchor": "middle", class: "axlab" }, String(Math.round(v))));
+    }
+    // ækvivalens- og halvækvivalenspunkter
+    for (var k = 1; k <= S.pKa.length; k++) {
+      var ve = eqVol(k);
+      if (ve <= T.vmax + 0.001) {
+        svg.appendChild(el("line", { x1: tx(ve), y1: T.y0, x2: tx(ve), y2: T.y1, class: "eqline" }));
+        svg.appendChild(el("text", { x: tx(ve) + 3, y: T.y1 + 12, class: "eqlab" }, k + ". ækv."));
+      }
+    }
+    // selve kurven
+    var pts = [], N = 320;
+    for (var i = 0; i <= N; i++) {
+      var vb = T.vmax * i / N, st = tilstand(vb);
+      pts.push(tx(vb).toFixed(1) + "," + ty(st.pH).toFixed(1));
+    }
+    svg.appendChild(el("polyline", { points: pts.join(" "), class: "curve", stroke: "var(--accent)" }));
+
+    // akser
+    svg.appendChild(el("line", { x1: T.x0, y1: T.y0, x2: T.x1, y2: T.y0, class: "ax" }));
+    svg.appendChild(el("line", { x1: T.x0, y1: T.y0, x2: T.x0, y2: T.y1, class: "ax" }));
+    svg.appendChild(el("text", { x: (T.x0 + T.x1) / 2, y: 322, "text-anchor": "middle", class: "axtitle" }, "tilsat base V (mL)"));
+    svg.appendChild(el("text", { x: 14, y: 16, class: "axtitle" }, "pH"));
+
+    // aktuel markør
+    var now = el("g", { id: "tnow" });
+    svg.appendChild(now);
+    opdaterTiterNu();
+  }
+  function opdaterTiterNu() {
+    var g = id("tnow"); if (!g) return; g.innerHTML = "";
+    var st = tilstand(S.Vb);
+    g.appendChild(el("line", { x1: tx(S.Vb), y1: T.y0, x2: tx(S.Vb), y2: T.y1, class: "nowline" }));
+    g.appendChild(el("circle", { cx: tx(S.Vb), cy: ty(st.pH), r: 5.5, class: "nowdot" }));
+  }
+
+  // ---- fordelingsdiagram ----
+  var D = { x0: 44, y0: 258, x1: 584, y1: 16 };
+  function dx(pH) { return D.x0 + (pH / 14) * (D.x1 - D.x0); }
+  function dy(a) { return D.y0 + a * (D.y1 - D.y0); }
+  function tegnDist() {
+    var svg = id("distsvg"); svg.innerHTML = "";
+    for (var a = 0; a <= 1.0001; a += 0.25) {
+      svg.appendChild(el("line", { x1: D.x0, y1: dy(a), x2: D.x1, y2: dy(a), class: "grid-l" }));
+      svg.appendChild(el("text", { x: D.x0 - 7, y: dy(a) + 4, "text-anchor": "end", class: "axlab" }, a.toFixed(2)));
+    }
+    for (var p = 0; p <= 14; p += 2) {
+      svg.appendChild(el("line", { x1: dx(p), y1: D.y0, x2: dx(p), y2: D.y1, class: "grid-l" }));
+      svg.appendChild(el("text", { x: dx(p), y: D.y0 + 16, "text-anchor": "middle", class: "axlab" }, String(p)));
+    }
+    // en kurve pr. art
+    var N = 280;
+    for (var s = 0; s < S.pKa.length + 1; s++) {
+      var pts = [];
+      for (var i = 0; i <= N; i++) {
+        var pH = 14 * i / N, al = alpha(S.pKa, pH);
+        pts.push(dx(pH).toFixed(1) + "," + dy(al[s]).toFixed(1));
+      }
+      svg.appendChild(el("polyline", { points: pts.join(" "), class: "curve", stroke: FARVE_HEX[s % FARVE_HEX.length], "stroke-width": 2.2 }));
+    }
+    svg.appendChild(el("line", { x1: D.x0, y1: D.y0, x2: D.x1, y2: D.y0, class: "ax" }));
+    svg.appendChild(el("line", { x1: D.x0, y1: D.y0, x2: D.x0, y2: D.y1, class: "ax" }));
+    svg.appendChild(el("text", { x: (D.x0 + D.x1) / 2, y: 292, "text-anchor": "middle", class: "axtitle" }, "pH"));
+    svg.appendChild(el("text", { x: 10, y: 14, class: "axtitle" }, "α"));
+    var now = el("g", { id: "dnow" }); svg.appendChild(now);
+    opdaterDistNu();
+  }
+  function opdaterDistNu() {
+    var g = id("dnow"); if (!g) return; g.innerHTML = "";
+    var st = tilstand(S.Vb);
+    g.appendChild(el("line", { x1: dx(st.pH), y1: D.y0, x2: dx(st.pH), y2: D.y1, class: "nowline" }));
+    for (var s = 0; s < st.a.length; s++)
+      g.appendChild(el("circle", { cx: dx(st.pH), cy: dy(st.a[s]), r: 4, fill: FARVE_HEX[s % FARVE_HEX.length], stroke: "#06243a", "stroke-width": 1.5 }));
+  }
+
+  function niceStep(max) {
+    var raw = max / 8, pow = Math.pow(10, Math.floor(Math.log10(raw))), n = raw / pow;
+    var m = n < 1.5 ? 1 : n < 3 ? 2 : n < 7 ? 5 : 10;
+    return m * pow;
+  }
+
+  // ---- aflæsning + arter ----
+  function fmtSci(x) {
+    if (x >= 1e-3) return x.toPrecision(3);
+    var e = Math.floor(Math.log10(x)), m = x / Math.pow(10, e);
+    return m.toFixed(2) + "·10" + sup(e);
+  }
+  function sup(n) { var s = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" }; return String(n).split("").map(function (c) { return s[c] || c; }).join(""); }
+
+  function opdaterAflaes() {
+    var st = tilstand(S.Vb);
+    id("ph-out").textContent = st.pH.toFixed(2);
+    id("ph-sub").textContent = st.pH < 6.5 ? "surt" : st.pH > 7.5 ? "basisk" : "~neutralt";
+    id("vb-out").textContent = S.Vb.toFixed(1);
+    id("vtot-out").textContent = st.Vtot.toFixed(1);
+    id("hplus").textContent = fmtSci(st.h);
+    id("ohminus").textContent = fmtSci(st.oh);
+    id("cb-sub").textContent = S.Cb.toFixed(2);
+
+    // arts-tabel (koncentration + stofmængde)
+    var box = id("arter"); box.innerHTML = "";
+    var nTot = nAcid(), dom = 0, domv = -1;
+    for (var s = 0; s < st.a.length; s++) {
+      var frak = st.a[s], konc = frak * st.Csyre, mol = frak * nTot;
+      if (frak > domv) { domv = frak; dom = s; }
+      var row = document.createElement("div"); row.className = "art-row";
+      row.innerHTML =
+        '<div><div class="art-name"><span class="swatch" style="background:' + FARVE_HEX[s % FARVE_HEX.length] + '"></span>' + S.arter[s] + '</div>' +
+        '<div class="art-bar"><span style="width:' + (frak * 100).toFixed(1) + '%;background:' + FARVE_HEX[s % FARVE_HEX.length] + '"></span></div></div>' +
+        '<div class="art-val"><b>' + (frak * 100).toFixed(1) + '%</b><br>' + fmtSci(konc) + ' M · ' + fmtSci(mol * 1000) + ' mmol</div>';
+      box.appendChild(row);
+    }
+    id("dom-txt").innerHTML = "— mest: " + S.arter[dom];
+
+    // ækvivalens-info: volumen + pH ved hvert ækvivalenspunkt
+    var info = [], k, svagt = "";
+    for (k = 1; k <= S.pKa.length; k++) {
+      var ve = eqVol(k), pHe = tilstand(ve).pH;
+      info.push(k + ". ækvivalenspunkt: <b>" + ve.toFixed(1) + " mL</b> (pH ≈ " + pHe.toFixed(1) + ")");
+      // et springvindue der ikke kan ses: pKs for stor (fx fosforsyrens 3.)
+      if (S.pKa[k - 1] > 11) svagt = "<br><span style=\"color:var(--muted)\">" + k + ". ækvivalenspunkt kan knap ses — pK<sub>s" + k + "</sub> er for stor.</span>";
+    }
+    var halv = [];
+    for (k = 1; k <= S.pKa.length; k++) if (S.pKa[k - 1] > 0) halv.push("pK<sub>s" + k + "</sub> = " + S.pKa[k - 1].toFixed(2));
+    id("eqinfo").innerHTML = "<b>" + S.pKa.length + "</b> " + (S.pKa.length === 1 ? "pK<sub>s</sub>-værdi (monohydron)" : "pK<sub>s</sub>-værdier (polyhydron)") +
+      "<br>" + info.join("<br>") + (halv.length ? "<br>" + halv.join(" · ") : "") + svagt;
+  }
+
+  function opdaterAlt() { opdaterTiterNu(); opdaterDistNu(); opdaterAflaes(); }
+
+  // ---- kontroller ----
+  function fyldSyrer() {
+    var sel = id("syre");
+    SYRER.forEach(function (s, i) { sel.appendChild(el("option", { value: String(i) }, s.navn)); });
+    sel.value = "6";
+  }
+
+  function saetVbMax() {
+    var mx = vMax();
+    var slider = id("vb");
+    slider.max = mx.toFixed(1);
+    slider.step = (mx / 500).toPrecision(2);
+    if (S.Vb > mx) { S.Vb = 0; slider.value = 0; }
+  }
+
+  function rebuild() {
+    saetVbMax();
+    tegnTiter(); tegnDist(); opdaterAflaes();
+  }
+
+  function laesPKaInput() {
+    var raw = id("pka-input").value.split(/[,;\s]+/).map(parseFloat).filter(function (x) { return !isNaN(x); });
+    raw.sort(function (a, b) { return a - b; });
+    if (!raw.length) raw = [7];
+    if (raw.length > 4) raw = raw.slice(0, 4);
+    S.pKa = raw;
+    S.arter = raw.map(function (_, i) { return i === 0 ? "H<sub>" + raw.length + "</sub>A" : "H<sub>" + (raw.length - i) + "</sub>A<sup>" + i + "−</sup>"; });
+    S.arter.push("A<sup>" + raw.length + "−</sup>");
+    if (raw.length === 1) S.arter = ["HA", "A<sup>−</sup>"];
+  }
+
+  function vaelgSyre() {
+    var i = parseInt(id("syre").value, 10), s = SYRER[i];
+    if (s.pKa === null) { id("pka-felt").style.display = "block"; laesPKaInput(); }
+    else { id("pka-felt").style.display = "none"; S.pKa = s.pKa.slice(); S.arter = s.arter.slice(); }
+    rebuild();
+  }
+
+  // bind
+  fyldSyrer();
+  id("syre").addEventListener("change", vaelgSyre);
+  id("pka-input").addEventListener("input", function () { laesPKaInput(); rebuild(); });
+  id("ca").addEventListener("input", function (e) { S.Ca = +e.target.value; id("ca-v").textContent = S.Ca.toFixed(3); rebuild(); });
+  id("va").addEventListener("input", function (e) { S.Va = +e.target.value; id("va-v").textContent = S.Va; rebuild(); });
+  id("cb").addEventListener("input", function (e) { S.Cb = +e.target.value; id("cb-v").textContent = S.Cb.toFixed(3); rebuild(); });
+  id("vb").addEventListener("input", function (e) { S.Vb = +e.target.value; id("vb-v").textContent = S.Vb.toFixed(1); opdaterAlt(); });
+
+  // klik/træk i titreringsgrafen
+  var titersvg = id("titervg");
+  function grafTilVb(evt) {
+    var r = titersvg.getBoundingClientRect();
+    var xpx = (evt.clientX - r.left) / r.width * 600;   // viewBox-bredde
+    var v = (xpx - T.x0) / (T.x1 - T.x0) * T.vmax;
+    v = Math.max(0, Math.min(T.vmax, v));
+    S.Vb = v; id("vb").value = v; id("vb-v").textContent = v.toFixed(1); opdaterAlt();
+  }
+  var traekker = false;
+  titersvg.addEventListener("pointerdown", function (e) { traekker = true; titersvg.setPointerCapture(e.pointerId); grafTilVb(e); });
+  titersvg.addEventListener("pointermove", function (e) { if (traekker) grafTilVb(e); });
+  titersvg.addEventListener("pointerup", function () { traekker = false; });
+
+  // auto-titrér
+  var anim = null;
+  id("play").addEventListener("click", function () {
+    if (anim) { cancelAnimationFrame(anim); anim = null; this.textContent = "▶ Auto-titrér"; return; }
+    this.textContent = "⏸ Pause";
+    var knap = this, mx = vMax(), t0 = null;
+    if (S.Vb >= mx) S.Vb = 0;
+    function step(t) {
+      if (t0 === null) t0 = t;
+      S.Vb = Math.min(mx, S.Vb + mx / 600);   // ~10 s over hele kurven
+      id("vb").value = S.Vb; id("vb-v").textContent = S.Vb.toFixed(1); opdaterAlt();
+      if (S.Vb < mx) anim = requestAnimationFrame(step);
+      else { anim = null; knap.textContent = "▶ Auto-titrér"; }
+    }
+    anim = requestAnimationFrame(step);
+  });
+  id("reset").addEventListener("click", function () {
+    if (anim) { cancelAnimationFrame(anim); anim = null; id("play").textContent = "▶ Auto-titrér"; }
+    S.Vb = 0; id("vb").value = 0; id("vb-v").textContent = "0.0"; opdaterAlt();
+  });
+
+  rebuild();
+})();
+</script>
+</body>
+</html>
