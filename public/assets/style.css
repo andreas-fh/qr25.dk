@@ -313,6 +313,19 @@ button:active { border-style: inset; }
 
 #kilde { font-size: 11px; margin-left: 4px; }
 
+/* dagens billede skal fylde kassens bredde og ikke flyde ud over den. andreas
+   meldte at det overlappede naboerne, fordi billedet blev vist i sin fulde
+   størrelse (picsum er 800x500) i stedet for at skalere ned til kassen. */
+#db-holder img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: cover;
+  border: 1px solid #b8b3a0;
+  background: #efece0;
+}
+
 #arkiv { margin-top: 12px; border-top: 2px dotted #b8b3a0; padding-top: 8px; }
 summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 
