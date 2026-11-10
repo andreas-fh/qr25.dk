@@ -529,14 +529,44 @@
     soegEfter();
 
     // --- 3: denne dag ---
+    function doy(m, d) {
+      return Math.round((Date.UTC(2001, m - 1, d) - Date.UTC(2001, 0, 1)) / 86400000);
+    }
     var iDagMD = ("0" + iDag.month).slice(-2) + "-" + ("0" + iDag.day).slice(-2);
     var denneDag = citater.filter(function (c) { return (c.date || "").slice(5) === iDagMD; });
+
+    // arkivet er ungt, så de fleste datoer har endnu ingen citater fra et tidligere
+    // år. i stedet for en død kasse (det lignede en fejl) viser vi den nærmeste
+    // kalenderdag der RENT FAKTISK har citater.
+    var naermesteMD = null;
+    if (!denneDag.length) {
+      var maal = doy(iDag.month, iDag.day);
+      var bedst = 999, set = {};
+      citater.forEach(function (c) {
+        var dt = c.date || "";
+        if (dt.length < 10) return;
+        var md = dt.slice(5);
+        if (set[md]) return;
+        set[md] = true;
+        var afst = Math.abs(doy(parseInt(dt.slice(5, 7), 10), parseInt(dt.slice(8, 10), 10)) - maal);
+        afst = Math.min(afst, 365 - afst);
+        if (afst < bedst) { bedst = afst; naermesteMD = md; }
+      });
+      if (naermesteMD) {
+        denneDag = citater.filter(function (c) { return (c.date || "").slice(5) === naermesteMD; });
+      }
+    }
+
     var dd = id("denne-dag");
     dd.innerHTML = "";
     if (!denneDag.length) {
-      dd.appendChild(lav("p", "tom", "der er ikke sagt noget den " +
-        iDag.day + "." + iDag.month + " før"));
+      dd.appendChild(lav("p", "tom", "der er ingen citater endnu"));
     } else {
+      if (naermesteMD) {
+        dd.appendChild(lav("p", "tom", "intet sagt den " + iDag.day + "." + iDag.month +
+          " endnu — nærmeste dag med citater, " + parseInt(naermesteMD.slice(3), 10) + "." +
+          parseInt(naermesteMD.slice(0, 2), 10) + ":"));
+      }
       var aar = {};
       denneDag.forEach(function (c) {
         var a = (c.date || "").slice(0, 4);
