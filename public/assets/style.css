@@ -30,13 +30,13 @@ a:visited { color: #6a1a9a; }
 a:hover { color: #c22a1c; }
 
 /* fuldskærms-lag oven på baggrunden, under boksene (z-index -1 ligger mellem
-   body-gradienten og indholdet). cover → fylder den enkeltes skærm uanset
-   størrelse. */
+   body-gradienten og indholdet). contain → hele billedet vises, skaleret efter
+   den mindste af højde/bredde, så det aldrig beskæres. */
 #tel-aviv {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: url("/assets/tel_aviv.png") center center / cover no-repeat;
+  background: url("/assets/tel_aviv.png") center center / contain no-repeat;
   pointer-events: none;
 }
 
