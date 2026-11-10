@@ -338,15 +338,19 @@
       svg.appendChild(el("line", { x1: dx(p), y1: D.y0, x2: dx(p), y2: D.y1, class: "grid-l" }));
       svg.appendChild(el("text", { x: dx(p), y: D.y0 + 16, "text-anchor": "middle", class: "axlab" }, String(p)));
     }
-    // en kurve pr. art
-    var N = 280;
-    for (var s = 0; s < S.pKa.length + 1; s++) {
+    // en kurve pr. art + en label ved artens plateau (som i Isis-figurerne)
+    var N = 280, n = S.pKa.length;
+    for (var s = 0; s < n + 1; s++) {
       var pts = [];
       for (var i = 0; i <= N; i++) {
         var pH = 14 * i / N, al = alpha(S.pKa, pH);
         pts.push(dx(pH).toFixed(1) + "," + dy(al[s]).toFixed(1));
       }
       svg.appendChild(el("polyline", { points: pts.join(" "), class: "curve", stroke: FARVE_HEX[s % FARVE_HEX.length], "stroke-width": 2.2 }));
+      // label midt i artens dominans-område (mellem nabo-pKs'er)
+      var vns = (s === 0) ? 0 : S.pKa[s - 1], hoj = (s === n) ? 14 : S.pKa[s];
+      var cpH = Math.max(0.8, Math.min(13.2, (vns + hoj) / 2));
+      svg.appendChild(el("text", { x: dx(cpH), y: dy(0.9), "text-anchor": "middle", fill: FARVE_HEX[s % FARVE_HEX.length], "font-size": "12", "font-weight": "700" }, formelTekst(S.arter[s])));
     }
     svg.appendChild(el("line", { x1: D.x0, y1: D.y0, x2: D.x1, y2: D.y0, class: "ax" }));
     svg.appendChild(el("line", { x1: D.x0, y1: D.y0, x2: D.x0, y2: D.y1, class: "ax" }));
@@ -375,7 +379,15 @@
     var e = Math.floor(Math.log10(x)), m = x / Math.pow(10, e);
     return m.toFixed(2) + "·10" + sup(e);
   }
-  function sup(n) { var s = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" }; return String(n).split("").map(function (c) { return s[c] || c; }).join(""); }
+  function sup(n) { var s = { "-": "⁻", "−": "⁻", "+": "⁺", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" }; return String(n).split("").map(function (c) { return s[c] || c; }).join(""); }
+  function sub(n) { var s = { "0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅", "6": "₆", "7": "₇", "8": "₈", "9": "₉" }; return String(n).split("").map(function (c) { return s[c] || c; }).join(""); }
+  // HTML-formel (med <sub>/<sup>) → ren tekst med unicode, så den kan stå i SVG
+  function formelTekst(html) {
+    return String(html)
+      .replace(/<sub>(.*?)<\/sub>/g, function (_, x) { return sub(x); })
+      .replace(/<sup>(.*?)<\/sup>/g, function (_, x) { return sup(x); })
+      .replace(/<[^>]+>/g, "");
+  }
 
   function opdaterAflaes() {
     var st = tilstand(S.Vb);
@@ -421,7 +433,13 @@
   // ---- kontroller ----
   function fyldSyrer() {
     var sel = id("syre");
-    SYRER.forEach(function (s, i) { sel.appendChild(el("option", { value: String(i) }, s.navn)); });
+    // VIGTIGT: rigtige HTML-options (ikke el(), som laver SVG-namespace-elementer)
+    SYRER.forEach(function (s, i) {
+      var o = document.createElement("option");
+      o.value = String(i);
+      o.textContent = s.navn;
+      sel.appendChild(o);
+    });
     sel.value = "6";
   }
 
