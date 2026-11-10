@@ -94,7 +94,7 @@
 
   /* arts-tabel + bars */
   .arter { margin-top: 2px; }
-  .art-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 7px 0; border-top: 1px solid var(--line); }
+  .art-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 7px 0; border-top: 1px solid var(--line); cursor: ew-resize; touch-action: none; }
   .art-row:first-child { border-top: none; }
   .art-name { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
   .swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; }
@@ -184,6 +184,7 @@
       </div>
       <div class="chartcard">
         <h3>Arter lige nu <span style="font-weight:400;color:var(--muted);font-size:12.5px" id="dom-txt"></span></h3>
+        <p class="hint">Koncentration og stofmængde af hver art. Træk i en bar for at sætte dens andel — så finder den pH'en og resten følger med.</p>
         <div class="arter" id="arter"></div>
       </div>
     </div>
@@ -518,6 +519,38 @@
   distsvg.addEventListener("pointerdown", function (e) { traekkerD = true; distsvg.setPointerCapture(e.pointerId); grafTilPH(e); });
   distsvg.addEventListener("pointermove", function (e) { if (traekkerD) grafTilPH(e); });
   distsvg.addEventListener("pointerup", function () { traekkerD = false; });
+
+  // træk i "Arter lige nu": sæt en arts andel ved at trække dens bar, og find
+  // det pH hvor arten har den andel (nærmest nuværende pH, så det føles kontinuert).
+  var arterBox = id("arter");
+  function pHforArt(j, maal) {
+    var nu = tilstand(S.Vb).pH, bedstPH = nu, bedstPris = 1e9, N = 560;
+    for (var i = 0; i <= N; i++) {
+      var pH = 14 * i / N, a = alpha(S.pKa, pH)[j];
+      var pris = Math.abs(a - maal) * 100 + Math.abs(pH - nu) * 0.01; // match vigtigst, nærhed bryder uafgjort
+      if (pris < bedstPris) { bedstPris = pris; bedstPH = pH; }
+    }
+    return bedstPH;
+  }
+  var aktivArt = null;
+  function artTilPH(evt) {
+    if (aktivArt == null) return;
+    var row = arterBox.children[aktivArt]; if (!row) return;
+    var track = row.querySelector(".art-bar"); if (!track) return;
+    var r = track.getBoundingClientRect();
+    var frac = Math.max(0, Math.min(1, (evt.clientX - r.left) / r.width));
+    var v = vbFraPH(pHforArt(aktivArt, frac));
+    S.Vb = v; id("vb").value = v; id("vb-v").textContent = v.toFixed(1); opdaterAlt();
+  }
+  arterBox.addEventListener("pointerdown", function (e) {
+    var row = e.target.closest ? e.target.closest(".art-row") : null;
+    if (!row || row.parentNode !== arterBox) return;
+    aktivArt = Array.prototype.indexOf.call(arterBox.children, row);
+    arterBox.setPointerCapture(e.pointerId);
+    artTilPH(e);
+  });
+  arterBox.addEventListener("pointermove", function (e) { if (aktivArt != null) artTilPH(e); });
+  arterBox.addEventListener("pointerup", function () { aktivArt = null; });
 
   // auto-titrér
   var anim = null;
