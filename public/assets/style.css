@@ -29,6 +29,17 @@ a { color: #1a1aa8; }
 a:visited { color: #6a1a9a; }
 a:hover { color: #c22a1c; }
 
+/* fuldskærms-lag oven på baggrunden, under boksene (z-index -1 ligger mellem
+   body-gradienten og indholdet). contain → hele billedet vises og beskæres aldrig. */
+#tel-aviv {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("/assets/tel_aviv.png") center center / contain no-repeat;
+  pointer-events: none;
+}
+body.verden-paa #tel-aviv { display: none; }
+
 /* ---- instagram-banner ---- */
 
 /* andreas bad om et reklame-banner øverst. instagram-gradienten, men i sidens
