@@ -75,20 +75,6 @@ a:hover { color: #c22a1c; }
 .insta-pil { flex: 0 0 auto; transition: transform 0.12s; }
 .insta-link:hover .insta-pil { transform: translateX(3px); }
 
-#insta-luk {
-  flex: 0 0 auto;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  border: 2px outset #e7b1d0;
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
-  font: bold 16px/1 Verdana, sans-serif;
-  cursor: pointer;
-}
-
-#insta-luk:hover { background: rgba(255, 255, 255, 0.4); }
-
 /* ingen reklame inde i pingvin-verdenen */
 body.verden-paa #insta-banner { display: none; }
 

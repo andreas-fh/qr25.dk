@@ -722,22 +722,6 @@
      datoen den sidst blev nulstillet), og alle kan nulstille den til 0. Tallet
      er fælles for hele serveren, så det ligger på data.qr25.dk. */
 
-  // andreas' instagram-banner: luk-knappen gemmer valget pr. browser, så den
-  // ikke dukker op igen hver gang. localStorage kan smække fejl i privat tilstand
-  // eller være slået fra, så alt er pakket ind.
-  function instaBanner() {
-    var banner = id("insta-banner");
-    var luk = id("insta-luk");
-    if (!banner || !luk) return;
-    try {
-      if (localStorage.getItem("insta-luk") === "1") { banner.hidden = true; return; }
-    } catch (e) {}
-    luk.addEventListener("click", function () {
-      banner.hidden = true;
-      try { localStorage.setItem("insta-luk", "1"); } catch (e) {}
-    });
-  }
-
   function sidenTael() {
     var kasser = [].slice.call(document.querySelectorAll(".kasse-siden"));
     if (!kasser.length) return;
@@ -3144,7 +3128,6 @@
   normalsider();
   dagensBillede();
   sidenTael();
-  instaBanner();
 
   tegnFlag();
   tegnSang();
