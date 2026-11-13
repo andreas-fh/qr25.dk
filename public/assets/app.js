@@ -18,13 +18,13 @@
 
   var DAGE = ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"];
 
-  // vedtægter, afstemninger, navne og besøgstælleren. resten er filer herfra.
+  // vedtægter, navne og besøgstælleren. resten er filer herfra.
   var DATA = "https://data.qr25.dk";
 
   /* Alt det siden har hentet, samlet ét sted. Mikkel slår op i det, og han er
      det eneste der læser herfra — resten af siden bruger sine egne data
      direkte. Er en af dem ikke hentet endnu, er listen bare tom. */
-  var VIDEN = { citater: [], kapitler: [], polls: [] };
+  var VIDEN = { citater: [], kapitler: [] };
 
 
   function id(name) { return document.getElementById(name); }
@@ -2427,16 +2427,11 @@
     });
 
 
-  // ---------------- vedtægter og afstemninger ----------------
+  // ---------------- vedtægter ----------------
 
-  /* Begge dele kommer fra data.qr25.dk, som er nginx på VPS'en. qr25.dk er
-     statiske filer på Cloudflare og kan ikke selv nå ind til DemokratiClanker,
-     så /opt/qr25-data/build.py bygger to json-filer derovre: vedtægterne fra
-     den nyeste pdf i #rules, og de åbne afstemninger fra bottens eget lager.
-
-     Afstemningerne er til at kigge på. Man stemmer i discord. Der er ikke en
-     eneste knap her nede der sender noget nogen steder hen, og det skal der
-     heller ikke komme. */
+  /* Vedtægterne kommer fra data.qr25.dk, som er nginx på VPS'en. qr25.dk er
+     statiske filer på Cloudflare, så /opt/qr25-data/build.py bygger en
+     json-fil derovre af den nyeste pdf i #rules. */
 
 
   function hent(sti) {
@@ -2476,79 +2471,6 @@
       });
 
       kasse.appendChild(blok);
-    });
-  }
-
-  // --- afstemninger ---
-
-  function omTil(ms) {
-    var v = ms - Date.now();
-    if (v <= 0) return "slutter når som helst";
-    return "slutter om " + laenge(v);
-  }
-
-  function tegnPolls(data) {
-    VIDEN.polls = (data && data.afstemninger) || [];
-    var kasse = id("polls");
-    kasse.innerHTML = "";
-
-    var liste = (data && data.afstemninger) || [];
-    if (!liste.length) {
-      kasse.appendChild(lav("p", "tom", "ingen åbne afstemninger lige nu"));
-      return liste.length;
-    }
-
-    liste.forEach(function (p) {
-      var blok = lav("div", "poll" + (p.skjult ? " hemmelig" : ""));
-      blok.appendChild(lav("h3", null, p.spoergsmaal));
-
-      p.muligheder.forEach(function (m) {
-        var valg = lav("div", "valg");
-        var top = lav("div", "valg-top");
-        top.appendChild(lav("span", "tekst", m.tekst));
-        if (!p.skjult) {
-          top.appendChild(lav("span", "antal", m.stemmer + (m.stemmer === 1 ? " stemme" : " stemmer")));
-        }
-        valg.appendChild(top);
-
-        if (!p.skjult) {
-          var bar = lav("div", "bar");
-          var fyld = lav("span");
-          fyld.style.width = Math.round((m.andel || 0) * 100) + "%";
-          bar.appendChild(fyld);
-          valg.appendChild(bar);
-        }
-        blok.appendChild(valg);
-      });
-
-      var dele = [];
-      if (p.skjult) {
-        dele.push("hemmelig, resultatet kommer når den lukker");
-        dele.push(p.vaelgere + (p.vaelgere === 1 ? " har stemt" : " har stemt"));
-      } else {
-        dele.push(p.vaelgere + (p.vaelgere === 1 ? " vælger" : " vælgere"));
-        if (p.flere_valg) dele.push("flere valg pr. person");
-      }
-      if (p.slutter) dele.push(omTil(p.slutter));
-      dele.push("af " + p.oprettet_af);
-      blok.appendChild(lav("p", "fod", dele.join(" \u00b7 ")));
-
-      kasse.appendChild(blok);
-    });
-
-    return liste.length;
-  }
-
-  var antalPolls = null;
-
-  function opdaterPolls(foerste) {
-    return hent("/polls.json").then(function (data) {
-      var n = tegnPolls(data);
-      /* kassen ruller indeni, så højden ændrer sig ikke af sig selv. men går
-         den fra ingen afstemninger til nogen, bliver den højere, og så skal
-         kasserne lægges om, ellers ligger den oven i naboen. */
-      if (!foerste && antalPolls !== null && (antalPolls === 0) !== (n === 0)) spred();
-      antalPolls = n;
     });
   }
 
@@ -2653,21 +2575,15 @@
     .catch(function (fejl) {
       id("vedtaegter").textContent = "kunne ikke hente vedtægterne (" + fejl.message + ")";
     })
-    .then(function () { return opdaterPolls(true); })
-    .catch(function (fejl) {
-      id("polls").textContent = "kunne ikke hente afstemningerne (" + fejl.message + ")";
-    })
     .then(function () { hentSenest(); })
     .catch(function (fejl) {
       id("senest").textContent = "kunne ikke hente den (" + fejl.message + ")";
     })
     .then(function () { spred(); });
 
-  // der bliver stemt mens folk kigger, så hent dem igen en gang imellem.
-  // det samme med tristan: botten skriver filen i samme sekund han trykker
-  // enter, så en side der står åben skal ikke vise noget en time gammelt.
+  // tristan: botten skriver filen i samme sekund han trykker enter, så en
+  // side der står åben skal ikke vise noget en time gammelt.
   setInterval(function () {
-    opdaterPolls(false).catch(function () {});
     hentSenest();
   }, 30000);
 
@@ -2783,8 +2699,8 @@
      klassen", og Dangus bad om at den skulle hedde Mikkel.
 
      Han er ikke en model. Der er ikke noget endepunkt, ingen nøgle og ingen
-     regning: han slår op i de filer siden allerede har hentet — citaterne,
-     vedtægterne og de åbne afstemninger — og svarer med det han finder.
+     regning: han slår op i de filer siden allerede har hentet — citaterne
+     og vedtægterne — og svarer med det han finder.
      Spørgsmålet forlader aldrig browseren. Det står også i kassen, for en
      kasse der hedder "ai" og lader som om der sidder en model bagved er en
      løgn, og siden lyver ikke om den slags.
@@ -2837,14 +2753,6 @@
     if (f.indexOf("kagepause") !== -1 && !omReglerne) {
       return [{ tekst: document.body.classList.contains("kagepause")
         ? "ja. løb." : "nej. der står hvor længe der er til oppe i kassen." }];
-    }
-
-    if (f.indexOf("stemme") !== -1 || f.indexOf("afstemning") !== -1) {
-      if (!VIDEN.polls.length) return [{ tekst: "der er ingen åbne afstemninger lige nu." }];
-      return [{ tekst: "der er " + VIDEN.polls.length + " åben" +
-        (VIDEN.polls.length === 1 ? "" : "e") + ": " +
-        VIDEN.polls.map(function (p) { return p.spoergsmaal; }).join(" — ") +
-        ". du stemmer i discord, ikke her." }];
     }
 
     /* "hvem er X". Et navn er tit kort, og korte ord drukner i pointgivningen
@@ -2926,8 +2834,8 @@
       log.scrollTop = log.scrollHeight;
     }
 
-    sig("mikkel-ham", [{ tekst: "spørg om klassen. jeg kigger i citaterne, " +
-      "vedtægterne og afstemningerne, og jeg kigger ikke andre steder." }]);
+    sig("mikkel-ham", [{ tekst: "spørg om klassen. jeg kigger i citaterne " +
+      "og vedtægterne, og jeg kigger ikke andre steder." }]);
 
     function spoerg() {
       var t = felt.value.trim().slice(0, MIKKEL_MAX);

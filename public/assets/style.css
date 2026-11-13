@@ -805,10 +805,10 @@ body.disco { animation: disco 2.4s linear infinite; }
 #archive-list .what { font: italic 15px Georgia, "Times New Roman", serif; }
 #archive-list .who { font-size: 12px; }
 
-/* ---- vedtægter og afstemninger ---- */
+/* ---- vedtægter ---- */
 
-/* begge kasser kan blive lange, og en kasse der vokser skubber sig ind i
-   naboen når de ligger tilfældige steder. så de ruller indeni i stedet */
+/* kassen kan blive lang, og en kasse der vokser skubber sig ind i naboen når
+   de ligger tilfældige steder. så den ruller indeni i stedet */
 .kassetop {
   margin: 0 0 8px;
   font-weight: bold;
@@ -821,16 +821,12 @@ body.disco { animation: disco 2.4s linear infinite; }
 
 .tom { margin: 0; font-size: 13px; color: #55503f; }
 
-#vedtaegter, #polls {
+#vedtaegter {
   max-height: 320px;
   overflow-y: auto;
   border-top: 1px dotted #b8b3a0;
   padding-top: 8px;
 }
-
-#polls { min-height: 60px; }
-
-/* ---- vedtægter ---- */
 
 .kapitel { margin: 0 0 12px; }
 .kapitel:last-child { margin-bottom: 0; }
@@ -847,26 +843,6 @@ body.disco { animation: disco 2.4s linear infinite; }
 
 .punkter { margin: 3px 0 0; padding-left: 22px; font-size: 12px; color: #3a382e; }
 .punkter li { margin-bottom: 2px; }
-
-/* ---- afstemninger ---- */
-
-.poll { margin: 0 0 14px; }
-.poll:last-child { margin-bottom: 0; }
-
-.poll h3 { margin: 0 0 6px; font: bold 13px Verdana, Geneva, sans-serif; line-height: 1.35; }
-
-.valg { margin: 0 0 4px; font-size: 12px; }
-
-.valg-top { display: flex; justify-content: space-between; gap: 10px; }
-.valg-top .antal { color: #55503f; white-space: nowrap; }
-
-/* massiv farve, ingen overgang */
-.bar { height: 9px; background: #efece0; border: 1px solid #b8b3a0; margin-top: 2px; }
-.bar span { display: block; height: 100%; background: #1a1aa8; }
-
-.poll .fod { margin: 5px 0 0; font-size: 11px; color: #55503f; }
-
-.poll.hemmelig .valg { color: #3a382e; }
 
 /* ---- dangus' profilbillede ---- */
 
