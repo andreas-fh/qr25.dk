@@ -415,6 +415,20 @@
     </div>
   </div>
 
+  <!-- gæt hvem der sagde et citat. svaret står i quotes.json, navnet slås op
+       live. kun citater med én kendt afsender er med. -->
+  <div class="kasse" id="kasse-gaet">
+    <div class="indhold">
+      <p class="kassetop">gæt hvem</p>
+      <div id="gaet-citat"><p class="tom">henter</p></div>
+      <div id="gaet-valg"></div>
+      <p class="kassebund">
+        <span id="gaet-status">rigtige i træk: <b>0</b></span>
+        <button type="button" id="gaet-ny" hidden>næste</button>
+      </p>
+    </div>
+  </div>
+
   <!-- en tilfældig fra serveren. nogen skal jo hente -->
   <div class="kasse" id="kasse-hent">
     <div class="indhold">

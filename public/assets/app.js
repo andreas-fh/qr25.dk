@@ -1057,6 +1057,138 @@
       });
   }
 
+  // ---------------- gæt hvem der sagde det ----------------
+
+  /* andreas' idé: vis et citat uden navn, og lad folk gætte hvem i klassen der
+     sagde det. Svaret står i quotes.json (speakerId); navnet slås op live som
+     alle andre steder på siden. Kun citater med præcis én kendt afsender er
+     med — en dialog mellem to, eller et lærercitat uden id, kan man ikke gætte
+     på én person. */
+  function gaetHvem(citater) {
+    var citatboks = id("gaet-citat");
+    var valgboks = id("gaet-valg");
+    var status = id("gaet-status");
+    var nyKnap = id("gaet-ny");
+    if (!citatboks || !valgboks || !status || !nyKnap) return;
+
+    // et spilbart citat -> dets ene afsender-id, ellers null
+    function spilbar(c) {
+      var ids = {}, ukendt = false;
+      (c.lines || []).forEach(function (l) {
+        if (l.speakerId) ids[l.speakerId] = true;
+        else if (l.speaker || l.speakerRole) ukendt = true;   // håndskrevet / lærer
+      });
+      var keys = Object.keys(ids);
+      if (keys.length !== 1 || ukendt) return null;
+      var uid = keys[0];
+      if (NAVNE.botter.indexOf(uid) !== -1) return null;
+      var n = navn(uid);
+      if (!n || n === "nogen") return null;
+      return uid;
+    }
+
+    var bunke = [], folk = {};
+    citater.forEach(function (c) {
+      var uid = spilbar(c);
+      if (!uid) return;
+      bunke.push({ citat: c, uid: uid });
+      folk[uid] = true;
+    });
+    var alleFolk = Object.keys(folk);
+
+    if (!bunke.length || alleFolk.length < 2) {
+      var harNavne = NAVNE && NAVNE.navne && Object.keys(NAVNE.navne).length;
+      citatboks.innerHTML = "";
+      citatboks.appendChild(lav("p", "tom",
+        harNavne ? "ikke nok citater at gætte på endnu" : "henter navne ..."));
+      valgboks.innerHTML = "";
+      nyKnap.hidden = true;
+      return;
+    }
+
+    function bland(a) {
+      a = a.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    var stime = 0, bedste = 0, svaret = false, facitUid = null;
+    try { bedste = parseInt(localStorage.getItem("qr25-gaet-bedste"), 10) || 0; } catch (e) {}
+
+    // navnet kan være et discord-kaldenavn, så det må aldrig gå gennem innerHTML.
+    // status bygges derfor af rigtige dom-noder, ikke en html-streng.
+    function visStatus(forrestNode) {
+      status.innerHTML = "";
+      if (forrestNode) {
+        status.appendChild(forrestNode);
+        status.appendChild(document.createTextNode(" "));
+      }
+      status.appendChild(document.createTextNode("rigtige i træk: "));
+      status.appendChild(lav("b", null, String(stime)));
+      if (bedste) status.appendChild(document.createTextNode(" · bedste: " + bedste));
+    }
+
+    function runde() {
+      svaret = false;
+      var valg = bunke[Math.floor(Math.random() * bunke.length)];
+      facitUid = valg.uid;
+
+      citatboks.innerHTML = "";
+      (valg.citat.lines || []).forEach(function (l) {
+        citatboks.appendChild(lav("p", "gaet-linje", "»" + udskriv(l.text) + "«"));
+      });
+
+      // op til tre forkerte personer + den rigtige, blandet
+      var andre = bland(alleFolk.filter(function (u) { return u !== facitUid; })).slice(0, 3);
+      var muligheder = bland(andre.concat([facitUid]));
+
+      valgboks.innerHTML = "";
+      muligheder.forEach(function (uid) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.dataset.uid = uid;
+        b.textContent = navn(uid);
+        b.addEventListener("click", function () { svar(uid === facitUid, b); });
+        valgboks.appendChild(b);
+      });
+
+      nyKnap.hidden = true;
+      visStatus(null);
+    }
+
+    function svar(rigtigt, knap) {
+      if (svaret) return;
+      svaret = true;
+      valgboks.querySelectorAll("button").forEach(function (b) {
+        b.disabled = true;
+        if (b.dataset.uid === facitUid) b.className = "rigtig";   // vis altid det rigtige
+      });
+      if (rigtigt) {
+        stime += 1;
+        if (stime > bedste) {
+          bedste = stime;
+          try { localStorage.setItem("qr25-gaet-bedste", String(bedste)); } catch (e) {}
+        }
+        visStatus(document.createTextNode("ja!"));
+      } else {
+        knap.className = "forkert";
+        stime = 0;
+        var reveal = document.createElement("span");
+        reveal.appendChild(document.createTextNode("nej — det var "));
+        reveal.appendChild(lav("b", null, navn(facitUid)));
+        reveal.appendChild(document.createTextNode("."));
+        visStatus(reveal);
+      }
+      nyKnap.hidden = false;
+    }
+
+    nyKnap.addEventListener("click", runde);
+    runde();
+  }
+
   // ---------------- kryds og bolle mod en cpu der snyder ----------------
 
   /* Der blev bedt om kryds og bolle mod en cpu der snyder og rykker dine
@@ -2415,6 +2547,8 @@
         vis(ekstra.fraAdressen);
         tilbage.hidden = false;
       }
+
+      gaetHvem(citater);
 
 
       // citatet er kommet ind og kassen er blevet højere, så mål op igen

@@ -377,6 +377,33 @@ summary { cursor: pointer; font-size: 12px; font-weight: bold; }
 #lande-status b { font-size: 14px; }
 #lande-ny[hidden] { display: none; }
 
+/* ---- gæt hvem ---- */
+#gaet-citat {
+  min-height: 48px;
+  border: 3px inset #cfcab6;
+  background: #fbf9f0;
+  padding: 8px 9px;
+  margin: 0 0 8px;
+}
+.gaet-linje { margin: 0 0 4px; font-size: 13px; line-height: 1.4; font-style: italic; }
+.gaet-linje:last-child { margin-bottom: 0; }
+
+#gaet-valg { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+#gaet-valg button {
+  font: 12px Verdana, Geneva, sans-serif;
+  border: 3px outset #ddd8c6;
+  background: #efece0;
+  color: #111;
+  cursor: pointer;
+  padding: 6px 4px;
+}
+#gaet-valg button:disabled { cursor: default; }
+#gaet-valg button.rigtig { background: #35c93a; border-color: #2a9a2e; color: #06260a; }
+#gaet-valg button.forkert { background: #e0503f; border-color: #b23222; color: #fff; }
+
+#gaet-status b { font-size: 14px; }
+#gaet-ny[hidden] { display: none; }
+
 /* ---- kryds og bolle ---- */
 
 #kryds-braet {
